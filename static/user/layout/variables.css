@@ -1,0 +1,48 @@
+/**
+ * ========================================================
+ * DESIGN TOKENS & CSS VARIABLES
+ * ========================================================
+ * Chứa toàn bộ biến màu sắc, kích thước, bo góc, bóng đổ
+ * dùng chung trên toàn hệ thống StickerHub.
+ */
+
+:root {
+  /* Color Palette */
+  --bg-page: #F6EFE6;
+  --bg-header: #FCFAF6;
+  --border-color: #E7DDCE;
+  --border-subtle: #EFE8DD;
+  --text-main: #2C1D18;
+  --text-muted: #7E6E64;
+  --text-light: #9B8C82;
+
+  /* Brand Accents */
+  --brand-orange: #C45832;
+  --brand-orange-hover: #AF4925;
+  --accent-blue: #3E87E8;
+  --accent-blue-hover: #2F75D2;
+
+  /* Sidebar Tokens */
+  --sidebar-card-bg: #FCF9F4;
+  --sidebar-featured-bg: #EBF1F5;
+  --sidebar-featured-border: #DDE5EC;
+
+  /* Card & Content Tokens */
+  --card-bg: #FFFFFF;
+  --card-border: #EBE2D5;
+
+  /* Footer Tokens */
+  --footer-bg: #2B211C;
+  --footer-text: #ABA098;
+
+  /* Border Radii */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+
+  /* Shadows */
+  --shadow-sm: 0 2px 6px rgba(44, 29, 24, 0.04);
+  --shadow-md: 0 4px 16px rgba(44, 29, 24, 0.06);
+  --shadow-hover: 0 8px 24px rgba(44, 29, 24, 0.1);
+}

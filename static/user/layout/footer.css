@@ -1,0 +1,105 @@
+/**
+ * ========================================================
+ * FOOTER STYLES
+ * ========================================================
+ * Chân trang chung bao gồm bản quyền, liên kết chính sách
+ * và mạng xã hội.
+ */
+
+.site-footer {
+  background-color: var(--footer-bg);
+  color: var(--footer-text);
+  padding: 20px 24px;
+  margin-top: auto;
+  border-top: 1px solid #3F312A;
+}
+
+.footer-inner {
+  max-width: 1360px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  font-size: 13px;
+}
+
+.footer-copy {
+  color: #9C8E84;
+}
+
+.footer-right {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.footer-links {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  list-style: none;
+}
+
+.footer-links li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.footer-links li:not(:last-child)::after {
+  content: "|";
+  color: #55443B;
+  font-size: 11px;
+}
+
+.footer-link {
+  color: #C0B4AB;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-link:hover {
+  color: #FFFFFF;
+}
+
+.footer-socials {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.social-btn {
+  color: #C0B4AB;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s, transform 0.2s;
+}
+
+.social-btn:hover {
+  color: #FFFFFF;
+  transform: translateY(-2px);
+}
+
+.social-btn i,
+.social-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* ========================================================
+   FOOTER RESPONSIVE RULES
+   ======================================================== */
+@media (max-width: 860px) {
+  .footer-inner {
+    flex-direction: column;
+    text-align: center;
+    gap: 14px;
+  }
+  .footer-right {
+    flex-direction: column;
+    gap: 12px;
+  }
+}

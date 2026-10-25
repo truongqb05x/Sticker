@@ -1,0 +1,15 @@
+/**
+ * ========================================================
+ * MASTER LAYOUT ENTRY STYLESHEET
+ * ========================================================
+ * Gộp toàn bộ các module layout dùng chung cho tất cả các trang
+ * trên hệ thống (Header, Sidebar, Drawer, Footer, Tokens, Base).
+ * Các trang con chỉ cần nạp file này + file css riêng của trang.
+ */
+
+@import url('./variables.css');
+@import url('./base.css');
+@import url('./header.css');
+@import url('./sidebar.css');
+@import url('./drawer.css');
+@import url('./footer.css');

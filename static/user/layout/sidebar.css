@@ -1,0 +1,209 @@
+/**
+ * ========================================================
+ * SIDEBAR STYLES
+ * ========================================================
+ * Khối cột bên trái hiển thị Danh mục và Bộ sưu tập nổi bật,
+ * cùng các quy tắc responsive ẩn sidebar trên mobile.
+ */
+
+.sidebar {
+  width: 250px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Sidebar Card 1: Categories */
+.sidebar-card {
+  background-color: #FAF5EE;
+  border: 1px solid #E6DCD0;
+  border-radius: 14px;
+  overflow: hidden;
+  padding: 0;
+  box-shadow: none;
+}
+
+.sidebar-card .card-header {
+  background-color: #EFE6DA;
+  padding: 12px 14px;
+  border-bottom: 1px solid #E6DCD0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  font-weight: 800;
+  color: #2D1C14;
+  margin-bottom: 0;
+}
+
+.sidebar-card .card-header svg {
+  width: 17px;
+  height: 17px;
+  color: #554236;
+  fill: currentColor;
+}
+
+.category-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 10px 12px;
+}
+
+.category-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6.5px 8px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #3C2B22;
+  transition: all 0.15s ease;
+  cursor: pointer;
+  user-select: none;
+}
+
+.category-item:hover {
+  background-color: #EFE7DA;
+  color: #2D1C14;
+}
+
+.category-item.active {
+  background-color: #E8DDCF;
+  color: #C35631;
+  font-weight: 700;
+}
+
+.cat-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cat-icon {
+  width: 17px;
+  height: 17px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  color: #6A584C;
+  flex-shrink: 0;
+}
+
+.cat-count {
+  font-size: 12px;
+  color: #8C7B70;
+  font-weight: 500;
+}
+
+/* Sidebar Card 2: Featured Collections */
+.featured-card {
+  background-color: #FFFFFF;
+  border: 1px solid #D6E0E7;
+  border-radius: 14px;
+  overflow: hidden;
+  padding: 0;
+  box-shadow: none;
+}
+
+.featured-card .card-header {
+  background-color: #EBF1F5;
+  padding: 12px 14px;
+  border-bottom: 1px solid #DCE6ED;
+  color: #203342;
+  font-size: 15px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 0;
+}
+
+.featured-card .card-header svg {
+  width: 17px;
+  height: 17px;
+  color: #3A5872;
+  fill: currentColor;
+}
+
+.featured-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px 12px 14px;
+}
+
+.featured-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 6px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background-color 0.15s;
+  cursor: pointer;
+}
+
+.featured-item:hover {
+  background-color: #F4F7F9;
+}
+
+.featured-thumb {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1px solid #DCE5EB;
+  background-color: #FAFBFD;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+.featured-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.featured-name {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #203342;
+  line-height: 1.2;
+}
+
+.featured-stickers {
+  font-size: 11.5px;
+  color: #6E8292;
+  font-weight: 500;
+}
+
+/* ========================================================
+   SIDEBAR RESPONSIVE RULES
+   ======================================================== */
+@media (max-width: 860px) {
+  /* Ẩn sidebar trên mobile & tablet vì nội dung đã chuyển vào menu 3 gạch */
+  .sidebar {
+    display: none;
+  }
+
+  .main-wrapper {
+    flex-direction: column;
+    padding: 14px 16px 36px;
+    gap: 20px;
+  }
+}
+
+@media (max-width: 540px) {
+  .main-wrapper {
+    padding: 10px 12px 30px;
+    gap: 16px;
+  }
+  .featured-list {
+    grid-template-columns: 1fr;
+  }
+}
