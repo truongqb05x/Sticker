@@ -1,0 +1,915 @@
+/**
+ * ========================================================
+ * STICKER CHI TIẾT (STICKER DETAIL) SPECIFIC STYLES
+ * ========================================================
+ * Chứa layout 3 cột, breadcrumb, hero banner sticker chi tiết,
+ * lưới 20 sticker xem trước, phân trang và thanh công cụ bên phải.
+ */
+
+/* ========================================================
+   CONTAINER & 3-COLUMN LAYOUT
+   ======================================================== */
+.bosuutap-page-container {
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 16px 24px 44px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Breadcrumb Navigation */
+.breadcrumb-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #7A695E;
+}
+
+.breadcrumb-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #635146;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.breadcrumb-item:hover {
+  color: var(--brand-orange);
+}
+
+.breadcrumb-sep {
+  color: #A8988D;
+  font-size: 13px;
+  user-select: none;
+}
+
+.breadcrumb-current {
+  color: #2D1C14;
+  font-weight: 700;
+}
+
+/* 3-Column Grid Layout */
+.bosuutap-3col-layout {
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr) 280px;
+  gap: 20px;
+  align-items: start;
+}
+
+/* ========================================================
+   LEFT SIDEBAR CUSTOMIZATIONS (BỘ SƯU TẬP LIÊN QUAN)
+   ======================================================== */
+.sidebar-col {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.related-card {
+  background-color: #FAF5EE;
+  border: 1px solid #E6DCD0;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: none;
+}
+
+.related-card .card-header {
+  background-color: #EFE6DA;
+  padding: 12px 14px;
+  border-bottom: 1px solid #E6DCD0;
+  color: #2D1C14;
+  font-size: 15px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.related-card .card-header svg {
+  width: 17px;
+  height: 17px;
+  color: #554236;
+  fill: currentColor;
+}
+
+.related-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px 12px 14px;
+}
+
+.related-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 5px 8px;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: background-color 0.15s;
+  cursor: pointer;
+}
+
+.related-item:hover {
+  background-color: #EFE7DA;
+}
+
+.related-thumb-box {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background-color: #FFFFFF;
+  border: 1px solid #E4D7C8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  flex-shrink: 0;
+  box-shadow: 0 1px 3px rgba(44, 29, 24, 0.04);
+}
+
+.related-thumb-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.related-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.related-name {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #2D1C14;
+  line-height: 1.25;
+}
+
+.related-stickers {
+  font-size: 12px;
+  color: #7E6E64;
+  font-weight: 500;
+}
+
+/* ========================================================
+   CENTER COLUMN (HERO & STICKER PREVIEW GRID)
+   ======================================================== */
+.center-col {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-width: 0;
+}
+
+/* 1. Collection Hero Card */
+.collection-hero-card {
+  background-color: #FAF5EE;
+  border: 1px solid #E6DCD0;
+  border-radius: 16px;
+  padding: 22px 26px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-main-flex {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  flex: 1;
+  min-width: 0;
+}
+
+.hero-badge-thumb {
+  width: 120px;
+  height: 120px;
+  border-radius: 20px;
+  background-color: #FCE9CF;
+  border: 1px solid #F0D5B3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 4px 14px rgba(220, 140, 50, 0.12);
+  padding: 6px;
+}
+
+.hero-badge-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.hero-details {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.hero-title {
+  font-size: 32px;
+  font-weight: 800;
+  color: #2D1C14;
+  line-height: 1.15;
+  letter-spacing: -0.4px;
+}
+
+.hero-desc {
+  font-size: 14px;
+  font-weight: 600;
+  color: #6C5A4E;
+  line-height: 1.4;
+  margin-bottom: 2px;
+}
+
+.hero-tags-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 2px;
+  margin-bottom: 6px;
+}
+
+.tag-pill {
+  display: inline-block;
+  padding: 3.5px 14px;
+  background-color: #F3ECE1;
+  border: 1px solid #E3D6C6;
+  border-radius: 16px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #4C3C33;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+
+.tag-pill:hover {
+  background-color: #EBDDCB;
+  color: #2D1C14;
+}
+
+.hero-stats-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #554236;
+  flex-wrap: wrap;
+}
+
+.stat-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.stat-item svg {
+  color: #725D50;
+  flex-shrink: 0;
+}
+
+.stat-item.favorite-stat {
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 6px;
+  transition: background-color 0.15s;
+}
+
+.stat-item.favorite-stat:hover {
+  background-color: #EFE4D6;
+}
+
+.stat-item.favorite-stat.is-favorited svg {
+  fill: #E64A38;
+  color: #E64A38;
+}
+
+.hero-right-decor {
+  flex-shrink: 0;
+  width: 140px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-right-decor img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* 2. Collection Preview Section */
+.collection-preview-card {
+  background-color: #FAF5EE;
+  border: 1px solid #E6DCD0;
+  border-radius: 16px;
+  padding: 22px 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+.preview-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.preview-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 17px;
+  font-weight: 800;
+  color: #2D1C14;
+}
+
+.preview-title svg {
+  color: #554236;
+}
+
+.see-all-stickers-btn {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #3E87E8;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: color 0.15s, transform 0.15s;
+}
+
+.see-all-stickers-btn:hover {
+  color: #2669C4;
+  text-decoration: underline;
+  transform: translateX(2px);
+}
+
+/* 5-Column Sticker Grid */
+.sticker-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 14px;
+}
+
+.sticker-item-box {
+  background-color: #FFFFFF;
+  border: 1px solid #EBE1D3;
+  border-radius: 14px;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 1px 3px rgba(44, 29, 24, 0.02);
+}
+
+.sticker-item-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: transform 0.2s ease;
+  user-select: none;
+}
+
+.sticker-item-box:hover {
+  transform: translateY(-4px) scale(1.03);
+  border-color: #D6C2AD;
+  box-shadow: 0 8px 20px rgba(58, 35, 18, 0.09);
+  z-index: 2;
+}
+
+.sticker-item-box:hover img {
+  transform: scale(1.04);
+}
+
+.sticker-item-box:active {
+  transform: scale(0.97);
+}
+
+/* Pagination Bar */
+.preview-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 24px;
+  user-select: none;
+}
+
+.page-btn {
+  min-width: 34px;
+  height: 34px;
+  padding: 0 8px;
+  background-color: #FAF5EE;
+  border: 1px solid #DFD3C4;
+  border-radius: 7px;
+  color: #4D3D33;
+  font-size: 13.5px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.page-btn:hover:not(.active) {
+  background-color: #EFE4D6;
+  border-color: #CBB9A7;
+  color: #2D1C14;
+}
+
+.page-btn.active {
+  background-color: #35231B;
+  border-color: #35231B;
+  color: #FFFFFF;
+}
+
+.page-btn.page-arrow {
+  color: #6C5A4E;
+}
+
+/* ========================================================
+   RIGHT SIDEBAR (ACTIONS & METADATA CARDS)
+   ======================================================== */
+.right-col {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.action-card {
+  background-color: #FAF5EE;
+  border: 1px solid #E6DCD0;
+  border-radius: 14px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+}
+
+.action-card-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  font-weight: 800;
+  color: #2D1C14;
+  margin-bottom: 14px;
+}
+
+.action-card-header svg {
+  color: #554236;
+  flex-shrink: 0;
+}
+
+/* Card 1: Buttons */
+.download-btn-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.btn-download-zip {
+  width: 100%;
+  height: 44px;
+  background-color: #3E2B22;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 8px;
+  font-size: 14.5px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: background-color 0.15s ease, transform 0.15s ease;
+}
+
+.btn-download-zip:hover {
+  background-color: #271A13;
+  transform: translateY(-1px);
+}
+
+.btn-download-zip:active {
+  transform: translateY(0);
+}
+
+.btn-download-single {
+  width: 100%;
+  height: 44px;
+  background-color: #FAF5EE;
+  color: #35231B;
+  border: 1.5px solid #D8CBBB;
+  border-radius: 8px;
+  font-size: 14.5px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-download-single:hover {
+  background-color: #FFFFFF;
+  border-color: #BBA794;
+  transform: translateY(-1px);
+}
+
+.btn-download-single:active {
+  transform: translateY(0);
+}
+
+.download-note {
+  font-size: 12px;
+  color: #7E6E64;
+  text-align: center;
+  line-height: 1.45;
+  margin-top: 14px;
+  margin-bottom: 2px;
+}
+
+/* Card 2: Collection Info */
+.info-rows-list {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+
+.info-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 13.5px;
+}
+
+.info-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #5C4A3E;
+  font-weight: 600;
+}
+
+.info-label svg {
+  color: #7A695E;
+}
+
+.info-value {
+  font-weight: 700;
+  color: #2D1C14;
+  text-align: right;
+}
+
+.rating-stars {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  color: #F5A623;
+  font-size: 13px;
+}
+
+.rating-score {
+  color: #2D1C14;
+  font-weight: 700;
+  margin-left: 4px;
+}
+
+.info-tags-list {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  justify-content: flex-end;
+}
+
+.mini-tag {
+  display: inline-block;
+  padding: 2px 10px;
+  background-color: #F1E9DE;
+  border: 1px solid #DFD2C2;
+  border-radius: 12px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #4D3D33;
+}
+
+/* Card 3: Share Buttons */
+.share-buttons-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.share-btn {
+  height: 38px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 800;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.15s;
+}
+
+.share-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.share-btn.btn-fb {
+  background-color: #3B5998;
+}
+
+.share-btn.btn-zalo {
+  background-color: #0088EB;
+}
+
+.share-btn.btn-x {
+  background-color: #121212;
+}
+
+.share-btn.btn-link {
+  background-color: #6C7A89;
+}
+
+.thank-you-box {
+  background-color: #FDF3E3;
+  border: 1px solid #F0DFCA;
+  border-radius: 10px;
+  padding: 12px 14px;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.thank-you-icon {
+  color: #E64A38;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.thank-you-text {
+  font-size: 12px;
+  color: #6E5338;
+  line-height: 1.45;
+  font-weight: 500;
+}
+
+/* ========================================================
+   MODAL LIGHTBOX PREVIEW (KHI BẤM VÀO STICKER BẤT KỲ)
+   ======================================================== */
+.sticker-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(44, 29, 24, 0.55);
+  backdrop-filter: blur(4px);
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+.sticker-modal-backdrop.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.sticker-modal {
+  background-color: #FAF5EE;
+  border: 1px solid #E6DCD0;
+  border-radius: 18px;
+  width: 360px;
+  max-width: 90vw;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  box-shadow: 0 12px 36px rgba(44, 29, 24, 0.22);
+  transform: scale(0.92);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.sticker-modal-backdrop.active .sticker-modal {
+  transform: scale(1);
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: none;
+  border: none;
+  color: #7A695E;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.15s;
+}
+
+.modal-close-btn:hover {
+  background-color: #EFE4D6;
+  color: #2D1C14;
+}
+
+.modal-preview-box {
+  width: 180px;
+  height: 180px;
+  background-color: #FFFFFF;
+  border: 1px solid #E6DCD0;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 14px rgba(44, 29, 24, 0.05);
+}
+
+.modal-preview-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.modal-sticker-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: #2D1C14;
+  margin-bottom: 4px;
+}
+
+.modal-sticker-meta {
+  font-size: 13px;
+  color: #7E6E64;
+  margin-bottom: 18px;
+}
+
+.modal-actions-row {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+
+.btn-modal-download {
+  flex: 1;
+  height: 40px;
+  background-color: #3E2B22;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 13.5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+.btn-modal-download:hover {
+  background-color: #271A13;
+}
+
+.btn-modal-copy {
+  height: 40px;
+  padding: 0 14px;
+  background-color: #FFFFFF;
+  border: 1px solid #D8CBBB;
+  border-radius: 8px;
+  color: #3E2B22;
+  font-weight: 700;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.btn-modal-copy:hover {
+  background-color: #F8F1E7;
+  border-color: #C35631;
+}
+
+/* ========================================================
+   RESPONSIVE RULES
+   ======================================================== */
+@media (max-width: 1200px) {
+  .bosuutap-3col-layout {
+    grid-template-columns: 220px minmax(0, 1fr) 260px;
+    gap: 16px;
+  }
+  .sticker-preview-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 1040px) {
+  .bosuutap-3col-layout {
+    grid-template-columns: 220px minmax(0, 1fr);
+  }
+  .right-col {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 860px) {
+  .bosuutap-page-container {
+    padding: 12px 16px 36px;
+  }
+  .sidebar-col {
+    display: none;
+  }
+  .bosuutap-3col-layout {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .right-col {
+    grid-template-columns: 1fr;
+  }
+  .hero-right-decor {
+    display: none;
+  }
+  .collection-hero-card {
+    padding: 18px 20px;
+  }
+  .hero-title {
+    font-size: 26px;
+  }
+  .hero-badge-thumb {
+    width: 90px;
+    height: 90px;
+    border-radius: 16px;
+  }
+  .sticker-preview-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+}
+
+@media (max-width: 580px) {
+  .hero-main-flex {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .hero-badge-thumb {
+    width: 80px;
+    height: 80px;
+  }
+  .sticker-preview-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+  .preview-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .share-buttons-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 380px) {
+  .sticker-preview-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

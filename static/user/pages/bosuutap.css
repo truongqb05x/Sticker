@@ -1,0 +1,400 @@
+/**
+ * ========================================================
+ * BỘ SƯU TẬP (COLLECTIONS LISTING) SPECIFIC STYLES
+ * ========================================================
+ * Trang danh sách tất cả các bộ sưu tập sticker:
+ * Hero banner dạng sổ lưu niệm (scrapbook paper craft),
+ * thanh lọc phân loại (Tất cả, Mới nhất, Tải nhiều, Yêu thích),
+ * và lưới hiển thị 12 bộ sưu tập sticker (4 cột).
+ */
+
+/* ========================================================
+   MAIN CONTENT CONTAINER
+   ======================================================== */
+.collections-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 0;
+}
+
+/* ========================================================
+   1. SCRAPBOOK HERO BANNER
+   ======================================================== */
+.scrapbook-hero {
+  background: #F3E7D5;
+  background: linear-gradient(135deg, #F5E9D8 0%, #EADAC3 100%);
+  border: 1.5px solid #E4D5C3;
+  border-radius: 18px;
+  padding: 22px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(44, 29, 24, 0.05);
+}
+
+/* Subtle craft paper texture accent */
+.scrapbook-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(180, 140, 100, 0.08) 1px, transparent 1px);
+  background-size: 16px 16px;
+  pointer-events: none;
+}
+
+/* Hero Left Note */
+.hero-note-decor {
+  flex-shrink: 0;
+  width: 115px;
+  height: 115px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  transition: transform 0.25s ease;
+}
+
+.hero-note-decor:hover {
+  transform: rotate(-2deg) scale(1.04);
+}
+
+.hero-note-decor img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Hero Center Text */
+.hero-center-info {
+  flex: 1;
+  text-align: left;
+  z-index: 2;
+  max-width: 580px;
+}
+
+.hero-title-main {
+  font-family: 'Comfortaa', cursive, 'Nunito', sans-serif;
+  font-size: 32px;
+  font-weight: 800;
+  color: #2D1C14;
+  line-height: 1.2;
+  margin-bottom: 8px;
+  letter-spacing: -0.4px;
+}
+
+.hero-sub-main {
+  font-size: 14.5px;
+  font-weight: 600;
+  color: #635044;
+  line-height: 1.45;
+}
+
+/* Hero Right Polaroid */
+.hero-polaroid-decor {
+  flex-shrink: 0;
+  width: 125px;
+  height: 125px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  transition: transform 0.25s ease;
+}
+
+.hero-polaroid-decor:hover {
+  transform: rotate(3deg) scale(1.04);
+}
+
+.hero-polaroid-decor img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* ========================================================
+   2. FILTER & PAGINATION BAR
+   ======================================================== */
+.filter-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.filter-pills {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  padding: 8px 18px;
+  background-color: #FAF5EE;
+  border: 1px solid #DFD3C4;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #554337;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.filter-btn:hover:not(.active) {
+  background-color: #EFE4D6;
+  border-color: #CBB9A7;
+  color: #2D1C14;
+}
+
+.filter-btn.active {
+  background-color: #35231B;
+  border-color: #35231B;
+  color: #FFFFFF;
+}
+
+/* Pagination Info & Buttons on Right */
+.filter-pagination-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pagination-counter {
+  font-size: 13px;
+  font-weight: 600;
+  color: #7E6E64;
+  user-select: none;
+}
+
+.pagination-arrows {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-arrow-page {
+  width: 32px;
+  height: 32px;
+  background-color: #FAF5EE;
+  border: 1px solid #DFD3C4;
+  border-radius: 7px;
+  color: #554337;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  padding: 0;
+}
+
+.btn-arrow-page:hover:not(:disabled) {
+  background-color: #EFE4D6;
+  border-color: #CBB9A7;
+  color: #2D1C14;
+}
+
+.btn-arrow-page:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* ========================================================
+   3. 4-COLUMN COLLECTIONS GRID
+   ======================================================== */
+.collections-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+}
+
+.collection-card {
+  background-color: #FFFFFF;
+  border: 1px solid #EBE0D2;
+  border-radius: 14px;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.22s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.22s;
+  box-shadow: 0 2px 6px rgba(44, 29, 24, 0.03);
+  position: relative;
+  cursor: pointer;
+}
+
+.collection-card:hover {
+  transform: translateY(-5px);
+  border-color: #D6C2AD;
+  box-shadow: 0 10px 24px rgba(44, 29, 24, 0.09);
+}
+
+/* Card Preview Top */
+.card-thumb-container {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  background-color: #FAF7F2;
+  border-bottom: 1px solid #EDE2D4;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-thumb-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.28s ease;
+}
+
+.collection-card:hover .card-thumb-img {
+  transform: scale(1.03);
+}
+
+/* Badges: Hot & Mới */
+.pack-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 2.5px 10px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 800;
+  color: #FFFFFF;
+  letter-spacing: 0.3px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  z-index: 3;
+}
+
+.pack-badge.badge-hot {
+  background-color: #E64A38;
+}
+
+.pack-badge.badge-new {
+  background-color: #4CAF50;
+}
+
+/* Card Information Body */
+.card-body-content {
+  padding: 13px 15px 14px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.card-title-text {
+  font-size: 15.5px;
+  font-weight: 800;
+  color: #2D1C14;
+  line-height: 1.25;
+  margin-bottom: 5px;
+  transition: color 0.15s ease;
+}
+
+.collection-card:hover .card-title-text {
+  color: var(--brand-orange);
+}
+
+.card-desc-text {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: #6C5A4F;
+  line-height: 1.42;
+  margin-bottom: 12px;
+  height: 36px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+/* Card Stats Footer */
+.card-stats-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px solid #F2E9DE;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #7E6E64;
+}
+
+.stat-entry {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.stat-entry svg {
+  color: #8C7B70;
+  width: 13px;
+  height: 13px;
+}
+
+
+/* ========================================================
+   RESPONSIVE DESIGN RULES
+   ======================================================== */
+@media (max-width: 1240px) {
+  .collections-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+}
+
+@media (max-width: 992px) {
+  .collections-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+  .scrapbook-hero {
+    padding: 20px 22px;
+  }
+  .hero-title-main {
+    font-size: 26px;
+  }
+}
+
+@media (max-width: 860px) {
+  .scrapbook-hero {
+    flex-direction: column;
+    text-align: center;
+    gap: 14px;
+  }
+  .hero-center-info {
+    text-align: center;
+  }
+  .hero-note-decor,
+  .hero-polaroid-decor {
+    display: none;
+  }
+  .filter-bar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .filter-pagination-right {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+@media (max-width: 520px) {
+  .collections-grid {
+    grid-template-columns: 1fr;
+  }
+  .filter-btn {
+    padding: 7px 12px;
+    font-size: 12.5px;
+  }
+}

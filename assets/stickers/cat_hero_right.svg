@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 140" width="160" height="140">
+  <defs>
+    <filter id="soft-shadow" x="-8%" y="-8%" width="116%" height="116%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#5C3A21" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+
+  <g id="hero_cat_right">
+    <!-- Floating pink hearts -->
+    <path d="M 44 26 C 44 18 36 16 36 22 C 36 27 44 32 44 32 C 44 32 52 27 52 22 C 52 16 44 18 44 26 Z" fill="#E64A38"/>
+    <path d="M 62 16 C 62 10 56 8 56 13 C 56 17 62 21 62 21 C 62 21 68 17 68 13 C 68 8 62 10 62 16 Z" fill="#FF8A80"/>
+    <!-- Sleeping cat lying flat, blushing -->
+    <g transform="translate(10, 20)">
+      <path d="M 30 94 Q 24 64 56 60 Q 90 58 108 70 Q 120 80 116 98 Q 108 108 70 108 Q 34 108 30 94 Z" fill="#F8E5CE" stroke="#3A2312" stroke-width="3"/>
+      <!-- Tail -->
+      <path d="M 114 90 Q 128 88 126 100" fill="none" stroke="#D18F58" stroke-width="4" stroke-linecap="round"/>
+      <path d="M 68 60 Q 90 60 102 72 Q 88 78 72 70 Z" fill="#D18F58"/>
+      <!-- Cat head -->
+      <ellipse cx="46" cy="84" rx="24" ry="20" fill="#F8E5CE" stroke="#3A2312" stroke-width="3"/>
+      <!-- Ears flat -->
+      <path d="M 32 70 Q 24 58 34 56 Q 42 62 40 72 Z" fill="#D18F58" stroke="#3A2312" stroke-width="2.5"/>
+      <path d="M 52 68 Q 60 56 66 60 Q 62 70 56 74 Z" fill="#D18F58" stroke="#3A2312" stroke-width="2.5"/>
+      <!-- Happy sleeping eyes -->
+      <path d="M 36 86 Q 40 90 44 86" fill="none" stroke="#3A2312" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M 48 86 Q 52 90 56 86" fill="none" stroke="#3A2312" stroke-width="2.5" stroke-linecap="round"/>
+      <ellipse cx="34" cy="90" rx="5" ry="3.5" fill="#FF9A9E" opacity="0.7"/>
+      <ellipse cx="58" cy="90" rx="5" ry="3.5" fill="#FF9A9E" opacity="0.7"/>
+      <ellipse cx="48" cy="102" rx="7" ry="4.5" fill="#FFFFFF" stroke="#3A2312" stroke-width="2"/>
+    </g>
+  </g>
+
+</svg>

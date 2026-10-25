@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="160" height="160">
+  <defs>
+    <filter id="soft-shadow" x="-8%" y="-8%" width="116%" height="116%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#5C3A21" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+
+  <g id="hero_cat_main">
+    <rect width="160" height="160" rx="24" fill="#FCE9CF"/>
+    <g transform="translate(0, 5)">
+      <!-- Body -->
+      <path d="M 46 108 Q 32 124 38 142 Q 44 152 70 152 L 102 152 Q 128 152 134 142 Q 140 124 126 108 Z" fill="#FFFFFF" stroke="#3A2312" stroke-width="3.5"/>
+      <ellipse cx="60" cy="151" rx="12" ry="6" fill="#FFFFFF" stroke="#3A2312" stroke-width="3"/>
+      <ellipse cx="112" cy="151" rx="12" ry="6" fill="#FFFFFF" stroke="#3A2312" stroke-width="3"/>
+      <!-- Head -->
+      <ellipse cx="86" cy="74" rx="48" ry="38" fill="#FFFFFF" stroke="#3A2312" stroke-width="3.5"/>
+      <!-- Ears -->
+      <path d="M 48 54 Q 38 24 56 22 Q 72 32 70 50 Z" fill="#FFA834" stroke="#3A2312" stroke-width="3.5" stroke-linejoin="round"/>
+      <path d="M 50 48 Q 44 32 54 30 Q 62 38 60 48 Z" fill="#FFBDC9"/>
+      <path d="M 104 50 Q 102 32 118 22 Q 136 24 126 54 Z" fill="#FFA834" stroke="#3A2312" stroke-width="3.5" stroke-linejoin="round"/>
+      <path d="M 110 48 Q 110 36 118 30 Q 128 32 122 48 Z" fill="#FFBDC9"/>
+      <path d="M 98 44 Q 122 48 132 68 Q 120 74 104 62 Z" fill="#FFA834"/>
+      <!-- Happy eyes -->
+      <path d="M 68 72 Q 74 64 80 72" fill="none" stroke="#3A2312" stroke-width="3.5" stroke-linecap="round"/>
+      <path d="M 96 72 Q 102 64 108 72" fill="none" stroke="#3A2312" stroke-width="3.5" stroke-linecap="round"/>
+      <!-- Nose & mouth -->
+      <polygon points="88,77 85,74 91,74" fill="#FF8E9E"/>
+      <path d="M 83 80 Q 88 85 88 80 Q 88 85 93 80" fill="none" stroke="#3A2312" stroke-width="3" stroke-linecap="round"/>
+      <!-- Rosy cheeks -->
+      <ellipse cx="60" cy="78" rx="9" ry="6" fill="#FF9A9E" opacity="0.65"/>
+      <ellipse cx="114" cy="78" rx="9" ry="6" fill="#FF9A9E" opacity="0.65"/>
+      <!-- Resting paw -->
+      <ellipse cx="50" cy="120" rx="10" ry="8" fill="#FFFFFF" stroke="#3A2312" stroke-width="3"/>
+      <!-- Waving right paw -->
+      <g transform="translate(126, 92) rotate(-28)">
+        <path d="M 0 0 C 10 -15 22 -12 24 0 C 26 12 12 20 0 10 Z" fill="#FFFFFF" stroke="#3A2312" stroke-width="3.5"/>
+      </g>
+    </g>
+  </g>
+
+</svg>

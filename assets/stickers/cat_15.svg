@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="160" height="160">
+  <defs>
+    <filter id="soft-shadow" x="-8%" y="-8%" width="116%" height="116%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#5C3A21" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+
+  <g id="cat_back" filter="url(#soft-shadow)">
+    <!-- Tiny heart floating near shoulder -->
+    <path d="M 112 70 C 112 65 106 63 106 68 C 106 72 112 77 112 77 C 112 77 118 72 118 68 C 118 63 112 65 112 70 Z" fill="#E64A38"/>
+    <!-- Tail curved upward -->
+    <path d="M 86 128 Q 112 128 108 104 Q 106 96 100 98" fill="none" stroke="#935D33" stroke-width="5" stroke-linecap="round"/>
+    <!-- Caramel back body -->
+    <path d="M 52 90 Q 42 116 46 134 Q 50 144 76 145 L 94 145 Q 120 144 124 134 Q 126 116 116 90 Z" fill="#B27A4E" stroke="#3A2312" stroke-width="3"/>
+    <!-- Head from back/side -->
+    <ellipse cx="84" cy="74" rx="36" ry="30" fill="#B27A4E" stroke="#3A2312" stroke-width="3"/>
+    <!-- Ears from behind -->
+    <path d="M 54 54 Q 46 32 60 30 Q 72 38 70 52 Z" fill="#935D33" stroke="#3A2312" stroke-width="3" stroke-linejoin="round"/>
+    <path d="M 98 52 Q 96 38 110 30 Q 124 32 116 54 Z" fill="#935D33" stroke="#3A2312" stroke-width="3" stroke-linejoin="round"/>
+    <!-- Cheerful cute peek from corner -->
+    <circle cx="106" cy="76" r="2.5" fill="#3A2312"/>
+    <ellipse cx="112" cy="80" rx="4" ry="2.5" fill="#FF9A9E" opacity="0.6"/>
+  </g>
+
+</svg>

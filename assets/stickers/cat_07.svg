@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="160" height="160">
+  <defs>
+    <filter id="soft-shadow" x="-8%" y="-8%" width="116%" height="116%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#5C3A21" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+
+  <g id="cat_sleep" filter="url(#soft-shadow)">
+    <!-- Sleeping text zzz -->
+    <text x="110" y="52" font-family="Nunito, sans-serif" font-weight="900" font-size="16" fill="#E64A38">z</text>
+    <text x="122" y="42" font-family="Nunito, sans-serif" font-weight="900" font-size="13" fill="#E64A38">z</text>
+    <text x="132" y="32" font-family="Nunito, sans-serif" font-weight="900" font-size="10" fill="#E64A38">z</text>
+    <!-- Sleeping horizontal body -->
+    <path d="M 40 120 Q 36 86 70 82 Q 106 80 124 94 Q 138 106 132 124 Q 124 136 80 136 Q 44 136 40 120 Z" fill="#FFFFFF" stroke="#3A2312" stroke-width="3"/>
+    <!-- Tail -->
+    <path d="M 130 114 Q 146 112 144 126" fill="none" stroke="#FFA834" stroke-width="4" stroke-linecap="round"/>
+    <!-- Orange patch on back -->
+    <path d="M 80 82 Q 106 82 118 96 Q 102 104 84 94 Z" fill="#FFA834"/>
+    <!-- Cat head facing down/left -->
+    <ellipse cx="58" cy="108" rx="26" ry="22" fill="#FFFFFF" stroke="#3A2312" stroke-width="3"/>
+    <!-- Ears flat -->
+    <path d="M 42 92 Q 32 78 44 76 Q 52 84 50 94 Z" fill="#FFA834" stroke="#3A2312" stroke-width="2.8"/>
+    <path d="M 64 90 Q 72 76 80 80 Q 76 92 68 96 Z" fill="#FFA834" stroke="#3A2312" stroke-width="2.8"/>
+    <!-- Closed sleeping eyes -->
+    <path d="M 46 110 Q 50 114 54 110" fill="none" stroke="#3A2312" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M 60 110 Q 64 114 68 110" fill="none" stroke="#3A2312" stroke-width="2.5" stroke-linecap="round"/>
+    <!-- Blush -->
+    <ellipse cx="44" cy="116" rx="5" ry="3" fill="#FF9A9E" opacity="0.6"/>
+    <ellipse cx="72" cy="116" rx="5" ry="3" fill="#FF9A9E" opacity="0.6"/>
+    <!-- Tucked paws -->
+    <ellipse cx="62" cy="130" rx="8" ry="5" fill="#FFFFFF" stroke="#3A2312" stroke-width="2.2"/>
+  </g>
+
+</svg>
