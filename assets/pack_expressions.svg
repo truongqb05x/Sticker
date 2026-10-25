@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250" width="100%" height="100%">
+  <defs>
+    <filter id="shadow-mochi" x="-10%" y="-10%" width="125%" height="125%">
+      <feDropShadow dx="0" dy="2.5" stdDeviation="2.5" flood-color="#4a3e35" flood-opacity="0.22"/>
+    </filter>
+  </defs>
+
+  <rect width="100%" height="100%" fill="#FAF7F2"/>
+  <rect x="10" y="10" width="380" height="230" rx="12" fill="#F5EFE6" stroke="#E5DCCE" stroke-width="1.5"/>
+
+  <!-- Sticker 1: Cheeky Winking Mochi -->
+  <g transform="translate(40, 25)" filter="url(#shadow-mochi)">
+    <circle cx="42" cy="42" r="38" fill="#FFFFFF"/>
+    <circle cx="42" cy="42" r="32" fill="#FFFDF8" stroke="#2C241E" stroke-width="2.5"/>
+    <!-- Left eye open -->
+    <ellipse cx="32" cy="38" rx="3.5" ry="4.5" fill="#2C241E"/>
+    <!-- Right eye wink -->
+    <path d="M 48 39 Q 54 34 58 39" stroke="#2C241E" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+    <!-- Cute open mouth with tongue -->
+    <path d="M 38 46 Q 44 54 50 46 Z" fill="#FF8A80" stroke="#2C241E" stroke-width="2"/>
+    <!-- Cheeks -->
+    <circle cx="25" cy="44" r="5" fill="#FFAB91" opacity="0.75"/>
+    <circle cx="61" cy="44" r="5" fill="#FFAB91" opacity="0.75"/>
+  </g>
+
+  <!-- Sticker 2: Dizzy / Surprised Mochi -->
+  <g transform="translate(150, 25)" filter="url(#shadow-mochi)">
+    <circle cx="45" cy="42" r="38" fill="#FFFFFF"/>
+    <ellipse cx="45" cy="42" rx="33" ry="30" fill="#FFFDF8" stroke="#2C241E" stroke-width="2.5"/>
+    <!-- Spiral eyes -->
+    <circle cx="34" cy="38" r="4" fill="none" stroke="#2C241E" stroke-width="2.2"/>
+    <circle cx="56" cy="38" r="4" fill="none" stroke="#2C241E" stroke-width="2.2"/>
+    <!-- Small round mouth :o -->
+    <ellipse cx="45" cy="48" rx="4" ry="5.5" fill="#2C241E"/>
+    <!-- Sweat drop -->
+    <path d="M 72 26 C 72 22 75 16 75 16 C 75 16 78 22 78 26 C 78 28 75 30 75 30 C 75 30 72 28 72 26 Z" fill="#64B5F6"/>
+  </g>
+
+  <!-- Sticker 3: Laughing Happy Mochi -->
+  <g transform="translate(260, 25)" filter="url(#shadow-mochi)">
+    <circle cx="45" cy="42" r="38" fill="#FFFFFF"/>
+    <circle cx="45" cy="42" r="32" fill="#FFFDF8" stroke="#2C241E" stroke-width="2.5"/>
+    <!-- Curved closed eyes ^ ^ -->
+    <path d="M 28 39 Q 34 32 40 39" stroke="#2C241E" stroke-width="3" stroke-linecap="round" fill="none"/>
+    <path d="M 50 39 Q 56 32 62 39" stroke="#2C241E" stroke-width="3" stroke-linecap="round" fill="none"/>
+    <!-- Big grin -->
+    <path d="M 33 46 Q 45 60 57 46 Z" fill="#FF6B6B" stroke="#2C241E" stroke-width="2.2"/>
+    <circle cx="24" cy="45" r="4.5" fill="#FFAAA6"/>
+    <circle cx="66" cy="45" r="4.5" fill="#FFAAA6"/>
+  </g>
+
+  <!-- Sticker 4: Crying Drama Mochi -->
+  <g transform="translate(40, 130)" filter="url(#shadow-mochi)">
+    <circle cx="42" cy="42" r="38" fill="#FFFFFF"/>
+    <circle cx="42" cy="42" r="32" fill="#FFFDF8" stroke="#2C241E" stroke-width="2.5"/>
+    <!-- Crying stream eyes -->
+    <path d="M 30 38 Q 35 34 40 38" stroke="#2C241E" stroke-width="2.5" fill="none"/>
+    <path d="M 48 38 Q 53 34 58 38" stroke="#2C241E" stroke-width="2.5" fill="none"/>
+    <path d="M 35 40 L 35 60" stroke="#4FC3F7" stroke-width="5" stroke-linecap="round"/>
+    <path d="M 53 40 L 53 60" stroke="#4FC3F7" stroke-width="5" stroke-linecap="round"/>
+    <!-- Wavy sad mouth -->
+    <path d="M 38 52 Q 44 48 50 52" stroke="#2C241E" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+  </g>
+
+  <!-- Sticker 5: Love Struck Mochi -->
+  <g transform="translate(150, 130)" filter="url(#shadow-mochi)">
+    <circle cx="45" cy="42" r="38" fill="#FFFFFF"/>
+    <circle cx="45" cy="42" r="32" fill="#FFFDF8" stroke="#2C241E" stroke-width="2.5"/>
+    <!-- Heart eyes -->
+    <path d="M 33 34 C 33 31 30 29 27 32 C 24 36 29 40 33 43 C 37 40 42 36 39 32 C 36 29 33 31 33 34 Z" fill="#E91E63"/>
+    <path d="M 55 34 C 55 31 52 29 49 32 C 46 36 51 40 55 43 C 59 40 64 36 61 32 C 58 29 55 31 55 34 Z" fill="#E91E63"/>
+    <path d="M 40 50 Q 45 54 49 50" stroke="#2C241E" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+    <circle cx="23" cy="47" r="4.5" fill="#F8BBD0"/>
+    <circle cx="66" cy="47" r="4.5" fill="#F8BBD0"/>
+  </g>
+
+  <!-- Sticker 6: Cute Yellow Duckling Chibi -->
+  <g transform="translate(265, 130)" filter="url(#shadow-mochi)">
+    <circle cx="42" cy="42" r="38" fill="#FFFFFF"/>
+    <circle cx="42" cy="42" r="32" fill="#FFE082" stroke="#F57F17" stroke-width="2"/>
+    <circle cx="34" cy="38" r="3.5" fill="#2E1C14"/>
+    <circle cx="52" cy="38" r="3.5" fill="#2E1C14"/>
+    <!-- Orange bill -->
+    <ellipse cx="43" cy="44" rx="7" ry="4" fill="#FF7043"/>
+    <circle cx="26" cy="44" r="4" fill="#FFAB91" opacity="0.6"/>
+    <circle cx="59" cy="44" r="4" fill="#FFAB91" opacity="0.6"/>
+  </g>
+</svg>

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="80" height="80">
+  <rect width="80" height="80" rx="16" fill="#FBF7F0"/>
+  <!-- Cute cat with flowers -->
+  <g transform="translate(14, 12)">
+    <circle cx="26" cy="28" r="22" fill="#FFFFFF" stroke="#EDE1D1" stroke-width="2"/>
+    <!-- Ears -->
+    <polygon points="12,14 18,2 26,12" fill="#FFA726"/>
+    <polygon points="15,12 18,5 23,11" fill="#FFCC80"/>
+    <polygon points="40,14 34,2 26,12" fill="#FFA726"/>
+    <polygon points="37,12 34,5 29,11" fill="#FFCC80"/>
+    <!-- Face -->
+    <circle cx="19" cy="26" r="2.5" fill="#3E2723"/>
+    <circle cx="33" cy="26" r="2.5" fill="#3E2723"/>
+    <ellipse cx="26" cy="30" rx="2" ry="1.2" fill="#E91E63"/>
+    <path d="M 23 32 Q 26 35 29 32" stroke="#3E2723" stroke-width="1.2" fill="none"/>
+    <circle cx="14" cy="30" r="3" fill="#FFAB91" opacity="0.6"/>
+    <circle cx="38" cy="30" r="3" fill="#FFAB91" opacity="0.6"/>
+    <!-- Tiny flower on ear -->
+    <circle cx="13" cy="14" r="3" fill="#FF80AB"/>
+    <circle cx="13" cy="14" r="1.2" fill="#FFF"/>
+  </g>
+</svg>

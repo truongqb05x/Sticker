@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250" width="100%" height="100%">
+  <defs>
+    <filter id="shadow-nature" x="-10%" y="-10%" width="125%" height="125%">
+      <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#557567" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+
+  <rect width="100%" height="100%" fill="#FBF9F5"/>
+  <rect x="10" y="10" width="380" height="230" rx="12" fill="#F4EFE6" stroke="#E6DDCF" stroke-width="1.5"/>
+
+  <!-- Sticker 1: Mount Fuji with Snow and Sun -->
+  <g transform="translate(35, 25)" filter="url(#shadow-nature)">
+    <!-- White outline -->
+    <path d="M 10 75 Q 45 10 50 10 Q 55 10 90 75 Z" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="12" stroke-linejoin="round"/>
+    <circle cx="50" cy="18" r="16" fill="#FFFFFF"/>
+    
+    <!-- Red Sun behind Fuji -->
+    <circle cx="50" cy="22" r="14" fill="#E74C3C"/>
+    
+    <!-- Volcano base -->
+    <path d="M 12 75 L 34 32 Q 42 35 50 32 Q 58 35 66 32 L 88 75 Z" fill="#4A7C9B"/>
+    <!-- Volcano snow cap -->
+    <path d="M 34 32 L 44 14 Q 50 12 56 14 L 66 32 Q 62 26 58 30 Q 54 25 50 32 Q 46 25 42 30 Q 38 26 34 32 Z" fill="#FFFFFF"/>
+    <!-- Soft line details -->
+    <path d="M 45 35 L 40 55 M 55 35 L 60 55" stroke="#345B73" stroke-width="1.5" stroke-linecap="round"/>
+  </g>
+
+  <!-- Sticker 2: Pine Forest Tree 1 -->
+  <g transform="translate(160, 25)" filter="url(#shadow-nature)">
+    <path d="M 35 10 L 55 35 L 45 35 L 65 60 L 55 60 L 70 80 L 10 80 L 25 60 L 15 60 L 35 35 L 25 35 Z" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="10" stroke-linejoin="round"/>
+    <!-- Trunk -->
+    <rect x="34" y="75" width="12" height="15" rx="3" fill="#6E4726"/>
+    <!-- Leaves -->
+    <path d="M 35 12 L 53 35 L 45 35 L 63 58 L 54 58 L 68 78 L 12 78 L 26 58 L 17 58 L 35 35 L 27 35 Z" fill="#2E7D32"/>
+    <path d="M 35 12 L 53 35 L 45 35 L 63 58 L 54 58 L 68 78 L 40 78 L 40 12 Z" fill="#1B5E20" opacity="0.3"/>
+  </g>
+
+  <!-- Sticker 3: Pine Tree 2 Rounder -->
+  <g transform="translate(265, 20)" filter="url(#shadow-nature)">
+    <path d="M 45 10 L 75 42 L 62 42 L 85 75 L 5 75 L 28 42 L 15 42 Z" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="12" stroke-linejoin="round"/>
+    <rect x="40" y="70" width="10" height="18" rx="3" fill="#5D4037"/>
+    <path d="M 45 12 L 72 42 L 60 42 L 82 74 L 8 74 L 30 42 L 18 42 Z" fill="#43A047"/>
+    <!-- Cute snow patch or star -->
+    <circle cx="45" cy="12" r="4" fill="#FFD54F"/>
+  </g>
+
+  <!-- Sticker 4: Ocean Wave with Moon -->
+  <g transform="translate(40, 130)" filter="url(#shadow-nature)">
+    <!-- White border -->
+    <path d="M 10 65 Q 25 20 50 35 Q 75 10 95 65 Z" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="12" stroke-linejoin="round"/>
+    <rect x="10" y="55" width="85" height="18" rx="8" fill="#FFFFFF"/>
+    
+    <!-- Wave body -->
+    <path d="M 12 65 Q 28 25 50 40 Q 72 18 92 65 Z" fill="#29B6F6"/>
+    <path d="M 12 65 Q 25 35 45 46 Q 65 30 85 65 Z" fill="#0288D1"/>
+    <!-- Wave crest -->
+    <circle cx="70" cy="22" r="5" fill="#FFFFFF"/>
+    <circle cx="78" cy="26" r="4" fill="#FFFFFF"/>
+    <circle cx="85" cy="34" r="3.5" fill="#FFFFFF"/>
+  </g>
+
+  <!-- Sticker 5: Forest Mountains -->
+  <g transform="translate(160, 130)" filter="url(#shadow-nature)">
+    <rect x="10" y="10" width="85" height="60" rx="16" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="8"/>
+    <!-- Mountains -->
+    <rect x="12" y="12" width="81" height="56" rx="14" fill="#E0F2F1"/>
+    <path d="M 15 62 L 40 25 L 65 62 Z" fill="#00897B"/>
+    <path d="M 50 62 L 72 35 L 90 62 Z" fill="#26A69A"/>
+    <path d="M 40 25 L 45 33 L 40 37 L 35 33 Z" fill="#FFFFFF"/>
+    <circle cx="75" cy="22" r="6" fill="#FFA726"/>
+  </g>
+
+  <!-- Sticker 6: Camping Tent -->
+  <g transform="translate(275, 128)" filter="url(#shadow-nature)">
+    <path d="M 10 65 L 45 15 L 80 65 Z" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="10" stroke-linejoin="round"/>
+    <!-- Tent body -->
+    <path d="M 14 63 L 45 19 L 76 63 Z" fill="#FB8C00"/>
+    <path d="M 45 19 L 45 63 L 76 63 Z" fill="#F57C00"/>
+    <!-- Door -->
+    <path d="M 32 63 L 45 35 L 58 63 Z" fill="#2E1C14"/>
+  </g>
+</svg>
