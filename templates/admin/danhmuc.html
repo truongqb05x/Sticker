@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Quản lý Danh mục chủ đề - StickerHub Admin</title>
+
+  <!-- Meta Description -->
+  <meta name="description" content="Quản lý hệ thống danh mục và chủ đề phân loại sticker trên StickerHub: thêm mới, cập nhật icon, độ ưu tiên và trạng thái hiển thị.">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="../../assets/logo_cat.svg">
+
+  <!-- Google Fonts: Comfortaa & Nunito đồng nhất hệ thống -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700;800&family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- MASTER ADMIN LAYOUT CSS (Bao gồm variables, base, header, sidebar) -->
+  <link rel="stylesheet" href="../../static/admin/css/layout/layout.css">
+
+  <!-- CSS riêng của trang Quản lý Danh mục -->
+  <link rel="stylesheet" href="../../static/admin/css/pages/danhmuc.css">
+</head>
+<body class="admin-layout-root">
+
+  <!-- ========================================================
+       TOPBAR / NAVIGATION QUẢN TRỊ
+       ======================================================== -->
+  <header class="admin-topbar">
+    <div class="admin-topbar-inner">
+      <a href="dashboard.html" class="admin-brand" title="Trang tổng quan StickerHub">
+        <img src="../../assets/logo_cat.svg" alt="StickerHub Cat Logo" width="36" height="36">
+        <span class="admin-brand-title">Sticker<span class="hub-part">Hub</span></span>
+      </a>
+    </div>
+  </header>
+
+  <!-- ========================================================
+       BODY WRAPPER: SIDEBAR + MAIN CONTENT
+       ======================================================== -->
+  <div class="admin-body-container">
+    
+    <!-- LEFT SIDEBAR -->
+    <aside class="admin-sidebar" id="adminSidebar">
+      <!-- Card Menu Điều Hướng -->
+      <div class="sidebar-card-box">
+        <div class="admin-nav-group-title">Quản lý hệ thống</div>
+        <ul class="admin-nav-list">
+          <li>
+            <a href="dashboard.html" class="admin-nav-item">
+              <span class="nav-left">
+                <i data-lucide="layout-dashboard" style="width: 18px; height: 18px;"></i>
+                <span>Tổng quan</span>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a href="bosuutap.html" class="admin-nav-item">
+              <span class="nav-left">
+                <i data-lucide="folder-heart" style="width: 18px; height: 18px;"></i>
+                <span>Bộ sưu tập</span>
+              </span>
+              <span class="nav-counter">48</span>
+            </a>
+          </li>
+          <li>
+            <a href="khosticker.html" class="admin-nav-item">
+              <span class="nav-left">
+                <i data-lucide="smile" style="width: 18px; height: 18px;"></i>
+                <span>Kho Sticker</span>
+              </span>
+              <span class="nav-counter">4.8K</span>
+            </a>
+          </li>
+          <li>
+            <a href="danhmuc.html" class="admin-nav-item active">
+              <span class="nav-left">
+                <i data-lucide="tag" style="width: 18px; height: 18px;"></i>
+                <span>Danh mục chủ đề</span>
+              </span>
+              <span class="nav-counter">8</span>
+            </a>
+          </li>
+        </ul>
+
+        <div class="admin-nav-group-title" style="margin-top: 14px;">Báo cáo & Thống kê</div>
+        <ul class="admin-nav-list">
+          <li>
+            <a href="thongke.html" class="admin-nav-item" title="Thống kê">
+              <span class="nav-left">
+                <i data-lucide="bar-chart-3" style="width: 18px; height: 18px;"></i>
+                <span>Thống kê</span>
+              </span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Nút Đăng Xuất -->
+      <a href="login.html" class="btn-sidebar-logout" title="Đăng xuất khỏi trang quản trị">
+        <i data-lucide="log-out" style="width: 16px; height: 16px;"></i>
+        <span>Đăng xuất Admin</span>
+      </a>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="admin-main-content">
+      
+      <!-- 1. Header Toolbar của trang -->
+      <section class="admin-page-header">
+        <div class="page-header-info">
+          <div class="page-title-row">
+            <h1 class="page-main-heading">Quản lý Danh mục chủ đề</h1>
+            <span class="page-count-badge">8 danh mục</span>
+          </div>
+          <p class="page-subtext">Hệ thống phân loại chủ đề sticker trên toàn bộ nền tảng StickerHub.</p>
+        </div>
+
+        <button type="button" class="btn-add-primary" id="openAddModalBtn">
+          <i data-lucide="plus-circle" style="width: 17px; height: 17px;"></i>
+          <span>Thêm danh mục mới</span>
+        </button>
+      </section>
+
+      <!-- 2. Quick Stat Cards (3 Thẻ Tóm Tắt) -->
+      <div class="category-stats-grid">
+        <div class="cat-stat-card">
+          <div class="cat-stat-icon-box icon-box-orange">
+            <i data-lucide="tags" style="width: 22px; height: 22px;"></i>
+          </div>
+          <div class="cat-stat-meta">
+            <span class="cat-stat-label">Tổng số chủ đề</span>
+            <span class="cat-stat-value">8 Danh mục</span>
+          </div>
+        </div>
+
+        <div class="cat-stat-card">
+          <div class="cat-stat-icon-box icon-box-green">
+            <i data-lucide="check-circle" style="width: 22px; height: 22px;"></i>
+          </div>
+          <div class="cat-stat-meta">
+            <span class="cat-stat-label">Trạng thái phát hành</span>
+            <span class="cat-stat-value">8/8 Đang hiển thị</span>
+          </div>
+        </div>
+
+        <div class="cat-stat-card">
+          <div class="cat-stat-icon-box icon-box-blue">
+            <i data-lucide="flame" style="width: 22px; height: 22px;"></i>
+          </div>
+          <div class="cat-stat-meta">
+            <span class="cat-stat-label">Chủ đề dẫn đầu lượt tải</span>
+            <span class="cat-stat-value">Động vật (68.5K)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Toolbar Tìm Kiếm & Lọc -->
+      <div class="category-filter-card">
+        <div class="filter-left-group">
+          <!-- Ô tìm kiếm -->
+          <div class="search-field-wrapper">
+            <i data-lucide="search" class="search-field-icon" style="width: 16px; height: 16px;"></i>
+            <input 
+              type="text" 
+              class="filter-search-input" 
+              id="categorySearchInput" 
+              placeholder="Tìm theo tên danh mục, slug URL..."
+              autocomplete="off"
+            >
+          </div>
+
+          <!-- Dropdown lọc trạng thái -->
+          <select class="filter-select-box" id="categoryStatusFilter">
+            <option value="all">Tất cả trạng thái</option>
+            <option value="active">Đang hiển thị</option>
+            <option value="hidden">Đang tạm ẩn</option>
+          </select>
+        </div>
+
+        <button type="button" class="btn-reset-filter" id="resetCatFilterBtn">
+          <i data-lucide="rotate-ccw" style="width: 14px; height: 14px;"></i>
+          <span>Đặt lại</span>
+        </button>
+      </div>
+
+      <!-- 4. Table Bảng Quản Lý Danh Mục -->
+      <div class="table-card-container">
+        <div class="table-responsive">
+          <table class="admin-data-table">
+            <thead>
+              <tr>
+                <th style="width: 50px; text-align: center;">Thứ tự</th>
+                <th style="min-width: 220px;">Danh mục</th>
+                <th>Mã Slug</th>
+                <th>Số bộ sưu tập</th>
+                <th>Số sticker</th>
+                <th>Lượt tải</th>
+                <th>Trạng thái</th>
+                <th style="text-align: right; min-width: 100px;">Thao tác</th>
+              </tr>
+            </thead>
+            <tbody id="categoryTableBody">
+              
+              <!-- 1. Động vật -->
+              <tr data-status="active">
+                <td style="text-align: center;"><span class="order-num-badge">1</span></td>
+                <td>
+                  <div class="category-name-cell">
+                    <div class="cat-icon-badge badge-bg-1">
+                      <i data-lucide="paw-print" style="width: 18px; height: 18px;"></i>
+                    </div>
+                    <div>
+                      <span class="cat-title">Động vật</span>
+                      <div class="cat-desc">Chó mèo dễ thương, thú cưng hài hước</div>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="slug-tag-code">animals</span></td>
+                <td><strong>14</strong> bộ</td>
+                <td><strong>1,420</strong></td>
+                <td><strong style="color: #C45832;">68.5K</strong></td>
+                <td>
+                  <span class="status-badge status-badge-active">
+                    <i data-lucide="check-circle" style="width: 12px; height: 12px;"></i>
+                    Công khai
+                  </span>
+                </td>
+                <td>
+                  <div class="table-btn-group" style="justify-content: flex-end;">
+                    <button type="button" class="tbl-action-btn btn-edit-cat" title="Chỉnh sửa">
+                      <i data-lucide="edit-3" style="width: 15px; height: 15px;"></i>
+                    </button>
+                    <button type="button" class="tbl-action-btn btn-toggle-cat" title="Ẩn danh mục">
+                      <i data-lucide="eye-off" style="width: 15px; height: 15px;"></i>
+                    </button>
+                    <button type="button" class="tbl-action-btn btn-delete btn-delete-cat" title="Xóa">
+                      <i data-lucide="trash-2" style="width: 15px; height: 15px;"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- 2. Anime & Manga -->
+              <tr data-status="active">
+                <td style="text-align: center;"><span class="order-num-badge">2</span></td>
+                <td>
+                  <div class="category-name-cell">
+                    <div class="cat-icon-badge badge-bg-2">
+                      <i data-lucide="tv" style="width: 18px; height: 18px;"></i>
+                    </div>
+                    <div>
+                      <span class="cat-title">Anime & Manga</span>
+                      <div class="cat-desc">Nhân vật hoạt hình Nhật Bản, One Piece, v.v.</div>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="slug-tag-code">anime</span></td>
+                <td><strong>12</strong> bộ</td>
+                <td><strong>1,180</strong></td>
+                <td><strong style="color: #C45832;">54.2K</strong></td>
+                <td>
+                  <span class="status-badge status-badge-active">
+                    <i data-lucide="check-circle" style="width: 12px; height: 12px;"></i>
+                    Công khai
+                  </span>
+                </td>
+                <td>
+                  <div class="table-btn-group" style="justify-content: flex-end;">
+                    <button type="button" class="tbl-action-btn btn-edit-cat" title="Chỉnh sửa">
+                      <i data-lucide="edit-3" style="width: 15px; height: 15px;"></i>
+                    </button>
+                    <button type="button" class="tbl-action-btn btn-toggle-cat" title="Ẩn danh mục">
+                      <i data-lucide="eye-off" style="width: 15px; height: 15px;"></i>
+                    </button>
+                    <button type="button" class="tbl-action-btn btn-delete btn-delete-cat" title="Xóa">
+                      <i data-lucide="trash-2" style="width: 15px; height: 15px;"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- 3. Chibi -->
+              <tr data-status="active">
+                <td style="text-align: center;"><span class="order-num-badge">3</span></td>
+                <td>
+                  <div class="category-name-cell">
+                    <div class="cat-icon-badge badge-bg-3">
+                      <i data-lucide="smile" style="width: 18px; height: 18px;"></i>
+                    </div>
+                    <div>
+                      <span class="cat-title">Chibi</span>
+                      <div class="cat-desc">Nhân vật phong cách tí hon, ngộ nghĩnh</div>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="slug-tag-code">chibi</span></td>
+                <td><strong>8</strong> bộ</td>
+                <td><strong>740</strong></td>
+                <td><strong style="color: #C45832;">32.8K</strong></td>
+                <td>
+                  <span class="status-badge status-badge-active">
+                    <i data-lucide="check-circle" style="width: 12px; height: 12px;"></i>
+                    Công khai
+                  </span>
+                </td>
+                <td>
+                  <div class="table-btn-group" style="justify-content: flex-end;">
+                    <button type="button" class="tbl-action-btn btn-edit-cat" title="Chỉnh sửa">
+                      <i data-lucide="edit-3" style="width: 15px; height: 15px;"></i>
+                    </button>
+                    <button type="button" class="tbl-action-btn btn-toggle-cat" title="Ẩn danh mục">
+                      <i data-lucide="eye-off" style="width: 15px; height: 15px;"></i>
+                    </button>
+                    <button type="button" class="tbl-action-btn btn-delete btn-delete-cat" title="Xóa">
+                      <i data-lucide="trash-2" style="width: 15px; height: 15px;"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- 4. Phong cảnh -->
+              <tr data-status="active">
+                <td style="text-align: center;"><span class="order-num-badge">4</span></td>
+                <td>
+                  <div class="category-name-cell">
+                    <div class="cat-icon-badge badge-bg-4">
+                      <i data-lucide="trees" style="width: 18px; height: 18px;"></i>
+                    </div>
+                    <div>
+                      <span class="cat-title">Phong cảnh</span>
+                      <div class="cat-desc">Thiên nhiên, hoa lá, mùa hè, dã ngoại</div>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="slug-tag-code">nature</span></td>
+                <td><strong>6</strong> bộ</td>
+                <td><strong>520</strong></td>
+                <td><strong style="color: #C45832;">21.6K</strong></td>
+                <td>
+                  <span class="status-badge status-badge-active">
+                    <i data-lucide="check-circle" style="width: 12px; height: 12px;"></i>
+                    Công khai
+                  </span>
+                </td>
+                <td>
+                  <div class="table-btn-group" style="justify-content: flex-end;">
+                    <button type="button" class="tbl-action-btn btn-edit-cat" title="Chỉnh sửa">
+                      <i data-lucide="edit-3" style="width: 15px; height: 15px;"></i>
+                    </button>
+                    <button type="button" class="tbl-action-btn btn-toggle-cat" title="Ẩn danh mục">
+                      <i data-lucide="eye-off" style="width: 15px; height: 15px;"></i>
+                    </button>
+                    <button type="button" class="tbl-action-btn btn-delete btn-delete-cat" title="Xóa">
+                      <i data-lucide="trash-2" style="width: 15px; height: 15px;"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- 5. Tình yêu -->
+              <tr data-status="active">
+                <td style="text-align: center;"><span class="order-num-badge">5</span></td>
+                <td>
+                  <div class="category-name-cell">
+                    <div class="cat-icon-badge badge-bg-5">
+                      <i data-lucide="heart" style="width: 18px; height: 18px;"></i>
+                    </div>
+                    <div>
+                      <span class="cat-title">Tình yêu</span>
+                      <div class="cat-desc">Trái tim, cặp đôi, lãng mạn ngọt ngào</div>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="slug-tag-code">love</span></td>
+                <td><strong>5</strong> bộ</td>
+                <td><strong>480</strong></td>
+                <td><strong style="color: #C45832;">26.4K</strong></td>
+                <td>
+                  <span class="status-badge status-badge-active">
+                    <i data-lucide="check-circle" style="width: 12px; height: 12px;"></i>
+                    Công khai
+                  </span>
+                </td>
+                <td>
+                  <div class="table-btn-group" style="justify-content: flex-end;">
+                    <button type="button" class="tbl-action-btn btn-edit-cat" title="Chỉnh sửa">
+                      <i data-lucide="edit-3" style="width: 15px; height: 15px;"></i>
+                    </button>
+                    <button type="button" class="tbl-action-btn btn-toggle-cat" title="Ẩn danh mục">
+                      <i data-lucide="eye-off" style="width: 15px; height: 15px;"></i>
+                    </button>
+                    <button type="button" class="tbl-action-btn btn-delete btn-delete-cat" title="Xóa">
+                      <i data-lucide="trash-2" style="width: 15px; height: 15px;"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- 6. Biểu cảm -->
+              <tr data-status="active">
+                <td style="text-align: center;"><span class="order-num-badge">6</span></td>
+                <td>
+                  <div class="category-name-cell">
+                    <div class="cat-icon-badge badge-bg-6">
+                      <i data-lucide="message-circle" style="width: 18px; height: 18px;"></i>
+                    </div>
+                    <div>
+                      <span class="cat-title">Biểu cảm</span>
+                      <div class="cat-desc">Emoji, tâm trạng hằng ngày, chat vui vẻ</div>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="slug-tag-code">expressions</span></td>
+                <td><strong>4</strong> bộ</td>
+                <td><strong>390</strong></td>
+                <td><strong style="color: #C45832;">18.2K</strong></td>
+                <td>
+                  <span class="status-badge status-badge-active">
+                    <i data-lucide="check-circle" style="width: 12px; height: 12px;"></i>
+                    Công khai
+                  </span>
+                </td>
+                <td>
+                  <div class="table-btn-group" style="justify-content: flex-end;">
+                    <button type="button" class="tbl-action-btn btn-edit-cat" title="Chỉnh sửa">
+                      <i data-lucide="edit-3" style="width: 15px; height: 15px;"></i>
+                    </button>
+                    <button type="button" class="tbl-action-btn btn-toggle-cat" title="Ẩn danh mục">
+                      <i data-lucide="eye-off" style="width: 15px; height: 15px;"></i>
+                    </button>
+                    <button type="button" class="tbl-action-btn btn-delete btn-delete-cat" title="Xóa">
+                      <i data-lucide="trash-2" style="width: 15px; height: 15px;"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- 7. Hài hước & Meme -->
+              <tr data-status="active">
+                <td style="text-align: center;"><span class="order-num-badge">7</span></td>
+                <td>
+                  <div class="category-name-cell">
+                    <div class="cat-icon-badge badge-bg-7">
+                      <i data-lucide="zap" style="width: 18px; height: 18px;"></i>
+                    </div>
+                    <div>
+                      <span class="cat-title">Hài hước & Meme</span>
+                      <div class="cat-desc">Meme troll, ảnh chế vui nhộn cộng đồng mạng</div>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="slug-tag-code">meme</span></td>
+                <td><strong>3</strong> bộ</td>
+                <td><strong>280</strong></td>
+                <td><strong style="color: #C45832;">15.7K</strong></td>
+                <td>
+                  <span class="status-badge status-badge-active">
+                    <i data-lucide="check-circle" style="width: 12px; height: 12px;"></i>
+                    Công khai
+                  </span>
+                </td>
+                <td>
+                  <div class="table-btn-group" style="justify-content: flex-end;">
+                    <button type="button" class="tbl-action-btn btn-edit-cat" title="Chỉnh sửa">
+                      <i data-lucide="edit-3" style="width: 15px; height: 15px;"></i>
+                    </button>
+                    <button type="button" class="tbl-action-btn btn-toggle-cat" title="Ẩn danh mục">
+                      <i data-lucide="eye-off" style="width: 15px; height: 15px;"></i>
+                    </button>
+                    <button type="button" class="tbl-action-btn btn-delete btn-delete-cat" title="Xóa">
+                      <i data-lucide="trash-2" style="width: 15px; height: 15px;"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- 8. Lễ hội & Khác -->
+              <tr data-status="active">
+                <td style="text-align: center;"><span class="order-num-badge">8</span></td>
+                <td>
+                  <div class="category-name-cell">
+                    <div class="cat-icon-badge badge-bg-8">
+                      <i data-lucide="gift" style="width: 18px; height: 18px;"></i>
+                    </div>
+                    <div>
+                      <span class="cat-title">Lễ hội & Khác</span>
+                      <div class="cat-desc">Halloween, Giáng sinh, Tết, chủ đề hỗn hợp</div>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="slug-tag-code">others</span></td>
+                <td><strong>2</strong> bộ</td>
+                <td><strong>180</strong></td>
+                <td><strong style="color: #C45832;">9.8K</strong></td>
+                <td>
+                  <span class="status-badge status-badge-active">
+                    <i data-lucide="check-circle" style="width: 12px; height: 12px;"></i>
+                    Công khai
+                  </span>
+                </td>
+                <td>
+                  <div class="table-btn-group" style="justify-content: flex-end;">
+                    <button type="button" class="tbl-action-btn btn-edit-cat" title="Chỉnh sửa">
+                      <i data-lucide="edit-3" style="width: 15px; height: 15px;"></i>
+                    </button>
+                    <button type="button" class="tbl-action-btn btn-toggle-cat" title="Ẩn danh mục">
+                      <i data-lucide="eye-off" style="width: 15px; height: 15px;"></i>
+                    </button>
+                    <button type="button" class="tbl-action-btn btn-delete btn-delete-cat" title="Xóa">
+                      <i data-lucide="trash-2" style="width: 15px; height: 15px;"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+
+        <!-- 5. Footer Thông Tin Bảng -->
+        <div class="table-footer-info">
+          <span>Đang hiển thị <strong id="catVisibleCount">8</strong> trên <strong>8</strong> danh mục chủ đề</span>
+          <span>Tổng số bộ sưu tập: <strong>48</strong> bộ</span>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- ========================================================
+       MODAL THÊM / CHỈNH SỬA DANH MỤC
+       ======================================================== -->
+  <div class="admin-modal-backdrop" id="addCategoryModal">
+    <div class="modal-dialog-box">
+      <div class="modal-header-bar">
+        <h3 class="modal-heading">
+          <i data-lucide="tag" style="width: 20px; height: 20px; color: #C45832;"></i>
+          <span>Thêm danh mục chủ đề mới</span>
+        </h3>
+        <button type="button" class="modal-close-btn" id="closeAddModalBtn" title="Đóng">
+          <i data-lucide="x" style="width: 18px; height: 18px;"></i>
+        </button>
+      </div>
+
+      <form id="addCategoryForm">
+        <div class="modal-body-content">
+          
+          <div class="form-row-2col">
+            <div class="form-group-item">
+              <label class="form-label" for="catNameInput">Tên danh mục <span style="color: #C45832;">*</span></label>
+              <input type="text" id="catNameInput" class="form-input-text" placeholder="Ví dụ: Động vật" required>
+            </div>
+            <div class="form-group-item">
+              <label class="form-label" for="catSlugInput">Mã Slug (URL) <span style="color: #C45832;">*</span></label>
+              <input type="text" id="catSlugInput" class="form-input-text" placeholder="Ví dụ: animals" required>
+            </div>
+          </div>
+
+          <div class="form-row-2col">
+            <div class="form-group-item">
+              <label class="form-label" for="catOrderInput">Thứ tự hiển thị</label>
+              <input type="number" id="catOrderInput" class="form-input-text" value="9" min="1" max="99">
+            </div>
+            <div class="form-group-item">
+              <label class="form-label" for="catStatusSelect">Trạng thái phát hành</label>
+              <select id="catStatusSelect" class="form-select-ctrl">
+                <option value="active">Công khai ngay</option>
+                <option value="hidden">Tạm ẩn</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group-item">
+            <label class="form-label" for="catDescInput">Mô tả tóm tắt</label>
+            <textarea id="catDescInput" class="form-textarea-ctrl" rows="2" placeholder="Mô tả các sticker thuộc chủ đề này..."></textarea>
+          </div>
+
+        </div>
+
+        <div class="modal-footer-bar">
+          <button type="button" class="btn-admin-action btn-secondary-action" id="cancelAddModalBtn">Hủy bỏ</button>
+          <button type="submit" class="btn-admin-action btn-primary-action">Lưu danh mục</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- ========================================================
+       SCRIPTS
+       ======================================================== -->
+  <script src="../../static/user/layout/layout.js"></script>
+  <script src="../../static/admin/js/pages/danhmuc.js"></script>
+
+</body>
+</html>

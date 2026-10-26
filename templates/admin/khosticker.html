@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Kho Sticker - StickerHub Admin</title>
+
+  <!-- Meta Description -->
+  <meta name="description" content="Quản lý toàn bộ kho sticker đơn lẻ trên hệ thống StickerHub: xem trước vector, kiểm tra định dạng, phân loại theo bộ sưu tập và tải lên sticker mới.">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="../../assets/logo_cat.svg">
+
+  <!-- Google Fonts: Comfortaa & Nunito đồng nhất hệ thống -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700;800&family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- MASTER ADMIN LAYOUT CSS (Bao gồm variables, base, header, sidebar) -->
+  <link rel="stylesheet" href="../../static/admin/css/layout/layout.css">
+
+  <!-- CSS riêng của trang Kho Sticker -->
+  <link rel="stylesheet" href="../../static/admin/css/pages/khosticker.css">
+</head>
+<body class="admin-layout-root">
+
+  <!-- ========================================================
+       TOPBAR / NAVIGATION QUẢN TRỊ
+       ======================================================== -->
+  <header class="admin-topbar">
+    <div class="admin-topbar-inner">
+      <a href="dashboard.html" class="admin-brand" title="Trang tổng quan StickerHub">
+        <img src="../../assets/logo_cat.svg" alt="StickerHub Cat Logo" width="36" height="36">
+        <span class="admin-brand-title">Sticker<span class="hub-part">Hub</span></span>
+      </a>
+    </div>
+  </header>
+
+  <!-- ========================================================
+       BODY WRAPPER: SIDEBAR + MAIN CONTENT
+       ======================================================== -->
+  <div class="admin-body-container">
+    
+    <!-- LEFT SIDEBAR -->
+    <aside class="admin-sidebar" id="adminSidebar">
+      <!-- Card Menu Điều Hướng -->
+      <div class="sidebar-card-box">
+        <div class="admin-nav-group-title">Quản lý hệ thống</div>
+        <ul class="admin-nav-list">
+          <li>
+            <a href="dashboard.html" class="admin-nav-item">
+              <span class="nav-left">
+                <i data-lucide="layout-dashboard" style="width: 18px; height: 18px;"></i>
+                <span>Tổng quan</span>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a href="bosuutap.html" class="admin-nav-item">
+              <span class="nav-left">
+                <i data-lucide="folder-heart" style="width: 18px; height: 18px;"></i>
+                <span>Bộ sưu tập</span>
+              </span>
+              <span class="nav-counter">48</span>
+            </a>
+          </li>
+          <li>
+            <a href="khosticker.html" class="admin-nav-item active">
+              <span class="nav-left">
+                <i data-lucide="smile" style="width: 18px; height: 18px;"></i>
+                <span>Kho Sticker</span>
+              </span>
+              <span class="nav-counter">4.8K</span>
+            </a>
+          </li>
+          <li>
+            <a href="danhmuc.html" class="admin-nav-item">
+              <span class="nav-left">
+                <i data-lucide="tag" style="width: 18px; height: 18px;"></i>
+                <span>Danh mục chủ đề</span>
+              </span>
+              <span class="nav-counter">8</span>
+            </a>
+          </li>
+        </ul>
+
+        <div class="admin-nav-group-title" style="margin-top: 14px;">Báo cáo & Thống kê</div>
+        <ul class="admin-nav-list">
+          <li>
+            <a href="thongke.html" class="admin-nav-item" title="Thống kê">
+              <span class="nav-left">
+                <i data-lucide="bar-chart-3" style="width: 18px; height: 18px;"></i>
+                <span>Thống kê</span>
+              </span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Nút Đăng Xuất -->
+      <a href="login.html" class="btn-sidebar-logout" title="Đăng xuất khỏi trang quản trị">
+        <i data-lucide="log-out" style="width: 16px; height: 16px;"></i>
+        <span>Đăng xuất Admin</span>
+      </a>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="admin-main-content">
+      
+      <!-- 1. Header Toolbar của trang -->
+      <section class="admin-page-header">
+        <div class="page-header-info">
+          <div class="page-title-row">
+            <h1 class="page-main-heading">Kho Sticker</h1>
+            <span class="page-count-badge">4,850 sticker</span>
+          </div>
+          <p class="page-subtext">Thư viện sticker đơn lẻ: quản lý định dạng vector, phân loại theo bộ sưu tập và xem trước phóng to.</p>
+        </div>
+
+        <button type="button" class="btn-upload-primary" id="openUploadModalBtn">
+          <i data-lucide="upload-cloud" style="width: 17px; height: 17px;"></i>
+          <span>Tải lên Sticker</span>
+        </button>
+      </section>
+
+      <!-- 2. Quick Category Tabs (Lọc nhanh theo chủ đề) -->
+      <div class="quick-category-tabs">
+        <button type="button" class="cat-tab-btn active" data-category="all">
+          <span>Tất cả</span>
+          <span class="cat-tab-count">4,850</span>
+        </button>
+        <button type="button" class="cat-tab-btn" data-category="animals">
+          <span>Động vật</span>
+          <span class="cat-tab-count">1,420</span>
+        </button>
+        <button type="button" class="cat-tab-btn" data-category="anime">
+          <span>Anime & Manga</span>
+          <span class="cat-tab-count">1,180</span>
+        </button>
+        <button type="button" class="cat-tab-btn" data-category="chibi">
+          <span>Chibi</span>
+          <span class="cat-tab-count">740</span>
+        </button>
+        <button type="button" class="cat-tab-btn" data-category="expressions">
+          <span>Biểu cảm</span>
+          <span class="cat-tab-count">390</span>
+        </button>
+      </div>
+
+      <!-- 3. Toolbar Lọc & Tìm Kiếm -->
+      <div class="stickers-filter-card">
+        <div class="filter-left-group">
+          <!-- Ô tìm kiếm -->
+          <div class="search-field-wrapper">
+            <i data-lucide="search" class="search-field-icon" style="width: 16px; height: 16px;"></i>
+            <input 
+              type="text" 
+              class="filter-search-input" 
+              id="stickerSearchInput" 
+              placeholder="Tìm theo tên sticker, mã tệp..."
+              autocomplete="off"
+            >
+          </div>
+
+          <!-- Dropdown lọc theo Bộ sưu tập cha -->
+          <select class="filter-select-box" id="stickerPackFilter">
+            <option value="all">Tất cả bộ sưu tập</option>
+            <option value="cute-cats">Cute Cats</option>
+            <option value="anime-girls">Anime Girls</option>
+            <option value="funny-animals">Funny Animals</option>
+            <option value="one-piece">One Piece Wano</option>
+            <option value="nature-vibes">Nature Vibes</option>
+            <option value="daily-expressions">Daily Expressions</option>
+          </select>
+        </div>
+
+        <button type="button" class="btn-reset-filter" id="resetStickerFilterBtn">
+          <i data-lucide="rotate-ccw" style="width: 14px; height: 14px;"></i>
+          <span>Đặt lại</span>
+        </button>
+      </div>
+
+      <!-- 4. Sticker Gallery Grid (Lưới hiển thị sticker trực quan) -->
+      <div class="sticker-gallery-grid" id="stickerGalleryGrid">
+        
+        <!-- Sticker 1: cat_01.svg -->
+        <div class="sticker-grid-item" data-category="animals" data-pack="cute-cats">
+          <div class="sticker-thumb-stage" title="Nhấn để phóng to">
+            <img src="../../assets/stickers/cat_01.svg" alt="Mèo vẫy tay chào" class="sticker-img" loading="lazy">
+            <div class="stage-hover-overlay">
+              <button type="button" class="stage-action-btn btn-zoom-sticker" title="Phóng to">
+                <i data-lucide="zoom-in" style="width: 15px; height: 15px;"></i>
+              </button>
+              <button type="button" class="stage-action-btn btn-download-sticker" title="Tải tệp về">
+                <i data-lucide="download" style="width: 15px; height: 15px;"></i>
+              </button>
+              <button type="button" class="stage-action-btn btn-delete-sticker" title="Xóa sticker">
+                <i data-lucide="trash-2" style="width: 15px; height: 15px; color: #C4381C;"></i>
+              </button>
+            </div>
+          </div>
+          <div class="sticker-info-block">
+            <div class="sticker-name-title">Mèo vẫy tay chào (cat_01.svg)</div>
+            <div class="sticker-pack-label">
+              <i data-lucide="folder" style="width: 12px; height: 12px;"></i>
+              <span>Cute Cats</span>
+            </div>
+            <div class="sticker-spec-row">
+              <span class="sticker-format-tag">SVG 512px</span>
+              <span class="sticker-downloads">
+                <i data-lucide="download" style="width: 12px; height: 12px;"></i>
+                3.4K
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sticker 2: cat_02.svg -->
+        <div class="sticker-grid-item" data-category="animals" data-pack="cute-cats">
+          <div class="sticker-thumb-stage" title="Nhấn để phóng to">
+            <img src="../../assets/stickers/cat_02.svg" alt="Mèo ôm tim yêu thương" class="sticker-img" loading="lazy">
+            <div class="stage-hover-overlay">
+              <button type="button" class="stage-action-btn btn-zoom-sticker" title="Phóng to">
+                <i data-lucide="zoom-in" style="width: 15px; height: 15px;"></i>
+              </button>
+              <button type="button" class="stage-action-btn btn-download-sticker" title="Tải tệp về">
+                <i data-lucide="download" style="width: 15px; height: 15px;"></i>
+              </button>
+              <button type="button" class="stage-action-btn btn-delete-sticker" title="Xóa sticker">
+                <i data-lucide="trash-2" style="width: 15px; height: 15px; color: #C4381C;"></i>
+              </button>
+            </div>
+          </div>
+          <div class="sticker-info-block">
+            <div class="sticker-name-title">Mèo ôm tim (cat_02.svg)</div>
+            <div class="sticker-pack-label">
+              <i data-lucide="folder" style="width: 12px; height: 12px;"></i>
+              <span>Cute Cats</span>
+            </div>
+            <div class="sticker-spec-row">
+              <span class="sticker-format-tag">SVG 512px</span>
+              <span class="sticker-downloads">
+                <i data-lucide="download" style="width: 12px; height: 12px;"></i>
+                4.1K
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sticker 3: cat_03.svg -->
+        <div class="sticker-grid-item" data-category="animals" data-pack="cute-cats">
+          <div class="sticker-thumb-stage" title="Nhấn để phóng to">
+            <img src="../../assets/stickers/cat_03.svg" alt="Mèo ngái ngủ cuộn tròn" class="sticker-img" loading="lazy">
+            <div class="stage-hover-overlay">
+              <button type="button" class="stage-action-btn btn-zoom-sticker" title="Phóng to">
+                <i data-lucide="zoom-in" style="width: 15px; height: 15px;"></i>
+              </button>
+              <button type="button" class="stage-action-btn btn-download-sticker" title="Tải tệp về">
+                <i data-lucide="download" style="width: 15px; height: 15px;"></i>
+              </button>
+              <button type="button" class="stage-action-btn btn-delete-sticker" title="Xóa sticker">
+                <i data-lucide="trash-2" style="width: 15px; height: 15px; color: #C4381C;"></i>
+              </button>
+            </div>
+          </div>
+          <div class="sticker-info-block">
+            <div class="sticker-name-title">Mèo ngái ngủ (cat_03.svg)</div>
+            <div class="sticker-pack-label">
+              <i data-lucide="folder" style="width: 12px; height: 12px;"></i>
+              <span>Cute Cats</span>
+            </div>
+            <div class="sticker-spec-row">
+              <span class="sticker-format-tag">SVG 512px</span>
+              <span class="sticker-downloads">
+                <i data-lucide="download" style="width: 12px; height: 12px;"></i>
+                2.8K
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sticker 4: cat_04.svg -->
+        <div class="sticker-grid-item" data-category="animals" data-pack="cute-cats">
+          <div class="sticker-thumb-stage" title="Nhấn để phóng to">
+            <img src="../../assets/stickers/cat_04.svg" alt="Mèo ăn cá" class="sticker-img" loading="lazy">
+            <div class="stage-hover-overlay">
+              <button type="button" class="stage-action-btn btn-zoom-sticker" title="Phóng to">
+                <i data-lucide="zoom-in" style="width: 15px; height: 15px;"></i>
+              </button>
+              <button type="button" class="stage-action-btn btn-download-sticker" title="Tải tệp về">
+                <i data-lucide="download" style="width: 15px; height: 15px;"></i>
+              </button>
+              <button type="button" class="stage-action-btn btn-delete-sticker" title="Xóa sticker">
+                <i data-lucide="trash-2" style="width: 15px; height: 15px; color: #C4381C;"></i>
+              </button>
+            </div>
+          </div>
+          <div class="sticker-info-block">
+            <div class="sticker-name-title">Mèo ăn cá ngon (cat_04.svg)</div>
+            <div class="sticker-pack-label">
+              <i data-lucide="folder" style="width: 12px; height: 12px;"></i>
+              <span>Cute Cats</span>
+            </div>
+            <div class="sticker-spec-row">
+              <span class="sticker-format-tag">SVG 512px</span>
+              <span class="sticker-downloads">
+                <i data-lucide="download" style="width: 12px; height: 12px;"></i>
+                3.1K
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sticker 5: cat_05.svg -->
+        <div class="sticker-grid-item" data-category="animals" data-pack="cute-cats">
+          <div class="sticker-thumb-stage" title="Nhấn để phóng to">
+            <img src="../../assets/stickers/cat_05.svg" alt="Mèo mắt long lanh" class="sticker-img" loading="lazy">
+            <div class="stage-hover-overlay">
+              <button type="button" class="stage-action-btn btn-zoom-sticker" title="Phóng to">
+                <i data-lucide="zoom-in" style="width: 15px; height: 15px;"></i>
+              </button>
+              <button type="button" class="stage-action-btn btn-download-sticker" title="Tải tệp về">
+                <i data-lucide="download" style="width: 15px; height: 15px;"></i>
+              </button>
+              <button type="button" class="stage-action-btn btn-delete-sticker" title="Xóa sticker">
+                <i data-lucide="trash-2" style="width: 15px; height: 15px; color: #C4381C;"></i>
+              </button>
+            </div>
+          </div>
+          <div class="sticker-info-block">
+            <div class="sticker-name-title">Mèo mắt long lanh (cat_05.svg)</div>
+            <div class="sticker-pack-label">
+              <i data-lucide="folder" style="width: 12px; height: 12px;"></i>
+              <span>Cute Cats</span>
+            </div>
+            <div class="sticker-spec-row">
+              <span class="sticker-format-tag">SVG 512px</span>
+              <span class="sticker-downloads">
+                <i data-lucide="download" style="width: 12px; height: 12px;"></i>
+                3.9K
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sticker 6: cat_06.svg -->
+        <div class="sticker-grid-item" data-category="animals" data-pack="cute-cats">
+          <div class="sticker-thumb-stage" title="Nhấn để phóng to">
+            <img src="../../assets/stickers/cat_06.svg" alt="Mèo cười toe toét" class="sticker-img" loading="lazy">
+            <div class="stage-hover-overlay">
+              <button type="button" class="stage-action-btn btn-zoom-sticker" title="Phóng to">
+                <i data-lucide="zoom-in" style="width: 15px; height: 15px;"></i>
+              </button>
+              <button type="button" class="stage-action-btn btn-download-sticker" title="Tải tệp về">
+                <i data-lucide="download" style="width: 15px; height: 15px;"></i>
+              </button>
+              <button type="button" class="stage-action-btn btn-delete-sticker" title="Xóa sticker">
+                <i data-lucide="trash-2" style="width: 15px; height: 15px; color: #C4381C;"></i>
+              </button>
+            </div>
+          </div>
+          <div class="sticker-info-block">
+            <div class="sticker-name-title">Mèo cười toe toét (cat_06.svg)</div>
+            <div class="sticker-pack-label">
+              <i data-lucide="folder" style="width: 12px; height: 12px;"></i>
+              <span>Cute Cats</span>
+            </div>
+            <div class="sticker-spec-row">
+              <span class="sticker-format-tag">SVG 512px</span>
+              <span class="sticker-downloads">
+                <i data-lucide="download" style="width: 12px; height: 12px;"></i>
+                2.5K
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sticker 7: cat_07.svg -->
+        <div class="sticker-grid-item" data-category="animals" data-pack="cute-cats">
+          <div class="sticker-thumb-stage" title="Nhấn để phóng to">
+            <img src="../../assets/stickers/cat_07.svg" alt="Mèo tinh nghịch" class="sticker-img" loading="lazy">
+            <div class="stage-hover-overlay">
+              <button type="button" class="stage-action-btn btn-zoom-sticker" title="Phóng to">
+                <i data-lucide="zoom-in" style="width: 15px; height: 15px;"></i>
+              </button>
+              <button type="button" class="stage-action-btn btn-download-sticker" title="Tải tệp về">
+                <i data-lucide="download" style="width: 15px; height: 15px;"></i>
+              </button>
+              <button type="button" class="stage-action-btn btn-delete-sticker" title="Xóa sticker">
+                <i data-lucide="trash-2" style="width: 15px; height: 15px; color: #C4381C;"></i>
+              </button>
+            </div>
+          </div>
+          <div class="sticker-info-block">
+            <div class="sticker-name-title">Mèo tinh nghịch (cat_07.svg)</div>
+            <div class="sticker-pack-label">
+              <i data-lucide="folder" style="width: 12px; height: 12px;"></i>
+              <span>Cute Cats</span>
+            </div>
+            <div class="sticker-spec-row">
+              <span class="sticker-format-tag">SVG 512px</span>
+              <span class="sticker-downloads">
+                <i data-lucide="download" style="width: 12px; height: 12px;"></i>
+                1.9K
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sticker 8: cat_08.svg -->
+        <div class="sticker-grid-item" data-category="animals" data-pack="cute-cats">
+          <div class="sticker-thumb-stage" title="Nhấn để phóng to">
+            <img src="../../assets/stickers/cat_08.svg" alt="Mèo giận dỗi" class="sticker-img" loading="lazy">
+            <div class="stage-hover-overlay">
+              <button type="button" class="stage-action-btn btn-zoom-sticker" title="Phóng to">
+                <i data-lucide="zoom-in" style="width: 15px; height: 15px;"></i>
+              </button>
+              <button type="button" class="stage-action-btn btn-download-sticker" title="Tải tệp về">
+                <i data-lucide="download" style="width: 15px; height: 15px;"></i>
+              </button>
+              <button type="button" class="stage-action-btn btn-delete-sticker" title="Xóa sticker">
+                <i data-lucide="trash-2" style="width: 15px; height: 15px; color: #C4381C;"></i>
+              </button>
+            </div>
+          </div>
+          <div class="sticker-info-block">
+            <div class="sticker-name-title">Mèo phụng phịu (cat_08.svg)</div>
+            <div class="sticker-pack-label">
+              <i data-lucide="folder" style="width: 12px; height: 12px;"></i>
+              <span>Cute Cats</span>
+            </div>
+            <div class="sticker-spec-row">
+              <span class="sticker-format-tag">SVG 512px</span>
+              <span class="sticker-downloads">
+                <i data-lucide="download" style="width: 12px; height: 12px;"></i>
+                2.2K
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sticker 9: cat_09.svg -->
+        <div class="sticker-grid-item" data-category="animals" data-pack="cute-cats">
+          <div class="sticker-thumb-stage" title="Nhấn để phóng to">
+            <img src="../../assets/stickers/cat_09.svg" alt="Mèo đội hộp" class="sticker-img" loading="lazy">
+            <div class="stage-hover-overlay">
+              <button type="button" class="stage-action-btn btn-zoom-sticker" title="Phóng to">
+                <i data-lucide="zoom-in" style="width: 15px; height: 15px;"></i>
+              </button>
+              <button type="button" class="stage-action-btn btn-download-sticker" title="Tải tệp về">
+                <i data-lucide="download" style="width: 15px; height: 15px;"></i>
+              </button>
+              <button type="button" class="stage-action-btn btn-delete-sticker" title="Xóa sticker">
+                <i data-lucide="trash-2" style="width: 15px; height: 15px; color: #C4381C;"></i>
+              </button>
+            </div>
+          </div>
+          <div class="sticker-info-block">
+            <div class="sticker-name-title">Mèo trong hộp (cat_09.svg)</div>
+            <div class="sticker-pack-label">
+              <i data-lucide="folder" style="width: 12px; height: 12px;"></i>
+              <span>Cute Cats</span>
+            </div>
+            <div class="sticker-spec-row">
+              <span class="sticker-format-tag">SVG 512px</span>
+              <span class="sticker-downloads">
+                <i data-lucide="download" style="width: 12px; height: 12px;"></i>
+                3.7K
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sticker 10: cat_10.svg -->
+        <div class="sticker-grid-item" data-category="animals" data-pack="cute-cats">
+          <div class="sticker-thumb-stage" title="Nhấn để phóng to">
+            <img src="../../assets/stickers/cat_10.svg" alt="Mèo ngạc nhiên" class="sticker-img" loading="lazy">
+            <div class="stage-hover-overlay">
+              <button type="button" class="stage-action-btn btn-zoom-sticker" title="Phóng to">
+                <i data-lucide="zoom-in" style="width: 15px; height: 15px;"></i>
+              </button>
+              <button type="button" class="stage-action-btn btn-download-sticker" title="Tải tệp về">
+                <i data-lucide="download" style="width: 15px; height: 15px;"></i>
+              </button>
+              <button type="button" class="stage-action-btn btn-delete-sticker" title="Xóa sticker">
+                <i data-lucide="trash-2" style="width: 15px; height: 15px; color: #C4381C;"></i>
+              </button>
+            </div>
+          </div>
+          <div class="sticker-info-block">
+            <div class="sticker-name-title">Mèo ngạc nhiên (cat_10.svg)</div>
+            <div class="sticker-pack-label">
+              <i data-lucide="folder" style="width: 12px; height: 12px;"></i>
+              <span>Cute Cats</span>
+            </div>
+            <div class="sticker-spec-row">
+              <span class="sticker-format-tag">SVG 512px</span>
+              <span class="sticker-downloads">
+                <i data-lucide="download" style="width: 12px; height: 12px;"></i>
+                2.9K
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sticker 11: cat_11.svg -->
+        <div class="sticker-grid-item" data-category="animals" data-pack="cute-cats">
+          <div class="sticker-thumb-stage" title="Nhấn để phóng to">
+            <img src="../../assets/stickers/cat_11.svg" alt="Mèo lười biếng" class="sticker-img" loading="lazy">
+            <div class="stage-hover-overlay">
+              <button type="button" class="stage-action-btn btn-zoom-sticker" title="Phóng to">
+                <i data-lucide="zoom-in" style="width: 15px; height: 15px;"></i>
+              </button>
+              <button type="button" class="stage-action-btn btn-download-sticker" title="Tải tệp về">
+                <i data-lucide="download" style="width: 15px; height: 15px;"></i>
+              </button>
+              <button type="button" class="stage-action-btn btn-delete-sticker" title="Xóa sticker">
+                <i data-lucide="trash-2" style="width: 15px; height: 15px; color: #C4381C;"></i>
+              </button>
+            </div>
+          </div>
+          <div class="sticker-info-block">
+            <div class="sticker-name-title">Mèo lười biếng (cat_11.svg)</div>
+            <div class="sticker-pack-label">
+              <i data-lucide="folder" style="width: 12px; height: 12px;"></i>
+              <span>Cute Cats</span>
+            </div>
+            <div class="sticker-spec-row">
+              <span class="sticker-format-tag">SVG 512px</span>
+              <span class="sticker-downloads">
+                <i data-lucide="download" style="width: 12px; height: 12px;"></i>
+                3.0K
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sticker 12: cat_12.svg -->
+        <div class="sticker-grid-item" data-category="animals" data-pack="cute-cats">
+          <div class="sticker-thumb-stage" title="Nhấn để phóng to">
+            <img src="../../assets/stickers/cat_12.svg" alt="Mèo đeo nơ" class="sticker-img" loading="lazy">
+            <div class="stage-hover-overlay">
+              <button type="button" class="stage-action-btn btn-zoom-sticker" title="Phóng to">
+                <i data-lucide="zoom-in" style="width: 15px; height: 15px;"></i>
+              </button>
+              <button type="button" class="stage-action-btn btn-download-sticker" title="Tải tệp về">
+                <i data-lucide="download" style="width: 15px; height: 15px;"></i>
+              </button>
+              <button type="button" class="stage-action-btn btn-delete-sticker" title="Xóa sticker">
+                <i data-lucide="trash-2" style="width: 15px; height: 15px; color: #C4381C;"></i>
+              </button>
+            </div>
+          </div>
+          <div class="sticker-info-block">
+            <div class="sticker-name-title">Mèo đeo nơ (cat_12.svg)</div>
+            <div class="sticker-pack-label">
+              <i data-lucide="folder" style="width: 12px; height: 12px;"></i>
+              <span>Cute Cats</span>
+            </div>
+            <div class="sticker-spec-row">
+              <span class="sticker-format-tag">SVG 512px</span>
+              <span class="sticker-downloads">
+                <i data-lucide="download" style="width: 12px; height: 12px;"></i>
+                4.5K
+              </span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- 5. Phân Trang (Pagination) -->
+      <div class="table-pagination-footer">
+        <span class="pagination-info-text">
+          Hiển thị <strong id="stickerVisibleCount">12</strong> trên tổng số <strong>4,850</strong> sticker
+        </span>
+        <div class="pagination-controls">
+          <button type="button" class="btn-page-nav" disabled title="Trang trước">
+            <i data-lucide="chevron-left" style="width: 15px; height: 15px;"></i>
+          </button>
+          <button type="button" class="btn-page-nav active">1</button>
+          <button type="button" class="btn-page-nav">2</button>
+          <button type="button" class="btn-page-nav">3</button>
+          <button type="button" class="btn-page-nav">4</button>
+          <button type="button" class="btn-page-nav">5</button>
+          <button type="button" class="btn-page-nav" title="Trang sau">
+            <i data-lucide="chevron-right" style="width: 15px; height: 15px;"></i>
+          </button>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- ========================================================
+       MODAL 1: TẢI LÊN STICKER MỚI
+       ======================================================== -->
+  <div class="admin-modal-backdrop" id="uploadStickerModal">
+    <div class="modal-dialog-box">
+      <div class="modal-header-bar">
+        <h3 class="modal-heading">
+          <i data-lucide="upload-cloud" style="width: 20px; height: 20px; color: #C45832;"></i>
+          <span>Tải lên sticker mới</span>
+        </h3>
+        <button type="button" class="modal-close-btn" id="closeUploadModalBtn" title="Đóng">
+          <i data-lucide="x" style="width: 18px; height: 18px;"></i>
+        </button>
+      </div>
+
+      <form id="uploadStickerForm">
+        <div class="modal-body-content">
+          
+          <!-- Dropzone kéo thả -->
+          <div class="upload-dropzone-area" onclick="document.getElementById('stickerFileInput').click()">
+            <input type="file" id="stickerFileInput" accept=".svg,.png,.webp" style="display: none;">
+            <i data-lucide="image-plus" style="width: 32px; height: 32px; color: #C45832;"></i>
+            <span class="dropzone-title">Kéo & thả tệp sticker vào đây, hoặc click để chọn</span>
+            <span class="dropzone-sub">Hỗ trợ định dạng vector SVG, PNG, WebP (tối ưu kích thước 512x512px)</span>
+          </div>
+
+          <div class="form-group-item">
+            <label class="form-label" for="uploadPackSelect">Bộ sưu tập chỉ định <span style="color: #C45832;">*</span></label>
+            <select id="uploadPackSelect" class="form-select-ctrl" required>
+              <option value="cute-cats">Cute Cats (Động vật)</option>
+              <option value="anime-girls">Anime Girls (Anime & Manga)</option>
+              <option value="funny-animals">Funny Animals (Động vật)</option>
+              <option value="one-piece">One Piece Wano (Anime & Manga)</option>
+              <option value="nature-vibes">Nature Vibes (Phong cảnh)</option>
+              <option value="daily-expressions">Daily Expressions (Biểu cảm)</option>
+            </select>
+          </div>
+
+          <div class="form-group-item">
+            <label class="form-label" for="stickerTitleInput">Tiêu đề / Tên sticker <span style="color: #C45832;">*</span></label>
+            <input type="text" id="stickerTitleInput" class="form-input-text" placeholder="Ví dụ: Mèo cưng nháy mắt" required>
+          </div>
+
+          <div class="form-group-item">
+            <label class="form-label" for="stickerTagsInput">Thẻ tag tìm kiếm (phân cách bằng dấu phẩy)</label>
+            <input type="text" id="stickerTagsInput" class="form-input-text" placeholder="meo, cute, happy, chao hoi...">
+          </div>
+
+        </div>
+
+        <div class="modal-footer-bar">
+          <button type="button" class="btn-admin-action btn-secondary-action" id="cancelUploadModalBtn">Hủy bỏ</button>
+          <button type="submit" class="btn-admin-action btn-primary-action">Tải lên ngay</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       MODAL 2: LIGHTBOX XEM CHI TIẾT PHÓNG TO
+       ======================================================== -->
+  <div class="admin-modal-backdrop" id="lightboxModal">
+    <div class="modal-dialog-box">
+      <div class="modal-header-bar">
+        <h3 class="modal-heading">
+          <i data-lucide="eye" style="width: 20px; height: 20px; color: #C45832;"></i>
+          <span>Chi tiết Sticker Vector</span>
+        </h3>
+        <button type="button" class="modal-close-btn" id="closeLightboxBtn" title="Đóng">
+          <i data-lucide="x" style="width: 18px; height: 18px;"></i>
+        </button>
+      </div>
+
+      <div class="modal-body-content">
+        <!-- Vùng xem ảnh lớn trong suốt -->
+        <div class="lightbox-preview-box">
+          <img src="" alt="" id="lightboxImg" class="lightbox-img">
+        </div>
+
+        <div class="lightbox-detail-grid">
+          <div class="lightbox-detail-item">
+            <span class="lightbox-label">Tiêu đề</span>
+            <span class="lightbox-val" id="lightboxTitle">-</span>
+          </div>
+
+          <div class="lightbox-detail-item">
+            <span class="lightbox-label">Bộ sưu tập</span>
+            <span class="lightbox-val" id="lightboxPack" style="color: #C45832;">-</span>
+          </div>
+
+          <div class="lightbox-detail-item">
+            <span class="lightbox-label">Độ phân giải & Chuẩn</span>
+            <span class="lightbox-val" id="lightboxDim">512 x 512 px (SVG Vector)</span>
+          </div>
+
+          <div class="lightbox-detail-item">
+            <span class="lightbox-label">Tổng lượt tải</span>
+            <span class="lightbox-val" id="lightboxDownloads" style="color: #2E7D32;">-</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- ========================================================
+       SCRIPTS
+       ======================================================== -->
+  <script src="../../static/user/layout/layout.js"></script>
+  <script src="../../static/admin/js/pages/khosticker.js"></script>
+
+</body>
+</html>

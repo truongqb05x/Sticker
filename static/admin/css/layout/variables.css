@@ -1,0 +1,42 @@
+/**
+ * ========================================================
+ * ADMIN DESIGN TOKENS & CSS VARIABLES - STICKERHUB
+ * ========================================================
+ */
+
+:root {
+  /* Canvas & Background Colors */
+  --bg-page: #F6EFE6;
+  --bg-topbar: #FCFAF6;
+  --bg-sidebar: #FFFFFF;
+  --bg-subtle: #FAF5EE;
+
+  /* Border Colors */
+  --border-color: #EBE0D2;
+  --border-subtle: #F4EDE3;
+  --border-strong: #DFD3C4;
+
+  /* Text Colors */
+  --text-main: #2C1D18;
+  --text-muted: #7E6E64;
+  --text-light: #9E8E84;
+
+  /* Brand & Semantic Accents */
+  --brand-orange: #C45832;
+  --brand-orange-hover: #AB4622;
+  --accent-blue: #3E87E8;
+  --accent-green: #2E7D32;
+  --accent-yellow: #B78103;
+  --accent-red: #D32F2F;
+
+  /* Border Radii */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+
+  /* Shadows */
+  --shadow-sm: 0 2px 6px rgba(44, 29, 24, 0.03);
+  --shadow-md: 0 4px 16px rgba(44, 29, 24, 0.06);
+  --shadow-hover: 0 8px 24px rgba(44, 29, 24, 0.08);
+}

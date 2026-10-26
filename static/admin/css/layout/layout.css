@@ -1,0 +1,13 @@
+/**
+ * ========================================================
+ * MASTER ADMIN LAYOUT ENTRY STYLESHEET - STICKERHUB
+ * ========================================================
+ * Gộp toàn bộ các module layout dùng chung cho tất cả các trang
+ * quản trị Admin (Variables, Base, Header/Topbar, Sidebar).
+ * Các trang con (pages) chỉ cần nạp file này + file css riêng của trang.
+ */
+
+@import url('./variables.css');
+@import url('./base.css');
+@import url('./header.css');
+@import url('./sidebar.css');

@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Báo cáo & Thống kê - StickerHub Admin</title>
+
+  <!-- Meta Description -->
+  <meta name="description" content="Trung tâm báo cáo và thống kê số liệu StickerHub: lượt tải về, tỷ lệ tăng trưởng, phân bổ nền tảng và bảng xếp hạng sticker thịnh hành.">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="../../assets/logo_cat.svg">
+
+  <!-- Google Fonts: Comfortaa & Nunito đồng nhất hệ thống -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700;800&family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- MASTER ADMIN LAYOUT CSS (Bao gồm variables, base, header, sidebar) -->
+  <link rel="stylesheet" href="../../static/admin/css/layout/layout.css">
+
+  <!-- CSS riêng của trang Thống kê -->
+  <link rel="stylesheet" href="../../static/admin/css/pages/thongke.css">
+</head>
+<body class="admin-layout-root">
+
+  <!-- ========================================================
+       TOPBAR / NAVIGATION QUẢN TRỊ
+       ======================================================== -->
+  <header class="admin-topbar">
+    <div class="admin-topbar-inner">
+      <a href="dashboard.html" class="admin-brand" title="Trang tổng quan StickerHub">
+        <img src="../../assets/logo_cat.svg" alt="StickerHub Cat Logo" width="36" height="36">
+        <span class="admin-brand-title">Sticker<span class="hub-part">Hub</span></span>
+      </a>
+    </div>
+  </header>
+
+  <!-- ========================================================
+       BODY WRAPPER: SIDEBAR + MAIN CONTENT
+       ======================================================== -->
+  <div class="admin-body-container">
+    
+    <!-- LEFT SIDEBAR -->
+    <aside class="admin-sidebar" id="adminSidebar">
+      <!-- Card Menu Điều Hướng -->
+      <div class="sidebar-card-box">
+        <div class="admin-nav-group-title">Quản lý hệ thống</div>
+        <ul class="admin-nav-list">
+          <li>
+            <a href="dashboard.html" class="admin-nav-item">
+              <span class="nav-left">
+                <i data-lucide="layout-dashboard" style="width: 18px; height: 18px;"></i>
+                <span>Tổng quan</span>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a href="bosuutap.html" class="admin-nav-item">
+              <span class="nav-left">
+                <i data-lucide="folder-heart" style="width: 18px; height: 18px;"></i>
+                <span>Bộ sưu tập</span>
+              </span>
+              <span class="nav-counter">48</span>
+            </a>
+          </li>
+          <li>
+            <a href="khosticker.html" class="admin-nav-item">
+              <span class="nav-left">
+                <i data-lucide="smile" style="width: 18px; height: 18px;"></i>
+                <span>Kho Sticker</span>
+              </span>
+              <span class="nav-counter">4.8K</span>
+            </a>
+          </li>
+          <li>
+            <a href="danhmuc.html" class="admin-nav-item">
+              <span class="nav-left">
+                <i data-lucide="tag" style="width: 18px; height: 18px;"></i>
+                <span>Danh mục chủ đề</span>
+              </span>
+              <span class="nav-counter">8</span>
+            </a>
+          </li>
+        </ul>
+
+        <div class="admin-nav-group-title" style="margin-top: 14px;">Báo cáo & Thống kê</div>
+        <ul class="admin-nav-list">
+          <li>
+            <a href="thongke.html" class="admin-nav-item active" title="Thống kê">
+              <span class="nav-left">
+                <i data-lucide="bar-chart-3" style="width: 18px; height: 18px;"></i>
+                <span>Thống kê</span>
+              </span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Nút Đăng Xuất -->
+      <a href="login.html" class="btn-sidebar-logout" title="Đăng xuất khỏi trang quản trị">
+        <i data-lucide="log-out" style="width: 16px; height: 16px;"></i>
+        <span>Đăng xuất Admin</span>
+      </a>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="admin-main-content">
+      
+      <!-- 1. Header Toolbar của trang -->
+      <section class="admin-page-header">
+        <div class="page-header-info">
+          <div class="page-title-row">
+            <h1 class="page-main-heading">Báo cáo & Thống kê</h1>
+            <span class="page-count-badge">Dữ liệu thời gian thực</span>
+          </div>
+          <p class="page-subtext">Theo dõi lượt tải sticker, tỷ lệ tăng trưởng và mức độ quan tâm của người dùng.</p>
+        </div>
+
+        <div class="page-header-actions">
+          <div class="timeframe-pills">
+            <button type="button" class="timeframe-btn" data-range="today">Hôm nay</button>
+            <button type="button" class="timeframe-btn active" data-range="7d">7 ngày qua</button>
+            <button type="button" class="timeframe-btn" data-range="30d">30 ngày qua</button>
+            <button type="button" class="timeframe-btn" data-range="year">Năm nay</button>
+          </div>
+
+          <button type="button" class="btn-export-csv" id="btnExportReport" title="Tải xuống báo cáo dạng CSV">
+            <i data-lucide="download" style="width: 15px; height: 15px;"></i>
+            <span>Xuất CSV</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- 2. 4 Thẻ KPI Phân Tích Tổng Quan -->
+      <section class="analytics-metrics-grid">
+        <div class="analytic-card">
+          <div class="analytic-header">
+            <span class="analytic-label">Lượt tải tháng này</span>
+            <div class="analytic-icon-box icon-green">
+              <i data-lucide="download-cloud" style="width: 20px; height: 20px;"></i>
+            </div>
+          </div>
+          <div class="analytic-value-row">
+            <span class="analytic-num">182.4K</span>
+            <span class="analytic-badge badge-growth-up">
+              <i data-lucide="trending-up" style="width: 12px; height: 12px;"></i>
+              +18.2%
+            </span>
+          </div>
+        </div>
+
+        <div class="analytic-card">
+          <div class="analytic-header">
+            <span class="analytic-label">Lượt tải TB / ngày</span>
+            <div class="analytic-icon-box icon-blue">
+              <i data-lucide="activity" style="width: 20px; height: 20px;"></i>
+            </div>
+          </div>
+          <div class="analytic-value-row">
+            <span class="analytic-num">6,080</span>
+            <span class="analytic-badge badge-growth-up">
+              <i data-lucide="trending-up" style="width: 12px; height: 12px;"></i>
+              +12.4%
+            </span>
+          </div>
+        </div>
+
+        <div class="analytic-card">
+          <div class="analytic-header">
+            <span class="analytic-label">Bộ sưu tập #1 Top</span>
+            <div class="analytic-icon-box icon-orange">
+              <i data-lucide="award" style="width: 20px; height: 20px;"></i>
+            </div>
+          </div>
+          <div class="analytic-value-row">
+            <span class="analytic-num" style="font-size: 20px;">Cute Cats</span>
+            <span class="analytic-badge badge-sub">38.5K tải</span>
+          </div>
+        </div>
+
+        <div class="analytic-card">
+          <div class="analytic-header">
+            <span class="analytic-label">Nền tảng dẫn đầu</span>
+            <div class="analytic-icon-box icon-purple">
+              <i data-lucide="send" style="width: 20px; height: 20px;"></i>
+            </div>
+          </div>
+          <div class="analytic-value-row">
+            <span class="analytic-num" style="font-size: 20px;">Telegram</span>
+            <span class="analytic-badge badge-growth-up">58% thị phần</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. Khu vực 2 Biểu Đồ Phân Tích -->
+      <section class="analytics-charts-grid">
+        
+        <!-- Biểu đồ cột Xu hướng tải tương tác -->
+        <div class="chart-card-box">
+          <div class="card-title-row">
+            <h3 class="card-heading">
+              <i data-lucide="bar-chart-2" style="width: 18px; height: 18px; color: #C45832;"></i>
+              <span>Xu hướng tăng trưởng lượt tải</span>
+            </h3>
+            <span style="font-size: 12px; font-weight: 700; color: #7E6E64;">Đơn vị: Lượt tải</span>
+          </div>
+
+          <div class="trend-chart-wrapper" id="analyticsTrendWrapper">
+            <!-- Trục Y -->
+            <div class="chart-y-axis">
+              <span class="y-label">40K</span>
+              <span class="y-label">30K</span>
+              <span class="y-label">20K</span>
+              <span class="y-label">10K</span>
+              <span class="y-label">0</span>
+            </div>
+
+            <!-- Khu vực cột -->
+            <div class="chart-bars-area" id="analyticsBarsArea">
+              <div class="chart-grid-line" style="top: 0%;"></div>
+              <div class="chart-grid-line" style="top: 25%;"></div>
+              <div class="chart-grid-line" style="top: 50%;"></div>
+              <div class="chart-grid-line" style="top: 75%;"></div>
+              <div class="chart-grid-line" style="top: 100%;"></div>
+
+              <div class="chart-col" data-day="Thứ Hai" data-date="20/10/2026" data-downloads="14,250" data-change="+8.4%">
+                <div class="col-bar-track"><div class="col-bar-fill" style="height: 37%;"></div></div>
+                <span class="col-day-label">T2</span>
+              </div>
+              <div class="chart-col" data-day="Thứ Ba" data-date="21/10/2026" data-downloads="18,500" data-change="+12.1%">
+                <div class="col-bar-track"><div class="col-bar-fill" style="height: 48%;"></div></div>
+                <span class="col-day-label">T3</span>
+              </div>
+              <div class="chart-col" data-day="Thứ Tư" data-date="22/10/2026" data-downloads="17,100" data-change="-2.5%">
+                <div class="col-bar-track"><div class="col-bar-fill" style="height: 44%;"></div></div>
+                <span class="col-day-label">T4</span>
+              </div>
+              <div class="chart-col" data-day="Thứ Năm" data-date="23/10/2026" data-downloads="25,400" data-change="+15.8%">
+                <div class="col-bar-track"><div class="col-bar-fill" style="height: 66%;"></div></div>
+                <span class="col-day-label">T5</span>
+              </div>
+              <div class="chart-col" data-day="Thứ Sáu" data-date="24/10/2026" data-downloads="29,800" data-change="+22.3%">
+                <div class="col-bar-track"><div class="col-bar-fill" style="height: 77%;"></div></div>
+                <span class="col-day-label">T6</span>
+              </div>
+              <div class="chart-col" data-day="Thứ Bảy" data-date="25/10/2026" data-downloads="27,300" data-change="+18.5%">
+                <div class="col-bar-track"><div class="col-bar-fill" style="height: 71%;"></div></div>
+                <span class="col-day-label">T7</span>
+              </div>
+              <div class="chart-col highlight" data-day="Chủ Nhật" data-date="26/10/2026" data-downloads="38,500" data-change="+34.2% 🔥">
+                <div class="col-bar-track"><div class="col-bar-fill" style="height: 100%;"></div></div>
+                <span class="col-day-label">CN</span>
+              </div>
+            </div>
+
+            <!-- Tooltip -->
+            <div class="chart-hover-tooltip" id="analyticsHoverTooltip">
+              <div class="tooltip-header" id="tooltipHeader">Chủ Nhật • 26/10</div>
+              <div class="tooltip-value-row">
+                <i data-lucide="download" style="width: 14px; height: 14px; color: #FFA278;"></i>
+                <span class="tooltip-num" id="tooltipNum">38,500</span>
+                <span class="tooltip-unit">lượt tải</span>
+              </div>
+              <div class="tooltip-badge" id="tooltipBadge">+34.2% so với hôm qua</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Biểu đồ Phân bổ nền tảng & định dạng -->
+        <div class="chart-card-box">
+          <div class="card-title-row">
+            <h3 class="card-heading">
+              <i data-lucide="pie-chart" style="width: 18px; height: 18px; color: #C45832;"></i>
+              <span>Cơ cấu nền tảng tải</span>
+            </h3>
+          </div>
+
+          <div class="distribution-list">
+            <!-- Telegram -->
+            <div class="dist-item">
+              <div class="dist-meta-row">
+                <span class="dist-label">
+                  <i data-lucide="send" style="width: 14px; height: 14px; color: #0288D1;"></i>
+                  Telegram Pack
+                </span>
+                <span class="dist-val"><strong>105.8K</strong> (58%)</span>
+              </div>
+              <div class="dist-bar-track">
+                <div class="dist-bar-fill fill-tg" style="width: 58%;"></div>
+              </div>
+            </div>
+
+            <!-- WhatsApp -->
+            <div class="dist-item">
+              <div class="dist-meta-row">
+                <span class="dist-label">
+                  <i data-lucide="message-square" style="width: 14px; height: 14px; color: #2E7D32;"></i>
+                  WhatsApp Pack
+                </span>
+                <span class="dist-val"><strong>51.1K</strong> (28%)</span>
+              </div>
+              <div class="dist-bar-track">
+                <div class="dist-bar-fill fill-wa" style="width: 28%;"></div>
+              </div>
+            </div>
+
+            <!-- File ZIP -->
+            <div class="dist-item">
+              <div class="dist-meta-row">
+                <span class="dist-label">
+                  <i data-lucide="file-archive" style="width: 14px; height: 14px; color: #E65100;"></i>
+                  Tệp nén ZIP
+                </span>
+                <span class="dist-val"><strong>25.5K</strong> (14%)</span>
+              </div>
+              <div class="dist-bar-track">
+                <div class="dist-bar-fill fill-zip" style="width: 14%;"></div>
+              </div>
+            </div>
+
+            <!-- SVG Vector -->
+            <div class="dist-item" style="margin-top: 6px; padding-top: 10px; border-top: 1px dashed #EDE2D4;">
+              <div class="dist-meta-row">
+                <span class="dist-label">
+                  <i data-lucide="sparkles" style="width: 14px; height: 14px; color: #7B3E98;"></i>
+                  Định dạng SVG Vector
+                </span>
+                <span class="dist-val"><strong>65%</strong> người dùng chọn</span>
+              </div>
+              <div class="dist-bar-track">
+                <div class="dist-bar-fill fill-svg" style="width: 65%;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- 4. Bảng Xếp Hạng Top Bộ Sưu Tập Thịnh Hành -->
+      <div class="table-card-container">
+        <div class="table-header-box">
+          <h3 class="card-heading">
+            <i data-lucide="trophy" style="width: 18px; height: 18px; color: #C45832;"></i>
+            <span>Top Bộ sưu tập được tải nhiều nhất</span>
+          </h3>
+          <span style="font-size: 13px; font-weight: 700; color: #7E6E64;">Tổng hợp 30 ngày gần nhất</span>
+        </div>
+
+        <div class="table-responsive">
+          <table class="admin-data-table">
+            <thead>
+              <tr>
+                <th style="width: 60px; text-align: center;">Hạng</th>
+                <th style="min-width: 220px;">Bộ sưu tập</th>
+                <th>Danh mục</th>
+                <th>Số sticker</th>
+                <th>Tổng lượt tải</th>
+                <th>Lượt yêu thích</th>
+                <th>Tỷ lệ hoàn thành</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+              <!-- Top 1 -->
+              <tr>
+                <td style="text-align: center;"><span class="rank-badge rank-1">1</span></td>
+                <td>
+                  <div class="table-pack-cell">
+                    <img src="../../assets/pack_cats.jpg" alt="Cute Cats" class="table-pack-thumb">
+                    <div>
+                      <div class="table-pack-title">Cute Cats</div>
+                      <div class="table-pack-sub">Tác giả: MiuMiu Studio</div>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="cat-pill">Động vật</span></td>
+                <td><strong>120</strong> sticker</td>
+                <td>
+                  <div class="download-mini-bar-wrap">
+                    <strong style="color: #C45832; min-width: 44px;">38.5K</strong>
+                    <div class="mini-bar-track"><div class="mini-bar-fill" style="width: 100%;"></div></div>
+                  </div>
+                </td>
+                <td><strong>2.4K</strong></td>
+                <td><span style="font-weight: 800; color: #2E7D32;">98.8%</span></td>
+              </tr>
+
+              <!-- Top 2 -->
+              <tr>
+                <td style="text-align: center;"><span class="rank-badge rank-2">2</span></td>
+                <td>
+                  <div class="table-pack-cell">
+                    <img src="../../assets/pack_anime.jpg" alt="Anime Girls" class="table-pack-thumb">
+                    <div>
+                      <div class="table-pack-title">Anime Girls</div>
+                      <div class="table-pack-sub">Tác giả: Sakura Art</div>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="cat-pill">Anime & Manga</span></td>
+                <td><strong>96</strong> sticker</td>
+                <td>
+                  <div class="download-mini-bar-wrap">
+                    <strong style="color: #C45832; min-width: 44px;">25.3K</strong>
+                    <div class="mini-bar-track"><div class="mini-bar-fill" style="width: 65%;"></div></div>
+                  </div>
+                </td>
+                <td><strong>1.8K</strong></td>
+                <td><span style="font-weight: 800; color: #2E7D32;">97.4%</span></td>
+              </tr>
+
+              <!-- Top 3 -->
+              <tr>
+                <td style="text-align: center;"><span class="rank-badge rank-3">3</span></td>
+                <td>
+                  <div class="table-pack-cell">
+                    <img src="../../assets/pack_onepiece.svg" alt="One Piece Wano" class="table-pack-thumb">
+                    <div>
+                      <div class="table-pack-title">One Piece Wano</div>
+                      <div class="table-pack-sub">Tác giả: OtakuZone</div>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="cat-pill">Anime & Manga</span></td>
+                <td><strong>83</strong> sticker</td>
+                <td>
+                  <div class="download-mini-bar-wrap">
+                    <strong style="color: #C45832; min-width: 44px;">22.4K</strong>
+                    <div class="mini-bar-track"><div class="mini-bar-fill" style="width: 58%;"></div></div>
+                  </div>
+                </td>
+                <td><strong>1.5K</strong></td>
+                <td><span style="font-weight: 800; color: #2E7D32;">96.9%</span></td>
+              </tr>
+
+              <!-- Top 4 -->
+              <tr>
+                <td style="text-align: center;"><span class="rank-badge rank-other">4</span></td>
+                <td>
+                  <div class="table-pack-cell">
+                    <img src="../../assets/stickers/cat_02.svg" alt="Sweet Couple" class="table-pack-thumb">
+                    <div>
+                      <div class="table-pack-title">Sweet Couple</div>
+                      <div class="table-pack-sub">Tác giả: LoveStory</div>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="cat-pill">Tình yêu</span></td>
+                <td><strong>50</strong> sticker</td>
+                <td>
+                  <div class="download-mini-bar-wrap">
+                    <strong style="color: #C45832; min-width: 44px;">21.2K</strong>
+                    <div class="mini-bar-track"><div class="mini-bar-fill" style="width: 55%;"></div></div>
+                  </div>
+                </td>
+                <td><strong>1.4K</strong></td>
+                <td><span style="font-weight: 800; color: #2E7D32;">96.2%</span></td>
+              </tr>
+
+              <!-- Top 5 -->
+              <tr>
+                <td style="text-align: center;"><span class="rank-badge rank-other">5</span></td>
+                <td>
+                  <div class="table-pack-cell">
+                    <img src="../../assets/thumb_anime.svg" alt="Chibi Heroes" class="table-pack-thumb">
+                    <div>
+                      <div class="table-pack-title">Chibi Heroes</div>
+                      <div class="table-pack-sub">Tác giả: ComicChibi</div>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="cat-pill">Chibi</span></td>
+                <td><strong>64</strong> sticker</td>
+                <td>
+                  <div class="download-mini-bar-wrap">
+                    <strong style="color: #C45832; min-width: 44px;">19.8K</strong>
+                    <div class="mini-bar-track"><div class="mini-bar-fill" style="width: 51%;"></div></div>
+                  </div>
+                </td>
+                <td><strong>1.1K</strong></td>
+                <td><span style="font-weight: 800; color: #2E7D32;">95.8%</span></td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- ========================================================
+       SCRIPTS
+       ======================================================== -->
+  <script src="../../static/user/layout/layout.js"></script>
+  <script src="../../static/admin/js/pages/thongke.js"></script>
+
+</body>
+</html>

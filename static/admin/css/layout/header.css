@@ -1,0 +1,58 @@
+/**
+ * ========================================================
+ * ADMIN TOPBAR / HEADER STYLES - STICKERHUB
+ * ========================================================
+ */
+
+.admin-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 90;
+  height: 64px;
+  background-color: var(--bg-topbar, #FCFAF6);
+  border-bottom: 1px solid var(--border-color, #EADBCE);
+  box-shadow: 0 2px 8px rgba(44, 29, 24, 0.03);
+  display: flex;
+  align-items: center;
+}
+
+.admin-topbar-inner {
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+}
+
+.admin-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  user-select: none;
+}
+
+.admin-brand img {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+}
+
+.admin-brand-title {
+  font-family: 'Comfortaa', 'Nunito', sans-serif;
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--text-main, #2D1C14);
+  letter-spacing: -0.4px;
+}
+
+.admin-brand-title .hub-part {
+  color: var(--brand-orange, #C45832);
+}
+
+@media (max-width: 600px) {
+  .admin-topbar-inner {
+    padding: 0 16px;
+  }
+}

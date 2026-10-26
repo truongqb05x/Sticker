@@ -1,0 +1,736 @@
+/**
+ * ========================================================
+ * ADMIN KHO STICKER (STICKER ASSET REPOSITORY) - CSS
+ * ========================================================
+ */
+
+/* 1. Header Toolbar của trang */
+.admin-page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 22px;
+}
+
+.page-header-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.page-title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.page-main-heading {
+  font-family: 'Comfortaa', 'Nunito', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--text-main, #2D1C14);
+  letter-spacing: -0.3px;
+  margin: 0;
+}
+
+.page-count-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3px 9px;
+  border-radius: 20px;
+  background-color: #FFF2EC;
+  border: 1px solid #F0C4B4;
+  color: var(--brand-orange, #C45832);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.page-subtext {
+  font-size: 13.5px;
+  color: var(--text-muted, #7E6E64);
+  margin: 0;
+}
+
+/* Nút tải lên */
+.btn-upload-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  background-color: var(--brand-orange, #C45832);
+  color: #FFFFFF;
+  border: none;
+  border-radius: var(--radius-md, 10px);
+  font-family: inherit;
+  font-size: 13.5px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(196, 88, 50, 0.22);
+  transition: all 0.2s ease;
+}
+
+.btn-upload-primary:hover {
+  background-color: var(--brand-orange-hover, #AF4925);
+  box-shadow: 0 6px 16px rgba(196, 88, 50, 0.32);
+  transform: translateY(-1px);
+}
+
+.btn-upload-primary:active {
+  transform: translateY(0);
+}
+
+/* 2. Quick Filter Tabs */
+.quick-category-tabs {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.cat-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-color, #EBE0D2);
+  border-radius: var(--radius-md, 10px);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-muted, #7E6E64);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: 0 1px 3px rgba(44, 29, 24, 0.02);
+}
+
+.cat-tab-btn:hover {
+  background-color: var(--bg-subtle, #FAF5EE);
+  color: var(--text-main, #2D1C14);
+  border-color: var(--border-strong, #DFD3C4);
+}
+
+.cat-tab-btn.active {
+  background-color: var(--text-main, #2D1C14);
+  color: #FFFFFF;
+  border-color: var(--text-main, #2D1C14);
+  box-shadow: 0 2px 8px rgba(44, 29, 24, 0.16);
+}
+
+.cat-tab-count {
+  display: inline-block;
+  padding: 1px 7px;
+  border-radius: 12px;
+  font-size: 11.5px;
+  font-weight: 800;
+  background-color: var(--bg-subtle, #FAF5EE);
+  color: #6C5A4F;
+}
+
+.cat-tab-btn.active .cat-tab-count {
+  background-color: rgba(255, 255, 255, 0.22);
+  color: #FFFFFF;
+}
+
+/* 3. Toolbar Lọc & Tìm Kiếm */
+.stickers-filter-card {
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-color, #EBE0D2);
+  border-radius: var(--radius-lg, 18px);
+  padding: 16px 20px;
+  box-shadow: var(--shadow-sm, 0 2px 6px rgba(44, 29, 24, 0.03));
+  margin-bottom: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.filter-left-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 280px;
+  flex-wrap: wrap;
+}
+
+.search-field-wrapper {
+  position: relative;
+  flex: 1;
+  min-width: 220px;
+  max-width: 320px;
+}
+
+.search-field-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-light, #9E8E84);
+  pointer-events: none;
+}
+
+.filter-search-input {
+  width: 100%;
+  height: 40px;
+  padding: 0 14px 0 38px;
+  background-color: var(--bg-subtle, #FAF5EE);
+  border: 1px solid var(--border-strong, #DFD3C4);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text-main, #2D1C14);
+  outline: none;
+  transition: all 0.18s ease;
+  box-sizing: border-box;
+}
+
+.filter-search-input:focus {
+  background-color: #FFFFFF;
+  border-color: var(--brand-orange, #C45832);
+  box-shadow: 0 0 0 3px rgba(196, 88, 50, 0.1);
+}
+
+.filter-select-box {
+  height: 40px;
+  padding: 0 14px;
+  background-color: var(--bg-subtle, #FAF5EE);
+  border: 1px solid var(--border-strong, #DFD3C4);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  color: #4A382D;
+  outline: none;
+  cursor: pointer;
+}
+
+.btn-reset-filter {
+  height: 40px;
+  padding: 0 14px;
+  background: none;
+  border: 1px dashed var(--border-strong, #DFD3C4);
+  border-radius: 8px;
+  color: var(--text-muted, #7E6E64);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+}
+
+.btn-reset-filter:hover {
+  background-color: #FFF2EC;
+  border-color: #F0C4B4;
+  color: var(--brand-orange, #C45832);
+}
+
+/* 4. Sticker Gallery Grid (Lưới hiển thị sticker trực quan) */
+.sticker-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 18px;
+  margin-bottom: 24px;
+}
+
+.sticker-grid-item {
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-color, #EBE0D2);
+  border-radius: var(--radius-md, 14px);
+  padding: 14px;
+  box-shadow: var(--shadow-sm, 0 2px 6px rgba(44, 29, 24, 0.03));
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.sticker-grid-item:hover {
+  transform: translateY(-3px);
+  border-color: #DFD3C4;
+  box-shadow: 0 8px 20px rgba(44, 29, 24, 0.08);
+}
+
+/* Vùng hiển thị ảnh sticker nền caro trong suốt */
+.sticker-thumb-stage {
+  width: 100%;
+  height: 140px;
+  border-radius: 10px;
+  background-color: #FAF6F0;
+  background-image: 
+    linear-gradient(45deg, #F0E8DE 25%, transparent 25%), 
+    linear-gradient(-45deg, #F0E8DE 25%, transparent 25%), 
+    linear-gradient(45deg, transparent 75%, #F0E8DE 75%), 
+    linear-gradient(-45deg, transparent 75%, #F0E8DE 75%);
+  background-size: 16px 16px;
+  background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  border: 1px solid #EDE2D4;
+}
+
+.sticker-img {
+  max-width: 85%;
+  max-height: 85%;
+  object-fit: contain;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  filter: drop-shadow(0 2px 5px rgba(0,0,0,0.08));
+}
+
+.sticker-grid-item:hover .sticker-img {
+  transform: scale(1.12);
+}
+
+/* Hover Quick Action Buttons on Stage */
+.stage-hover-overlay {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(44, 29, 24, 0.4);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  opacity: 0;
+  transition: opacity 0.18s ease;
+  pointer-events: none;
+}
+
+.sticker-grid-item:hover .stage-hover-overlay {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.stage-action-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background-color: #FFFFFF;
+  border: none;
+  color: #38271E;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.stage-action-btn:hover {
+  background-color: var(--brand-orange, #C45832);
+  color: #FFFFFF;
+  transform: scale(1.08);
+}
+
+/* Thông tin sticker */
+.sticker-info-block {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.sticker-name-title {
+  font-weight: 800;
+  font-size: 13.5px;
+  color: var(--text-main, #2D1C14);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.3;
+}
+
+.sticker-pack-label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--brand-orange, #C45832);
+}
+
+.sticker-spec-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11.5px;
+  color: var(--text-light, #9E8E84);
+  margin-top: 4px;
+  padding-top: 6px;
+  border-top: 1px dashed #EDE2D4;
+}
+
+.sticker-format-tag {
+  background-color: #FAF4EB;
+  border: 1px solid #E6DCD0;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-weight: 800;
+  color: #554337;
+  font-size: 10.5px;
+}
+
+.sticker-downloads {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-weight: 700;
+  color: #388E3C;
+}
+
+/* 5. Pagination Bar */
+.table-pagination-footer {
+  padding: 16px 20px;
+  border-top: 1px solid #EDE2D4;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  background-color: #FAF7F2;
+  border-radius: var(--radius-lg, 18px);
+  border: 1px solid var(--border-color, #EBE0D2);
+}
+
+.pagination-info-text {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted, #7E6E64);
+}
+
+.pagination-info-text strong {
+  color: var(--text-main, #2D1C14);
+}
+
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-page-nav {
+  min-width: 32px;
+  height: 32px;
+  padding: 0 8px;
+  border-radius: 6px;
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-strong, #DFD3C4);
+  color: #554337;
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-page-nav:hover:not(:disabled) {
+  background-color: var(--bg-subtle, #FAF5EE);
+  color: var(--brand-orange, #C45832);
+  border-color: var(--brand-orange, #C45832);
+}
+
+.btn-page-nav.active {
+  background-color: var(--brand-orange, #C45832);
+  color: #FFFFFF;
+  border-color: var(--brand-orange, #C45832);
+  box-shadow: 0 1px 4px rgba(196, 88, 50, 0.25);
+}
+
+.btn-page-nav:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* 6. Modals (Upload & Lightbox) */
+.admin-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(36, 23, 18, 0.55);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.admin-modal-backdrop.active {
+  display: flex;
+}
+
+.modal-dialog-box {
+  width: 100%;
+  max-width: 560px;
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-color, #EBE0D2);
+  border-radius: var(--radius-lg, 18px);
+  box-shadow: 0 14px 40px rgba(44, 29, 24, 0.22);
+  overflow: hidden;
+  animation: modalScaleIn 0.22s ease-out;
+}
+
+@keyframes modalScaleIn {
+  from { opacity: 0; transform: scale(0.96) translateY(8px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.modal-header-bar {
+  padding: 18px 24px;
+  border-bottom: 1px solid #EDE2D4;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #FAF5EE;
+}
+
+.modal-heading {
+  font-family: 'Comfortaa', 'Nunito', sans-serif;
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--text-main, #2D1C14);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+}
+
+.modal-close-btn {
+  background: none;
+  border: none;
+  color: var(--text-light, #9E8E84);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border-radius: 6px;
+  transition: all 0.15s ease;
+}
+
+.modal-close-btn:hover {
+  background-color: #EFE4D6;
+  color: var(--text-main, #2D1C14);
+}
+
+.modal-body-content {
+  padding: 22px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Dropzone Kéo Thả File */
+.upload-dropzone-area {
+  border: 2px dashed #DFD3C4;
+  border-radius: 12px;
+  background-color: #FAF6F0;
+  padding: 28px 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.upload-dropzone-area:hover {
+  border-color: var(--brand-orange, #C45832);
+  background-color: #FFF5F0;
+}
+
+.dropzone-title {
+  font-weight: 800;
+  font-size: 14px;
+  color: var(--text-main, #2D1C14);
+}
+
+.dropzone-sub {
+  font-size: 12px;
+  color: var(--text-light, #8C7B71);
+}
+
+.form-group-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-main, #2D1C14);
+}
+
+.form-input-text,
+.form-select-ctrl {
+  width: 100%;
+  padding: 10px 13px;
+  background-color: var(--bg-subtle, #FAF5EE);
+  border: 1px solid var(--border-strong, #DFD3C4);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-main, #2D1C14);
+  outline: none;
+  transition: all 0.18s ease;
+  box-sizing: border-box;
+}
+
+.form-input-text:focus,
+.form-select-ctrl:focus {
+  background-color: #FFFFFF;
+  border-color: var(--brand-orange, #C45832);
+  box-shadow: 0 0 0 3px rgba(196, 88, 50, 0.1);
+}
+
+.modal-footer-bar {
+  padding: 16px 24px;
+  border-top: 1px solid #EDE2D4;
+  background-color: #FAF5EE;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.btn-admin-action {
+  padding: 9px 18px;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  border: none;
+}
+
+.btn-secondary-action {
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-strong, #DFD3C4);
+  color: #554337;
+}
+
+.btn-secondary-action:hover {
+  background-color: var(--bg-subtle, #FAF5EE);
+  color: var(--text-main, #2D1C14);
+}
+
+.btn-primary-action {
+  background-color: var(--brand-orange, #C45832);
+  color: #FFFFFF;
+  box-shadow: 0 2px 8px rgba(196, 88, 50, 0.22);
+}
+
+.btn-primary-action:hover {
+  background-color: var(--brand-orange-hover, #AF4925);
+}
+
+/* Lightbox Preview Modal Specific */
+.lightbox-preview-box {
+  width: 100%;
+  height: 240px;
+  border-radius: 12px;
+  background-color: #FAF6F0;
+  background-image: 
+    linear-gradient(45deg, #EFE6DA 25%, transparent 25%), 
+    linear-gradient(-45deg, #EFE6DA 25%, transparent 25%), 
+    linear-gradient(45deg, transparent 75%, #EFE6DA 75%), 
+    linear-gradient(-45deg, transparent 75%, #EFE6DA 75%);
+  background-size: 20px 20px;
+  background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #EDE2D4;
+}
+
+.lightbox-img {
+  max-width: 180px;
+  max-height: 180px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.15));
+}
+
+.lightbox-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.lightbox-detail-item {
+  background-color: var(--bg-subtle, #FAF5EE);
+  border: 1px solid var(--border-strong, #DFD3C4);
+  border-radius: 8px;
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.lightbox-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-light, #9E8E84);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.lightbox-val {
+  font-size: 13.5px;
+  font-weight: 800;
+  color: var(--text-main, #2D1C14);
+}
+
+/* Toast Container */
+.toast-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.toast {
+  background-color: #2D1C14;
+  color: #FFFFFF;
+  padding: 12px 18px;
+  border-radius: 10px;
+  font-size: 13.5px;
+  font-weight: 700;
+  box-shadow: 0 8px 24px rgba(44, 29, 24, 0.28);
+  pointer-events: auto;
+  animation: toastSlideUp 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes toastSlideUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+  .sticker-gallery-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

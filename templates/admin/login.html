@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Đăng nhập Quản trị viên - StickerHub</title>
+
+  <!-- Meta Description -->
+  <meta name="description" content="Cổng đăng nhập hệ thống quản trị nội bộ StickerHub.">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="../../assets/logo_cat.svg">
+
+  <!-- Google Fonts: Comfortaa & Nunito đồng nhất layout -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700;800&family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- MASTER ADMIN LAYOUT CSS (Dùng chung: variables, base) -->
+  <link rel="stylesheet" href="../../static/admin/css/layout/layout.css">
+
+  <!-- CSS riêng của trang Đăng nhập Quản trị viên -->
+  <link rel="stylesheet" href="../../static/admin/css/pages/login.css">
+</head>
+<body>
+
+  <!-- ========================================================
+       MAIN WRAPPER & ADMIN LOGIN CARD
+       ======================================================== -->
+  <main class="admin-login-wrapper">
+    
+    <div class="admin-login-card">
+
+
+      <!-- Header Card: Avatar Crown Cat & Tiêu đề -->
+      <div class="admin-card-header">
+        <div class="admin-avatar-box" title="StickerHub Admin">
+          <img src="../../assets/banner_cat_crown.svg" alt="Admin Crown Cat">
+        </div>
+        <h1 class="admin-card-title">Đăng nhập Quản trị</h1>
+      </div>
+
+      <!-- Form Đăng Nhập Quản Trị Viên -->
+      <div class="admin-card-body">
+        <form id="adminLoginForm" novalidate>
+          
+          <!-- Trường Tên Đăng Nhập -->
+          <div class="admin-form-group" id="groupUsername">
+            <label for="adminUsername" class="admin-label">Tài khoản quản trị</label>
+            <div class="admin-input-wrapper">
+              <span class="admin-input-icon">
+                <i data-lucide="user" style="width: 18px; height: 18px;"></i>
+              </span>
+              <input 
+                type="text" 
+                id="adminUsername" 
+                class="admin-input" 
+                placeholder="admin" 
+                autocomplete="username" 
+                autofocus 
+                required
+              >
+            </div>
+            <div class="form-error-msg">
+              <i data-lucide="alert-circle" style="width: 13px; height: 13px;"></i>
+              <span>Vui lòng nhập tài khoản quản trị!</span>
+            </div>
+          </div>
+
+          <!-- Trường Mật khẩu -->
+          <div class="admin-form-group" id="groupPassword">
+            <label for="adminPassword" class="admin-label">Mật khẩu</label>
+            <div class="admin-input-wrapper">
+              <span class="admin-input-icon">
+                <i data-lucide="lock" style="width: 18px; height: 18px;"></i>
+              </span>
+              <input 
+                type="password" 
+                id="adminPassword" 
+                class="admin-input" 
+                placeholder="••••••••••••" 
+                autocomplete="current-password" 
+                required
+              >
+              <button type="button" id="togglePasswordBtn" class="admin-toggle-pwd" title="Ẩn/Hiện mật khẩu" aria-label="Ẩn hoặc hiện mật khẩu">
+                <i data-lucide="eye" id="eyeIcon" style="width: 17px; height: 17px;"></i>
+              </button>
+            </div>
+            <div class="form-error-msg">
+              <i data-lucide="alert-circle" style="width: 13px; height: 13px;"></i>
+              <span>Vui lòng nhập mật khẩu quản trị!</span>
+            </div>
+          </div>
+
+          <!-- Nút Đăng Nhập -->
+          <button type="submit" id="adminSubmitBtn" class="admin-submit-btn">
+            <i data-lucide="log-in" class="btn-icon" style="width: 18px; height: 18px;"></i>
+            <span class="btn-text">Đăng nhập</span>
+            <span class="btn-spinner"></span>
+          </button>
+
+        </form>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- ========================================================
+       SCRIPTS
+       ======================================================== -->
+  <script src="../../static/user/layout/layout.js"></script>
+  <script src="../../static/admin/js/pages/login.js"></script>
+
+</body>
+</html>

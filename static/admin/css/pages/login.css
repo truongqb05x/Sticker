@@ -1,0 +1,297 @@
+/**
+ * ========================================================
+ * ADMIN LOGIN PAGE STYLESHEET - STICKERHUB (TỐI GIẢN)
+ * ========================================================
+ * - Tông màu Craft Canvas (#F6EFE6), Terra Cotta (#C45832), Dark Roast (#2C1D18)
+ * - Card Scrapbook bo góc mềm mại, tape trang trí
+ * - Thiết kế tối giản, tập trung vào form đăng nhập
+ */
+
+/* ========================================================
+   MAIN WRAPPER & CONTAINER
+   ======================================================== */
+.admin-login-wrapper {
+  flex: 1;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Decor background scrapbook elements */
+.admin-login-wrapper::before {
+  content: "";
+  position: absolute;
+  top: -60px;
+  left: 10%;
+  width: 260px;
+  height: 260px;
+  background: radial-gradient(circle, rgba(196, 88, 50, 0.08) 0%, rgba(246, 239, 230, 0) 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.admin-login-wrapper::after {
+  content: "";
+  position: absolute;
+  bottom: -40px;
+  right: 12%;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(62, 135, 232, 0.06) 0%, rgba(246, 239, 230, 0) 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ========================================================
+   ADMIN LOGIN CARD
+   ======================================================== */
+.admin-login-card {
+  width: 100%;
+  max-width: 440px;
+  background-color: #FFFFFF;
+  border: 1px solid #EBE0D2;
+  border-radius: 22px;
+  box-shadow: 0 14px 40px rgba(44, 29, 24, 0.08), 0 2px 6px rgba(44, 29, 24, 0.03);
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  animation: cardFadeUp 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes cardFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Card Header */
+.admin-card-header {
+  padding: 32px 36px 14px;
+  text-align: center;
+  position: relative;
+}
+
+.admin-avatar-box {
+  width: 86px;
+  height: 86px;
+  margin: 0 auto 16px;
+  background: linear-gradient(135deg, #FFF9F3 0%, #F5ECE0 100%);
+  border: 2px solid #EADBCE;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 14px rgba(44, 29, 24, 0.07);
+  transition: transform 0.3s ease;
+}
+
+.admin-avatar-box:hover {
+  transform: scale(1.05) rotate(2deg);
+}
+
+.admin-avatar-box img {
+  width: 62px;
+  height: 62px;
+  object-fit: contain;
+}
+
+.admin-card-title {
+  font-family: 'Comfortaa', 'Nunito', sans-serif;
+  font-size: 24px;
+  font-weight: 800;
+  color: #2D1C14;
+  letter-spacing: -0.3px;
+}
+
+/* Card Body (Form) */
+.admin-card-body {
+  padding: 20px 36px 36px;
+}
+
+.admin-form-group {
+  margin-bottom: 20px;
+}
+
+.admin-label {
+  display: block;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #3B2A22;
+  margin-bottom: 7px;
+}
+
+.admin-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.admin-input-icon {
+  position: absolute;
+  left: 14px;
+  color: #9E8E84;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  transition: color 0.2s ease;
+}
+
+.admin-input {
+  width: 100%;
+  height: 48px;
+  padding: 0 42px;
+  background-color: #FAF7F2;
+  border: 1.5px solid #E5D9CB;
+  border-radius: 12px;
+  font-family: inherit;
+  font-size: 14.5px;
+  font-weight: 600;
+  color: #2D1C14;
+  outline: none;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.admin-input::placeholder {
+  color: #B4A69B;
+  font-weight: 400;
+}
+
+.admin-input:focus {
+  background-color: #FFFFFF;
+  border-color: #C45832;
+  box-shadow: 0 0 0 3.5px rgba(196, 88, 50, 0.12);
+}
+
+.admin-input-wrapper:focus-within .admin-input-icon {
+  color: #C45832;
+}
+
+/* Toggle password visibility button */
+.admin-toggle-pwd {
+  position: absolute;
+  right: 10px;
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  color: #9E8E84;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  padding: 0;
+}
+
+.admin-toggle-pwd:hover {
+  color: #2D1C14;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+/* Form Helper & Validation Message */
+.form-error-msg {
+  display: none;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #D32F2F;
+  margin-top: 6px;
+}
+
+.admin-form-group.has-error .admin-input {
+  border-color: #D32F2F;
+  background-color: #FFF8F7;
+}
+
+.admin-form-group.has-error .form-error-msg {
+  display: flex;
+}
+
+/* Submit Button */
+.admin-submit-btn {
+  width: 100%;
+  height: 48px;
+  margin-top: 10px;
+  background: linear-gradient(135deg, #C45832 0%, #AB4622 100%);
+  border: none;
+  border-radius: 12px;
+  color: #FFFFFF;
+  font-family: inherit;
+  font-size: 15.5px;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(196, 88, 50, 0.28);
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.admin-submit-btn:hover {
+  background: linear-gradient(135deg, #D4633B 0%, #B84B25 100%);
+  box-shadow: 0 6px 18px rgba(196, 88, 50, 0.35);
+}
+
+.admin-submit-btn:active {
+  background: linear-gradient(135deg, #C45832 0%, #AB4622 100%);
+}
+
+.admin-submit-btn.loading {
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+.admin-submit-btn .btn-spinner {
+  display: none;
+  width: 20px;
+  height: 20px;
+  border: 2.5px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #FFFFFF;
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+}
+
+.admin-submit-btn.loading .btn-text,
+.admin-submit-btn.loading .btn-icon {
+  display: none;
+}
+
+.admin-submit-btn.loading .btn-spinner {
+  display: inline-block;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ========================================================
+   RESPONSIVE DESIGN
+   ======================================================== */
+@media (max-width: 480px) {
+  .admin-login-wrapper {
+    padding: 24px 16px;
+  }
+
+  .admin-card-header {
+    padding: 30px 22px 10px;
+  }
+
+  .admin-card-body {
+    padding: 18px 22px 28px;
+  }
+}

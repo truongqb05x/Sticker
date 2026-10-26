@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Quản lý Bộ sưu tập - StickerHub Admin</title>
+
+  <!-- Meta Description -->
+  <meta name="description" content="Quản lý danh sách các bộ sưu tập sticker trên hệ thống StickerHub: thêm mới, phê duyệt, phân loại và cập nhật trạng thái.">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="../../assets/logo_cat.svg">
+
+  <!-- Google Fonts: Comfortaa & Nunito đồng nhất hệ thống -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700;800&family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- MASTER ADMIN LAYOUT CSS (Bao gồm variables, base, header, sidebar) -->
+  <link rel="stylesheet" href="../../static/admin/css/layout/layout.css">
+
+  <!-- CSS riêng của trang Quản lý Bộ sưu tập -->
+  <link rel="stylesheet" href="../../static/admin/css/pages/bosuutap.css">
+</head>
+<body class="admin-layout-root">
+
+  <!-- ========================================================
+       TOPBAR / NAVIGATION QUẢN TRỊ
+       ======================================================== -->
+  <header class="admin-topbar">
+    <div class="admin-topbar-inner">
+      <a href="dashboard.html" class="admin-brand" title="Trang tổng quan StickerHub">
+        <img src="../../assets/logo_cat.svg" alt="StickerHub Cat Logo" width="36" height="36">
+        <span class="admin-brand-title">Sticker<span class="hub-part">Hub</span></span>
+      </a>
+    </div>
+  </header>
+
+  <!-- ========================================================
+       BODY WRAPPER: SIDEBAR + MAIN CONTENT
+       ======================================================== -->
+  <div class="admin-body-container">
+    
+    <!-- LEFT SIDEBAR -->
+    <aside class="admin-sidebar" id="adminSidebar">
+      <!-- Card Menu Điều Hướng -->
+      <div class="sidebar-card-box">
+        <div class="admin-nav-group-title">Quản lý hệ thống</div>
+        <ul class="admin-nav-list">
+          <li>
+            <a href="dashboard.html" class="admin-nav-item">
+              <span class="nav-left">
+                <i data-lucide="layout-dashboard" style="width: 18px; height: 18px;"></i>
+                <span>Tổng quan</span>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a href="bosuutap.html" class="admin-nav-item active">
+              <span class="nav-left">
+                <i data-lucide="folder-heart" style="width: 18px; height: 18px;"></i>
+                <span>Bộ sưu tập</span>
+              </span>
+              <span class="nav-counter">48</span>
+            </a>
+          </li>
+          <li>
+            <a href="khosticker.html" class="admin-nav-item">
+              <span class="nav-left">
+                <i data-lucide="smile" style="width: 18px; height: 18px;"></i>
+                <span>Kho Sticker</span>
+              </span>
+              <span class="nav-counter">4.8K</span>
+            </a>
+          </li>
+          <li>
+            <a href="danhmuc.html" class="admin-nav-item">
+              <span class="nav-left">
+                <i data-lucide="tag" style="width: 18px; height: 18px;"></i>
+                <span>Danh mục chủ đề</span>
+              </span>
+              <span class="nav-counter">8</span>
+            </a>
+          </li>
+        </ul>
+
+        <div class="admin-nav-group-title" style="margin-top: 14px;">Báo cáo & Thống kê</div>
+        <ul class="admin-nav-list">
+          <li>
+            <a href="thongke.html" class="admin-nav-item" title="Thống kê">
+              <span class="nav-left">
+                <i data-lucide="bar-chart-3" style="width: 18px; height: 18px;"></i>
+                <span>Thống kê</span>
+              </span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Nút Đăng Xuất -->
+      <a href="login.html" class="btn-sidebar-logout" title="Đăng xuất khỏi trang quản trị">
+        <i data-lucide="log-out" style="width: 16px; height: 16px;"></i>
+        <span>Đăng xuất Admin</span>
+      </a>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="admin-main-content">
+      
+      <!-- 1. Header Toolbar của trang -->
+      <section class="admin-page-header">
+        <div class="page-header-info">
+          <div class="page-title-row">
+            <h1 class="page-main-heading">Quản lý Bộ sưu tập</h1>
+            <span class="page-count-badge">48 bộ sưu tập</span>
+          </div>
+          <p class="page-subtext">Quản lý, phân loại, phê duyệt và cập nhật trạng thái hiển thị cho toàn bộ gói sticker.</p>
+        </div>
+
+        <button type="button" class="btn-add-primary" id="openAddModalBtn">
+          <i data-lucide="folder-plus" style="width: 17px; height: 17px;"></i>
+          <span>Thêm bộ sưu tập</span>
+        </button>
+      </section>
+
+      <!-- 2. Quick Status Tabs (Lọc nhanh theo trạng thái) -->
+      <div class="quick-status-tabs">
+        <button type="button" class="status-tab-btn active" data-status="all">
+          <span>Tất cả</span>
+          <span class="status-tab-count">48</span>
+        </button>
+        <button type="button" class="status-tab-btn" data-status="active">
+          <span>Công khai</span>
+          <span class="status-tab-count">42</span>
+        </button>
+        <button type="button" class="status-tab-btn" data-status="pending">
+          <span>Chờ duyệt</span>
+          <span class="status-tab-count">3</span>
+        </button>
+        <button type="button" class="status-tab-btn" data-status="hidden">
+          <span>Tạm ẩn</span>
+          <span class="status-tab-count">3</span>
+        </button>
+      </div>
+
+      <!-- 3. Toolbar Lọc & Tìm Kiếm -->
+      <div class="collections-filter-card">
+        <div class="filter-left-group">
+          <!-- Ô tìm kiếm -->
+          <div class="search-field-wrapper">
+            <i data-lucide="search" class="search-field-icon" style="width: 16px; height: 16px;"></i>
+            <input 
+              type="text" 
+              class="filter-search-input" 
+              id="collectionSearchInput" 
+              placeholder="Tìm theo tên bộ sưu tập, tác giả..."
+              autocomplete="off"
+            >
+          </div>
+
+          <!-- Dropdown lọc danh mục -->
+          <select class="filter-select-box" id="collectionCategoryFilter">
+            <option value="all">Tất cả danh mục</option>
+            <option value="animals">Động vật</option>
+            <option value="anime">Anime & Manga</option>
+            <option value="chibi">Chibi</option>
+            <option value="nature">Phong cảnh</option>
+            <option value="love">Tình yêu</option>
+            <option value="expressions">Biểu cảm</option>
+            <option value="others">Lễ hội & Khác</option>
+          </select>
+        </div>
+
+        <div class="filter-right-group">
+          <button type="button" class="btn-reset-filter" id="resetFilterBtn">
+            <i data-lucide="rotate-ccw" style="width: 14px; height: 14px;"></i>
+            <span>Đặt lại</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 4. Data Table Bảng Danh Sách Bộ Sưu Tập -->
+      <div class="table-card-container">
+        <div class="table-responsive">
+          <table class="admin-data-table">
+            <thead>
+              <tr>
+                <th style="width: 44px; text-align: center;">#</th>
+                <th style="min-width: 220px;">Bộ sưu tập</th>
+                <th>Danh mục</th>
+                <th>Số sticker</th>
+                <th>Lượt tải</th>
+                <th>Nền tảng</th>
+                <th>Trạng thái</th>
+                <th>Ngày cập nhật</th>
+                <th style="text-align: right; min-width: 110px;">Thao tác</th>
+              </tr>
+            </thead>
+            <tbody id="collectionsTableBody">
+              
+              <!-- 1. Cute Cats -->
+              <tr data-category="animals" data-status="active">
+                <td style="text-align: center; color: #9E8E84; font-weight: 700;">1</td>
+                <td>
+                  <div class="table-pack-cell">
+                    <img src="../../assets/pack_cats.jpg" alt="Cute Cats" class="table-pack-thumb">
+                    <div>
+                      <a href="chitietsticker.html" class="table-pack-title">Cute Cats</a>
+                      <div class="table-pack-author">Tác giả: <strong>MiuMiu Studio</strong></div>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="category-tag-badge">Động vật</span></td>
+                <td><strong>120</strong> sticker</td>
+                <td><strong>38.5K</strong></td>
+                <td>
+                  <div class="platform-icons-row">
+                    <span class="platform-pill pill-tg" title="Telegram">TG</span>
+                    <span class="platform-pill pill-wa" title="WhatsApp">WA</span>
+                    <span class="platform-pill pill-zip" title="ZIP">ZIP</span>
+                  </div>
+                </td>
+                <td>
+                  <span class="status-badge status-badge-active">
+                    <i data-lucide="check-circle" style="width: 12px; height: 12px;"></i>
+                    Công khai
+                  </span>
+                </td>
+                <td style="color: #8C7B71; font-size: 12.5px;">26/10/2026</td>
+                <td>
+                  <div class="table-btn-group" style="justify-content: flex-end;">
+                    <a href="chitietsticker.html" class="tbl-action-btn" title="Xem chi tiết">
+                      <i data-lucide="eye" style="width: 15px; height: 15px;"></i>
+                    </a>
+                    <button type="button" class="tbl-action-btn" title="Chỉnh sửa" onclick="showToast('Chỉnh sửa: Cute Cats')">
+                      <i data-lucide="edit-3" style="width: 15px; height: 15px;"></i>
+                    </button>
+                    <button type="button" class="tbl-action-btn btn-delete btn-delete-row" title="Xóa">
+                      <i data-lucide="trash-2" style="width: 15px; height: 15px;"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- 2. Anime Girls -->
+              <tr data-category="anime" data-status="active">
+                <td style="text-align: center; color: #9E8E84; font-weight: 700;">2</td>
+                <td>
+                  <div class="table-pack-cell">
+                    <img src="../../assets/pack_anime.jpg" alt="Anime Girls" class="table-pack-thumb">
+                    <div>
+                      <a href="chitietsticker.html" class="table-pack-title">Anime Girls</a>
+                      <div class="table-pack-author">Tác giả: <strong>Sakura Art</strong></div>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="category-tag-badge">Anime & Manga</span></td>
+                <td><strong>96</strong> sticker</td>
+                <td><strong>25.3K</strong></td>
+                <td>
+                  <div class="platform-icons-row">
+                    <span class="platform-pill pill-tg" title="Telegram">TG</span>
+                    <span class="platform-pill pill-wa" title="WhatsApp">WA</span>
+                  </div>
+                </td>
+                <td>
+                  <span class="status-badge status-badge-active">
+                    <i data-lucide="check-circle" style="width: 12px; height: 12px;"></i>
+                    Công khai
+                  </span>
+                </td>
+                <td style="color: #8C7B71; font-size: 12.5px;">25/10/2026</td>
+                <td>
+                  <div class="table-btn-group" style="justify-content: flex-end;">
+                    <a href="chitietsticker.html" class="tbl-action-btn" title="Xem chi tiết">
+                      <i data-lucide="eye" style="width: 15px; height: 15px;"></i>
+                    </a>
+                    <button type="button" class="tbl-action-btn" title="Chỉnh sửa" onclick="showToast('Chỉnh sửa: Anime Girls')">
+                      <i data-lucide="edit-3" style="width: 15px; height: 15px;"></i>
+                    </button>
+                    <button type="button" class="tbl-action-btn btn-delete btn-delete-row" title="Xóa">
+                      <i data-lucide="trash-2" style="width: 15px; height: 15px;"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- 3. Funny Animals -->
+              <tr data-category="animals" data-status="active">
+                <td style="text-align: center; color: #9E8E84; font-weight: 700;">3</td>
+                <td>
+                  <div class="table-pack-cell">
+                    <img src="../../assets/pack_funny_animals.svg" alt="Funny Animals" class="table-pack-thumb">
+                    <div>
+                      <a href="javascript:void(0)" class="table-pack-title">Funny Animals</a>
+                      <div class="table-pack-author">Tác giả: <strong>MemeMaker</strong></div>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="category-tag-badge">Động vật</span></td>
+                <td><strong>74</strong> sticker</td>
+                <td><strong>18.7K</strong></td>
+                <td>
+                  <div class="platform-icons-row">
+                    <span class="platform-pill pill-tg" title="Telegram">TG</span>
+                    <span class="platform-pill pill-zip" title="ZIP">ZIP</span>
+                  </div>
+                </td>
+                <td>
+                  <span class="status-badge status-badge-active">
+                    <i data-lucide="check-circle" style="width: 12px; height: 12px;"></i>
+                    Công khai
+                  </span>
+                </td>
+                <td style="color: #8C7B71; font-size: 12.5px;">24/10/2026</td>
+                <td>
+                  <div class="table-btn-group" style="justify-content: flex-end;">
+                    <button type="button" class="tbl-action-btn" title="Xem chi tiết" onclick="showToast('Xem chi tiết: Funny Animals')">
+                      <i data-lucide="eye" style="width: 15px; height: 15px;"></i>
+                    </button>
+                    <button type="button" class="tbl-action-btn" title="Chỉnh sửa" onclick="showToast('Chỉnh sửa: Funny Animals')">
+                      <i data-lucide="edit-3" style="width: 15px; height: 15px;"></i>
+                    </button>
+                    <button type="button" class="tbl-action-btn btn-delete btn-delete-row" title="Xóa">
+                      <i data-lucide="trash-2" style="width: 15px; height: 15px;"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- 4. One Piece Wano (Chờ duyệt) -->
+              <tr data-category="anime" data-status="pending">
+                <td style="text-align: center; color: #9E8E84; font-weight: 700;">4</td>
+                <td>
+                  <div class="table-pack-cell">
+                    <img src="../../assets/pack_onepiece.svg" alt="One Piece Wano" class="table-pack-thumb">
+                    <div>
+                      <a href="javascript:void(0)" class="table-pack-title">One Piece Wano</a>
+                      <div class="table-pack-author">Tác giả: <strong>OtakuZone</strong></div>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="category-tag-badge">Anime & Manga</span></td>
+                <td><strong>83</strong> sticker</td>
+                <td><strong>22.4K</strong></td>
+                <td>
+                  <div class="platform-icons-row">
+                    <span class="platform-pill pill-tg" title="Telegram">TG</span>
+                    <span class="platform-pill pill-wa" title="WhatsApp">WA</span>
+                    <span class="platform-pill pill-zip" title="ZIP">ZIP</span>
+                  </div>
+                </td>
+                <td>
+                  <span class="status-badge status-badge-pending">
+                    <i data-lucide="clock" style="width: 12px; height: 12px;"></i>
+                    Chờ duyệt
+                  </span>
+                </td>
+                <td style="color: #8C7B71; font-size: 12.5px;">23/10/2026</td>
+                <td>
+                  <div class="table-btn-group" style="justify-content: flex-end;">
+                    <button type="button" class="tbl-action-btn btn-approve btn-approve-row" title="Phê duyệt xuất bản">
+                      <i data-lucide="check" style="width: 15px; height: 15px; color: #2E7D32;"></i>
+                    </button>
+                    <button type="button" class="tbl-action-btn" title="Chỉnh sửa" onclick="showToast('Chỉnh sửa: One Piece Wano')">
+                      <i data-lucide="edit-3" style="width: 15px; height: 15px;"></i>
+                    </button>
+                    <button type="button" class="tbl-action-btn btn-delete btn-delete-row" title="Từ chối/Xóa">
+                      <i data-lucide="trash-2" style="width: 15px; height: 15px;"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- 5. Nature Vibes -->
+              <tr data-category="nature" data-status="active">
+                <td style="text-align: center; color: #9E8E84; font-weight: 700;">5</td>
+                <td>
+                  <div class="table-pack-cell">
+                    <img src="../../assets/pack_nature.svg" alt="Nature Vibes" class="table-pack-thumb">
+                    <div>
+                      <a href="javascript:void(0)" class="table-pack-title">Nature Vibes</a>
+                      <div class="table-pack-author">Tác giả: <strong>EcoGreen</strong></div>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="category-tag-badge">Phong cảnh</span></td>
+                <td><strong>62</strong> sticker</td>
+                <td><strong>16.4K</strong></td>
+                <td>
+                  <div class="platform-icons-row">
+                    <span class="platform-pill pill-wa" title="WhatsApp">WA</span>
+                    <span class="platform-pill pill-zip" title="ZIP">ZIP</span>
+                  </div>
+                </td>
+                <td>
+                  <span class="status-badge status-badge-active">
+                    <i data-lucide="check-circle" style="width: 12px; height: 12px;"></i>
+                    Công khai
+                  </span>
+                </td>
+                <td style="color: #8C7B71; font-size: 12.5px;">22/10/2026</td>
+                <td>
+                  <div class="table-btn-group" style="justify-content: flex-end;">
+                    <button type="button" class="tbl-action-btn" title="Xem chi tiết" onclick="showToast('Xem chi tiết: Nature Vibes')">
+                      <i data-lucide="eye" style="width: 15px; height: 15px;"></i>
+                    </button>
+                    <button type="button" class="tbl-action-btn" title="Chỉnh sửa" onclick="showToast('Chỉnh sửa: Nature Vibes')">
+                      <i data-lucide="edit-3" style="width: 15px; height: 15px;"></i>
+                    </button>
+                    <button type="button" class="tbl-action-btn btn-delete btn-delete-row" title="Xóa">
+                      <i data-lucide="trash-2" style="width: 15px; height: 15px;"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- 6. Halloween Party (Tạm ẩn) -->
+              <tr data-category="others" data-status="hidden">
+                <td style="text-align: center; color: #9E8E84; font-weight: 700;">6</td>
+                <td>
+                  <div class="table-pack-cell">
+                    <img src="../../assets/pack_halloween.svg" alt="Halloween Party" class="table-pack-thumb">
+                    <div>
+                      <a href="javascript:void(0)" class="table-pack-title">Halloween Party</a>
+                      <div class="table-pack-author">Tác giả: <strong>SpookyHub</strong></div>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="category-tag-badge">Lễ hội & Khác</span></td>
+                <td><strong>40</strong> sticker</td>
+                <td><strong>15.1K</strong></td>
+                <td>
+                  <div class="platform-icons-row">
+                    <span class="platform-pill pill-tg" title="Telegram">TG</span>
+                  </div>
+                </td>
+                <td>
+                  <span class="status-badge status-badge-hidden">
+                    <i data-lucide="eye-off" style="width: 12px; height: 12px;"></i>
+                    Tạm ẩn
+                  </span>
+                </td>
+                <td style="color: #8C7B71; font-size: 12.5px;">20/10/2026</td>
+                <td>
+                  <div class="table-btn-group" style="justify-content: flex-end;">
+                    <button type="button" class="tbl-action-btn btn-approve btn-approve-row" title="Công khai lại">
+                      <i data-lucide="eye" style="width: 15px; height: 15px; color: #2E7D32;"></i>
+                    </button>
+                    <button type="button" class="tbl-action-btn" title="Chỉnh sửa" onclick="showToast('Chỉnh sửa: Halloween Party')">
+                      <i data-lucide="edit-3" style="width: 15px; height: 15px;"></i>
+                    </button>
+                    <button type="button" class="tbl-action-btn btn-delete btn-delete-row" title="Xóa">
+                      <i data-lucide="trash-2" style="width: 15px; height: 15px;"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- 7. Daily Expressions -->
+              <tr data-category="expressions" data-status="active">
+                <td style="text-align: center; color: #9E8E84; font-weight: 700;">7</td>
+                <td>
+                  <div class="table-pack-cell">
+                    <img src="../../assets/thumb_funny.svg" alt="Daily Expressions" class="table-pack-thumb">
+                    <div>
+                      <a href="javascript:void(0)" class="table-pack-title">Daily Expressions</a>
+                      <div class="table-pack-author">Tác giả: <strong>EmojiMaster</strong></div>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="category-tag-badge">Biểu cảm</span></td>
+                <td><strong>90</strong> sticker</td>
+                <td><strong>31.0K</strong></td>
+                <td>
+                  <div class="platform-icons-row">
+                    <span class="platform-pill pill-tg" title="Telegram">TG</span>
+                    <span class="platform-pill pill-wa" title="WhatsApp">WA</span>
+                    <span class="platform-pill pill-zip" title="ZIP">ZIP</span>
+                  </div>
+                </td>
+                <td>
+                  <span class="status-badge status-badge-active">
+                    <i data-lucide="check-circle" style="width: 12px; height: 12px;"></i>
+                    Công khai
+                  </span>
+                </td>
+                <td style="color: #8C7B71; font-size: 12.5px;">19/10/2026</td>
+                <td>
+                  <div class="table-btn-group" style="justify-content: flex-end;">
+                    <button type="button" class="tbl-action-btn" title="Xem chi tiết" onclick="showToast('Xem chi tiết: Daily Expressions')">
+                      <i data-lucide="eye" style="width: 15px; height: 15px;"></i>
+                    </button>
+                    <button type="button" class="tbl-action-btn" title="Chỉnh sửa" onclick="showToast('Chỉnh sửa: Daily Expressions')">
+                      <i data-lucide="edit-3" style="width: 15px; height: 15px;"></i>
+                    </button>
+                    <button type="button" class="tbl-action-btn btn-delete btn-delete-row" title="Xóa">
+                      <i data-lucide="trash-2" style="width: 15px; height: 15px;"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- 8. Summer Vacation (Chờ duyệt) -->
+              <tr data-category="nature" data-status="pending">
+                <td style="text-align: center; color: #9E8E84; font-weight: 700;">8</td>
+                <td>
+                  <div class="table-pack-cell">
+                    <img src="../../assets/pack_summer.svg" alt="Summer Vacation" class="table-pack-thumb">
+                    <div>
+                      <a href="javascript:void(0)" class="table-pack-title">Summer Vacation</a>
+                      <div class="table-pack-author">Tác giả: <strong>SunShine Studio</strong></div>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="category-tag-badge">Phong cảnh</span></td>
+                <td><strong>45</strong> sticker</td>
+                <td><strong>12.8K</strong></td>
+                <td>
+                  <div class="platform-icons-row">
+                    <span class="platform-pill pill-tg" title="Telegram">TG</span>
+                    <span class="platform-pill pill-zip" title="ZIP">ZIP</span>
+                  </div>
+                </td>
+                <td>
+                  <span class="status-badge status-badge-pending">
+                    <i data-lucide="clock" style="width: 12px; height: 12px;"></i>
+                    Chờ duyệt
+                  </span>
+                </td>
+                <td style="color: #8C7B71; font-size: 12.5px;">18/10/2026</td>
+                <td>
+                  <div class="table-btn-group" style="justify-content: flex-end;">
+                    <button type="button" class="tbl-action-btn btn-approve btn-approve-row" title="Phê duyệt xuất bản">
+                      <i data-lucide="check" style="width: 15px; height: 15px; color: #2E7D32;"></i>
+                    </button>
+                    <button type="button" class="tbl-action-btn" title="Chỉnh sửa" onclick="showToast('Chỉnh sửa: Summer Vacation')">
+                      <i data-lucide="edit-3" style="width: 15px; height: 15px;"></i>
+                    </button>
+                    <button type="button" class="tbl-action-btn btn-delete btn-delete-row" title="Từ chối/Xóa">
+                      <i data-lucide="trash-2" style="width: 15px; height: 15px;"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- 9. Chibi Heroes -->
+              <tr data-category="chibi" data-status="active">
+                <td style="text-align: center; color: #9E8E84; font-weight: 700;">9</td>
+                <td>
+                  <div class="table-pack-cell">
+                    <img src="../../assets/thumb_anime.svg" alt="Chibi Heroes" class="table-pack-thumb">
+                    <div>
+                      <a href="javascript:void(0)" class="table-pack-title">Chibi Heroes</a>
+                      <div class="table-pack-author">Tác giả: <strong>ComicChibi</strong></div>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="category-tag-badge">Chibi</span></td>
+                <td><strong>64</strong> sticker</td>
+                <td><strong>19.8K</strong></td>
+                <td>
+                  <div class="platform-icons-row">
+                    <span class="platform-pill pill-tg" title="Telegram">TG</span>
+                    <span class="platform-pill pill-wa" title="WhatsApp">WA</span>
+                  </div>
+                </td>
+                <td>
+                  <span class="status-badge status-badge-active">
+                    <i data-lucide="check-circle" style="width: 12px; height: 12px;"></i>
+                    Công khai
+                  </span>
+                </td>
+                <td style="color: #8C7B71; font-size: 12.5px;">16/10/2026</td>
+                <td>
+                  <div class="table-btn-group" style="justify-content: flex-end;">
+                    <button type="button" class="tbl-action-btn" title="Xem chi tiết" onclick="showToast('Xem chi tiết: Chibi Heroes')">
+                      <i data-lucide="eye" style="width: 15px; height: 15px;"></i>
+                    </button>
+                    <button type="button" class="tbl-action-btn" title="Chỉnh sửa" onclick="showToast('Chỉnh sửa: Chibi Heroes')">
+                      <i data-lucide="edit-3" style="width: 15px; height: 15px;"></i>
+                    </button>
+                    <button type="button" class="tbl-action-btn btn-delete btn-delete-row" title="Xóa">
+                      <i data-lucide="trash-2" style="width: 15px; height: 15px;"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- 10. Sweet Couple (Tình yêu) -->
+              <tr data-category="love" data-status="active">
+                <td style="text-align: center; color: #9E8E84; font-weight: 700;">10</td>
+                <td>
+                  <div class="table-pack-cell">
+                    <img src="../../assets/stickers/cat_02.svg" alt="Sweet Couple" class="table-pack-thumb">
+                    <div>
+                      <a href="javascript:void(0)" class="table-pack-title">Sweet Couple</a>
+                      <div class="table-pack-author">Tác giả: <strong>LoveStory</strong></div>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="category-tag-badge">Tình yêu</span></td>
+                <td><strong>50</strong> sticker</td>
+                <td><strong>21.2K</strong></td>
+                <td>
+                  <div class="platform-icons-row">
+                    <span class="platform-pill pill-tg" title="Telegram">TG</span>
+                    <span class="platform-pill pill-wa" title="WhatsApp">WA</span>
+                    <span class="platform-pill pill-zip" title="ZIP">ZIP</span>
+                  </div>
+                </td>
+                <td>
+                  <span class="status-badge status-badge-active">
+                    <i data-lucide="check-circle" style="width: 12px; height: 12px;"></i>
+                    Công khai
+                  </span>
+                </td>
+                <td style="color: #8C7B71; font-size: 12.5px;">15/10/2026</td>
+                <td>
+                  <div class="table-btn-group" style="justify-content: flex-end;">
+                    <button type="button" class="tbl-action-btn" title="Xem chi tiết" onclick="showToast('Xem chi tiết: Sweet Couple')">
+                      <i data-lucide="eye" style="width: 15px; height: 15px;"></i>
+                    </button>
+                    <button type="button" class="tbl-action-btn" title="Chỉnh sửa" onclick="showToast('Chỉnh sửa: Sweet Couple')">
+                      <i data-lucide="edit-3" style="width: 15px; height: 15px;"></i>
+                    </button>
+                    <button type="button" class="tbl-action-btn btn-delete btn-delete-row" title="Xóa">
+                      <i data-lucide="trash-2" style="width: 15px; height: 15px;"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+
+        <!-- 5. Phân Trang (Pagination) -->
+        <div class="table-pagination-footer">
+          <span class="pagination-info-text">
+            Hiển thị <strong id="pageVisibleCount">10</strong> trên tổng số <strong>48</strong> bộ sưu tập
+          </span>
+          <div class="pagination-controls">
+            <button type="button" class="btn-page-nav" disabled title="Trang trước">
+              <i data-lucide="chevron-left" style="width: 15px; height: 15px;"></i>
+            </button>
+            <button type="button" class="btn-page-nav active">1</button>
+            <button type="button" class="btn-page-nav">2</button>
+            <button type="button" class="btn-page-nav">3</button>
+            <button type="button" class="btn-page-nav">4</button>
+            <button type="button" class="btn-page-nav">5</button>
+            <button type="button" class="btn-page-nav" title="Trang sau">
+              <i data-lucide="chevron-right" style="width: 15px; height: 15px;"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- ========================================================
+       MODAL THÊM BỘ SƯU TẬP MỚI
+       ======================================================== -->
+  <div class="admin-modal-backdrop" id="addCollectionModal">
+    <div class="modal-dialog-box">
+      <div class="modal-header-bar">
+        <h3 class="modal-heading">
+          <i data-lucide="folder-plus" style="width: 20px; height: 20px; color: #C45832;"></i>
+          <span>Thêm bộ sưu tập mới</span>
+        </h3>
+        <button type="button" class="modal-close-btn" id="closeAddModalBtn" title="Đóng">
+          <i data-lucide="x" style="width: 18px; height: 18px;"></i>
+        </button>
+      </div>
+
+      <form id="addCollectionForm">
+        <div class="modal-body-content">
+          
+          <div class="form-row-2col">
+            <div class="form-group-item">
+              <label class="form-label" for="packNameInput">Tên bộ sưu tập <span style="color: #C45832;">*</span></label>
+              <input type="text" id="packNameInput" class="form-input-text" placeholder="Ví dụ: Cún Shiba Năng Động" required>
+            </div>
+            <div class="form-group-item">
+              <label class="form-label" for="packAuthorInput">Tác giả / Studio</label>
+              <input type="text" id="packAuthorInput" class="form-input-text" placeholder="Ví dụ: ShibaTeam">
+            </div>
+          </div>
+
+          <div class="form-row-2col">
+            <div class="form-group-item">
+              <label class="form-label" for="packCategorySelect">Danh mục <span style="color: #C45832;">*</span></label>
+              <select id="packCategorySelect" class="form-select-ctrl" required>
+                <option value="animals">Động vật</option>
+                <option value="anime">Anime & Manga</option>
+                <option value="chibi">Chibi</option>
+                <option value="nature">Phong cảnh</option>
+                <option value="love">Tình yêu</option>
+                <option value="expressions">Biểu cảm</option>
+                <option value="others">Lễ hội & Khác</option>
+              </select>
+            </div>
+            <div class="form-group-item">
+              <label class="form-label" for="packStatusSelect">Trạng thái phát hành</label>
+              <select id="packStatusSelect" class="form-select-ctrl">
+                <option value="active">Công khai ngay</option>
+                <option value="pending">Chờ phê duyệt</option>
+                <option value="hidden">Lưu nháp / Tạm ẩn</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group-item">
+            <label class="form-label" for="packDescInput">Mô tả ngắn gọn</label>
+            <textarea id="packDescInput" class="form-textarea-ctrl" rows="2" placeholder="Ghi chú tóm tắt nội dung bộ sticker..."></textarea>
+          </div>
+
+          <div class="form-group-item">
+            <label class="form-label">Định dạng hỗ trợ xuất bản</label>
+            <div style="display: flex; gap: 18px; margin-top: 4px;">
+              <label style="display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; cursor: pointer;">
+                <input type="checkbox" checked style="accent-color: #C45832;"> Telegram Pack
+              </label>
+              <label style="display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; cursor: pointer;">
+                <input type="checkbox" checked style="accent-color: #C45832;"> WhatsApp Pack
+              </label>
+              <label style="display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; cursor: pointer;">
+                <input type="checkbox" checked style="accent-color: #C45832;"> File nén ZIP
+              </label>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="modal-footer-bar">
+          <button type="button" class="btn-admin-action btn-secondary-action" id="cancelAddModalBtn">Hủy bỏ</button>
+          <button type="submit" class="btn-admin-action btn-primary-action">Lưu & Xuất bản</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- ========================================================
+       SCRIPTS
+       ======================================================== -->
+  <script src="../../static/user/layout/layout.js"></script>
+  <script src="../../static/admin/js/pages/bosuutap.js"></script>
+
+</body>
+</html>
