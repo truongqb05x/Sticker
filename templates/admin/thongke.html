@@ -135,7 +135,6 @@
         <div class="page-header-info">
           <div class="page-title-row">
             <h1 class="page-main-heading">Báo cáo & Thống kê</h1>
-            <span class="page-count-badge">Dữ liệu thời gian thực</span>
           </div>
           <p class="page-subtext">Theo dõi lượt tải sticker, tỷ lệ tăng trưởng và mức độ quan tâm của người dùng.</p>
         </div>
@@ -146,12 +145,8 @@
             <button type="button" class="timeframe-btn active" data-range="7d">7 ngày qua</button>
             <button type="button" class="timeframe-btn" data-range="30d">30 ngày qua</button>
             <button type="button" class="timeframe-btn" data-range="year">Năm nay</button>
+            <button type="button" class="timeframe-btn" data-range="all">Tất cả</button>
           </div>
-
-          <button type="button" class="btn-export-csv" id="btnExportReport" title="Tải xuống báo cáo dạng CSV">
-            <i data-lucide="download" style="width: 15px; height: 15px;"></i>
-            <span>Xuất CSV</span>
-          </button>
         </div>
       </section>
 
@@ -159,59 +154,62 @@
       <section class="analytics-metrics-grid">
         <div class="analytic-card">
           <div class="analytic-header">
-            <span class="analytic-label">Lượt tải tháng này</span>
+            <span class="analytic-label" id="kpiDownloadsLabel">Lượt tải 7 ngày qua</span>
             <div class="analytic-icon-box icon-green">
               <i data-lucide="download-cloud" style="width: 20px; height: 20px;"></i>
             </div>
           </div>
           <div class="analytic-value-row">
-            <span class="analytic-num">182.4K</span>
-            <span class="analytic-badge badge-growth-up">
+            <span class="analytic-num" id="kpiDownloadsVal">169.8K</span>
+            <span class="analytic-badge badge-growth-up" id="kpiDownloadsBadge">
               <i data-lucide="trending-up" style="width: 12px; height: 12px;"></i>
-              +18.2%
+              <span id="kpiDownloadsChange">+18.2%</span>
             </span>
           </div>
         </div>
 
         <div class="analytic-card">
           <div class="analytic-header">
-            <span class="analytic-label">Lượt tải TB / ngày</span>
+            <span class="analytic-label" id="kpiDailyLabel">Lượt tải TB / ngày</span>
             <div class="analytic-icon-box icon-blue">
               <i data-lucide="activity" style="width: 20px; height: 20px;"></i>
             </div>
           </div>
           <div class="analytic-value-row">
-            <span class="analytic-num">6,080</span>
-            <span class="analytic-badge badge-growth-up">
+            <span class="analytic-num" id="kpiDailyVal">24,250</span>
+            <span class="analytic-badge badge-growth-up" id="kpiDailyBadge">
               <i data-lucide="trending-up" style="width: 12px; height: 12px;"></i>
-              +12.4%
+              <span id="kpiDailyChange">+12.4%</span>
             </span>
           </div>
         </div>
 
         <div class="analytic-card">
           <div class="analytic-header">
-            <span class="analytic-label">Bộ sưu tập #1 Top</span>
+            <span class="analytic-label" id="kpiTopPackLabel">Bộ sưu tập #1 Top</span>
             <div class="analytic-icon-box icon-orange">
               <i data-lucide="award" style="width: 20px; height: 20px;"></i>
             </div>
           </div>
           <div class="analytic-value-row">
-            <span class="analytic-num" style="font-size: 20px;">Cute Cats</span>
-            <span class="analytic-badge badge-sub">38.5K tải</span>
+            <span class="analytic-num" id="kpiTopPackName" style="font-size: 20px;">Cute Cats</span>
+            <span class="analytic-badge badge-sub" id="kpiTopPackDownloads">38.5K tải</span>
           </div>
         </div>
 
         <div class="analytic-card">
           <div class="analytic-header">
-            <span class="analytic-label">Nền tảng dẫn đầu</span>
+            <span class="analytic-label" id="kpiTrafficLabel">Lưu lượng truy cập 7 ngày</span>
             <div class="analytic-icon-box icon-purple">
-              <i data-lucide="send" style="width: 20px; height: 20px;"></i>
+              <i data-lucide="globe" style="width: 20px; height: 20px;"></i>
             </div>
           </div>
           <div class="analytic-value-row">
-            <span class="analytic-num" style="font-size: 20px;">Telegram</span>
-            <span class="analytic-badge badge-growth-up">58% thị phần</span>
+            <span class="analytic-num" id="kpiTrafficVal">264.4K</span>
+            <span class="analytic-badge badge-growth-up" id="kpiTrafficBadge">
+              <i data-lucide="trending-up" style="width: 12px; height: 12px;"></i>
+              <span id="kpiTrafficChange">+22.6%</span>
+            </span>
           </div>
         </div>
       </section>
@@ -219,19 +217,18 @@
       <!-- 3. Khu vực 2 Biểu Đồ Phân Tích -->
       <section class="analytics-charts-grid">
         
-        <!-- Biểu đồ cột Xu hướng tải tương tác -->
+        <!-- Biểu đồ Xu hướng tải tương tác (Smooth Wave Chart) -->
         <div class="chart-card-box">
           <div class="card-title-row">
             <h3 class="card-heading">
-              <i data-lucide="bar-chart-2" style="width: 18px; height: 18px; color: #C45832;"></i>
+              <i data-lucide="trending-up" style="width: 18px; height: 18px; color: #C45832;"></i>
               <span>Xu hướng tăng trưởng lượt tải</span>
             </h3>
-            <span style="font-size: 12px; font-weight: 700; color: #7E6E64;">Đơn vị: Lượt tải</span>
           </div>
 
           <div class="trend-chart-wrapper" id="analyticsTrendWrapper">
             <!-- Trục Y -->
-            <div class="chart-y-axis">
+            <div class="chart-y-axis" id="analyticsYAxis">
               <span class="y-label">40K</span>
               <span class="y-label">30K</span>
               <span class="y-label">20K</span>
@@ -239,42 +236,39 @@
               <span class="y-label">0</span>
             </div>
 
-            <!-- Khu vực cột -->
-            <div class="chart-bars-area" id="analyticsBarsArea">
+            <!-- Khu vực biểu đồ sóng mềm mại (Lượt tải) -->
+            <div class="chart-wave-area" id="analyticsWaveArea">
               <div class="chart-grid-line" style="top: 0%;"></div>
               <div class="chart-grid-line" style="top: 25%;"></div>
               <div class="chart-grid-line" style="top: 50%;"></div>
               <div class="chart-grid-line" style="top: 75%;"></div>
               <div class="chart-baseline-axis"></div>
 
-              <div class="chart-col" data-day="Thứ Hai" data-date="20/10/2026" data-downloads="14,250" data-change="+8.4%">
-                <div class="col-bar-track"><div class="col-bar-fill" style="height: 37%;"></div></div>
-                <span class="col-day-label">T2</span>
+              <div class="chart-svg-container">
+                <svg class="chart-wave-svg" id="analyticsWaveSvg" viewBox="0 0 700 180" preserveAspectRatio="none">
+                  <defs>
+                    <linearGradient id="analyticsWaveGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#E27953" stop-opacity="0.36"/>
+                      <stop offset="50%" stop-color="#C45832" stop-opacity="0.14"/>
+                      <stop offset="100%" stop-color="#C45832" stop-opacity="0.01"/>
+                    </linearGradient>
+                    <filter id="analyticsGlow" x="-20%" y="-20%" width="140%" height="140%">
+                      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#C45832" flood-opacity="0.35"/>
+                    </filter>
+                  </defs>
+                  <path id="analyticsWaveAreaPath" class="wave-area-path" fill="url(#analyticsWaveGrad)"></path>
+                  <path id="analyticsWaveLinePath" class="wave-line-path" fill="none" stroke="#C45832" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" filter="url(#analyticsGlow)"></path>
+                  <line id="analyticsCrosshair" class="wave-crosshair" x1="0" y1="10" x2="0" y2="162" stroke="#C45832" stroke-width="1.5" stroke-dasharray="3 3"></line>
+                  <g id="analyticsActiveMarker" class="wave-active-marker">
+                    <circle class="wave-marker-pulse" r="10" fill="rgba(196, 88, 50, 0.22)"></circle>
+                    <circle class="wave-marker-outer" r="5.5" fill="#FFFFFF" stroke="#C45832" stroke-width="2.5"></circle>
+                  </g>
+                  <g id="analyticsDotsGroup" class="wave-dots-group"></g>
+                </svg>
               </div>
-              <div class="chart-col" data-day="Thứ Ba" data-date="21/10/2026" data-downloads="18,500" data-change="+12.1%">
-                <div class="col-bar-track"><div class="col-bar-fill" style="height: 48%;"></div></div>
-                <span class="col-day-label">T3</span>
-              </div>
-              <div class="chart-col" data-day="Thứ Tư" data-date="22/10/2026" data-downloads="17,100" data-change="-2.5%">
-                <div class="col-bar-track"><div class="col-bar-fill" style="height: 44%;"></div></div>
-                <span class="col-day-label">T4</span>
-              </div>
-              <div class="chart-col" data-day="Thứ Năm" data-date="23/10/2026" data-downloads="25,400" data-change="+15.8%">
-                <div class="col-bar-track"><div class="col-bar-fill" style="height: 66%;"></div></div>
-                <span class="col-day-label">T5</span>
-              </div>
-              <div class="chart-col" data-day="Thứ Sáu" data-date="24/10/2026" data-downloads="29,800" data-change="+22.3%">
-                <div class="col-bar-track"><div class="col-bar-fill" style="height: 77%;"></div></div>
-                <span class="col-day-label">T6</span>
-              </div>
-              <div class="chart-col" data-day="Thứ Bảy" data-date="25/10/2026" data-downloads="27,300" data-change="+18.5%">
-                <div class="col-bar-track"><div class="col-bar-fill" style="height: 71%;"></div></div>
-                <span class="col-day-label">T7</span>
-              </div>
-              <div class="chart-col highlight" data-day="Chủ Nhật" data-date="26/10/2026" data-downloads="38,500" data-change="+34.2% 🔥">
-                <div class="col-bar-track"><div class="col-bar-fill" style="height: 100%;"></div></div>
-                <span class="col-day-label">CN</span>
-              </div>
+
+              <div class="chart-triggers-layer" id="analyticsTriggersLayer"></div>
+              <div class="chart-x-axis" id="analyticsXAxis"></div>
             </div>
 
             <!-- Tooltip -->
@@ -290,70 +284,69 @@
           </div>
         </div>
 
-        <!-- Biểu đồ Phân bổ nền tảng & định dạng -->
+        <!-- Biểu đồ Lưu lượng truy cập hệ thống (Smooth Wave Chart - Blue Theme) -->
         <div class="chart-card-box">
           <div class="card-title-row">
             <h3 class="card-heading">
-              <i data-lucide="pie-chart" style="width: 18px; height: 18px; color: #C45832;"></i>
-              <span>Cơ cấu nền tảng tải</span>
+              <i data-lucide="activity" style="width: 18px; height: 18px; color: #2E78D6;"></i>
+              <span>Lưu lượng truy cập hệ thống</span>
             </h3>
           </div>
 
-          <div class="distribution-list">
-            <!-- Telegram -->
-            <div class="dist-item">
-              <div class="dist-meta-row">
-                <span class="dist-label">
-                  <i data-lucide="send" style="width: 14px; height: 14px; color: #0288D1;"></i>
-                  Telegram Pack
-                </span>
-                <span class="dist-val"><strong>105.8K</strong> (58%)</span>
-              </div>
-              <div class="dist-bar-track">
-                <div class="dist-bar-fill fill-tg" style="width: 58%;"></div>
-              </div>
+          <div class="trend-chart-wrapper" id="trafficChartWrapper">
+            <!-- Trục Y -->
+            <div class="chart-y-axis" id="trafficYAxis">
+              <span class="y-label">60K</span>
+              <span class="y-label">45K</span>
+              <span class="y-label">30K</span>
+              <span class="y-label">15K</span>
+              <span class="y-label">0</span>
             </div>
 
-            <!-- WhatsApp -->
-            <div class="dist-item">
-              <div class="dist-meta-row">
-                <span class="dist-label">
-                  <i data-lucide="message-square" style="width: 14px; height: 14px; color: #2E7D32;"></i>
-                  WhatsApp Pack
-                </span>
-                <span class="dist-val"><strong>51.1K</strong> (28%)</span>
+            <!-- Khu vực biểu đồ sóng mềm mại (Lưu lượng truy cập - Blue Theme) -->
+            <div class="chart-wave-area chart-wave-blue" id="trafficWaveArea">
+              <div class="chart-grid-line" style="top: 0%;"></div>
+              <div class="chart-grid-line" style="top: 25%;"></div>
+              <div class="chart-grid-line" style="top: 50%;"></div>
+              <div class="chart-grid-line" style="top: 75%;"></div>
+              <div class="chart-baseline-axis"></div>
+
+              <div class="chart-svg-container">
+                <svg class="chart-wave-svg" id="trafficWaveSvg" viewBox="0 0 700 180" preserveAspectRatio="none">
+                  <defs>
+                    <linearGradient id="trafficWaveGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#60A5FA" stop-opacity="0.36"/>
+                      <stop offset="50%" stop-color="#2563EB" stop-opacity="0.14"/>
+                      <stop offset="100%" stop-color="#2563EB" stop-opacity="0.01"/>
+                    </linearGradient>
+                    <filter id="trafficGlow" x="-20%" y="-20%" width="140%" height="140%">
+                      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#2563EB" flood-opacity="0.35"/>
+                    </filter>
+                  </defs>
+                  <path id="trafficWaveAreaPath" class="wave-area-path" fill="url(#trafficWaveGrad)"></path>
+                  <path id="trafficWaveLinePath" class="wave-line-path" fill="none" stroke="#2563EB" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" filter="url(#trafficGlow)"></path>
+                  <line id="trafficCrosshair" class="wave-crosshair" x1="0" y1="10" x2="0" y2="162" stroke="#2563EB" stroke-width="1.5" stroke-dasharray="3 3"></line>
+                  <g id="trafficActiveMarker" class="wave-active-marker">
+                    <circle class="wave-marker-pulse" r="10" fill="rgba(37, 99, 235, 0.22)"></circle>
+                    <circle class="wave-marker-outer" r="5.5" fill="#FFFFFF" stroke="#2563EB" stroke-width="2.5"></circle>
+                  </g>
+                  <g id="trafficDotsGroup" class="wave-dots-group"></g>
+                </svg>
               </div>
-              <div class="dist-bar-track">
-                <div class="dist-bar-fill fill-wa" style="width: 28%;"></div>
-              </div>
+
+              <div class="chart-triggers-layer" id="trafficTriggersLayer"></div>
+              <div class="chart-x-axis" id="trafficXAxis"></div>
             </div>
 
-            <!-- File ZIP -->
-            <div class="dist-item">
-              <div class="dist-meta-row">
-                <span class="dist-label">
-                  <i data-lucide="file-archive" style="width: 14px; height: 14px; color: #E65100;"></i>
-                  Tệp nén ZIP
-                </span>
-                <span class="dist-val"><strong>25.5K</strong> (14%)</span>
+            <!-- Tooltip cho Biểu đồ Traffic -->
+            <div class="chart-hover-tooltip" id="trafficHoverTooltip">
+              <div class="tooltip-header" id="trafficTooltipHeader">Chủ Nhật • 26/10</div>
+              <div class="tooltip-value-row">
+                <i data-lucide="activity" style="width: 14px; height: 14px; color: #60A5FA;"></i>
+                <span class="tooltip-num" id="trafficTooltipVal">58,900</span>
+                <span class="tooltip-unit">lượt truy cập</span>
               </div>
-              <div class="dist-bar-track">
-                <div class="dist-bar-fill fill-zip" style="width: 14%;"></div>
-              </div>
-            </div>
-
-            <!-- SVG Vector -->
-            <div class="dist-item" style="margin-top: 6px; padding-top: 10px; border-top: 1px dashed #EDE2D4;">
-              <div class="dist-meta-row">
-                <span class="dist-label">
-                  <i data-lucide="sparkles" style="width: 14px; height: 14px; color: #7B3E98;"></i>
-                  Định dạng SVG Vector
-                </span>
-                <span class="dist-val"><strong>65%</strong> người dùng chọn</span>
-              </div>
-              <div class="dist-bar-track">
-                <div class="dist-bar-fill fill-svg" style="width: 65%;"></div>
-              </div>
+              <div class="tooltip-badge" id="trafficTooltipBadge">+38.5% so với hôm qua</div>
             </div>
           </div>
         </div>
@@ -367,27 +360,24 @@
             <i data-lucide="trophy" style="width: 18px; height: 18px; color: #C45832;"></i>
             <span>Top Bộ sưu tập được tải nhiều nhất</span>
           </h3>
-          <span style="font-size: 13px; font-weight: 700; color: #7E6E64;">Tổng hợp 30 ngày gần nhất</span>
+          <span id="tableTimeframeNote" style="font-size: 12.5px; font-weight: 700; color: #7E6E64; margin-left: auto;">(7 ngày qua)</span>
         </div>
 
         <div class="table-responsive">
           <table class="admin-data-table">
             <thead>
               <tr>
-                <th style="width: 60px; text-align: center;">Hạng</th>
                 <th style="min-width: 220px;">Bộ sưu tập</th>
                 <th>Danh mục</th>
                 <th>Số sticker</th>
                 <th>Tổng lượt tải</th>
                 <th>Lượt yêu thích</th>
-                <th>Tỷ lệ hoàn thành</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody id="topPacksTableBody">
               
               <!-- Top 1 -->
               <tr>
-                <td style="text-align: center;"><span class="rank-badge rank-1">1</span></td>
                 <td>
                   <div class="table-pack-cell">
                     <img src="../../assets/pack_cats.jpg" alt="Cute Cats" class="table-pack-thumb">
@@ -399,19 +389,12 @@
                 </td>
                 <td><span class="cat-pill">Động vật</span></td>
                 <td><strong>120</strong> sticker</td>
-                <td>
-                  <div class="download-mini-bar-wrap">
-                    <strong style="color: #C45832; min-width: 44px;">38.5K</strong>
-                    <div class="mini-bar-track"><div class="mini-bar-fill" style="width: 100%;"></div></div>
-                  </div>
-                </td>
+                <td><strong style="color: #C45832;">38.5K</strong></td>
                 <td><strong>2.4K</strong></td>
-                <td><span style="font-weight: 800; color: #2E7D32;">98.8%</span></td>
               </tr>
 
               <!-- Top 2 -->
               <tr>
-                <td style="text-align: center;"><span class="rank-badge rank-2">2</span></td>
                 <td>
                   <div class="table-pack-cell">
                     <img src="../../assets/pack_anime.jpg" alt="Anime Girls" class="table-pack-thumb">
@@ -423,19 +406,12 @@
                 </td>
                 <td><span class="cat-pill">Anime & Manga</span></td>
                 <td><strong>96</strong> sticker</td>
-                <td>
-                  <div class="download-mini-bar-wrap">
-                    <strong style="color: #C45832; min-width: 44px;">25.3K</strong>
-                    <div class="mini-bar-track"><div class="mini-bar-fill" style="width: 65%;"></div></div>
-                  </div>
-                </td>
+                <td><strong style="color: #C45832;">25.3K</strong></td>
                 <td><strong>1.8K</strong></td>
-                <td><span style="font-weight: 800; color: #2E7D32;">97.4%</span></td>
               </tr>
 
               <!-- Top 3 -->
               <tr>
-                <td style="text-align: center;"><span class="rank-badge rank-3">3</span></td>
                 <td>
                   <div class="table-pack-cell">
                     <img src="../../assets/pack_onepiece.svg" alt="One Piece Wano" class="table-pack-thumb">
@@ -447,19 +423,12 @@
                 </td>
                 <td><span class="cat-pill">Anime & Manga</span></td>
                 <td><strong>83</strong> sticker</td>
-                <td>
-                  <div class="download-mini-bar-wrap">
-                    <strong style="color: #C45832; min-width: 44px;">22.4K</strong>
-                    <div class="mini-bar-track"><div class="mini-bar-fill" style="width: 58%;"></div></div>
-                  </div>
-                </td>
+                <td><strong style="color: #C45832;">22.4K</strong></td>
                 <td><strong>1.5K</strong></td>
-                <td><span style="font-weight: 800; color: #2E7D32;">96.9%</span></td>
               </tr>
 
               <!-- Top 4 -->
               <tr>
-                <td style="text-align: center;"><span class="rank-badge rank-other">4</span></td>
                 <td>
                   <div class="table-pack-cell">
                     <img src="../../assets/stickers/cat_02.svg" alt="Sweet Couple" class="table-pack-thumb">
@@ -471,19 +440,12 @@
                 </td>
                 <td><span class="cat-pill">Tình yêu</span></td>
                 <td><strong>50</strong> sticker</td>
-                <td>
-                  <div class="download-mini-bar-wrap">
-                    <strong style="color: #C45832; min-width: 44px;">21.2K</strong>
-                    <div class="mini-bar-track"><div class="mini-bar-fill" style="width: 55%;"></div></div>
-                  </div>
-                </td>
+                <td><strong style="color: #C45832;">21.2K</strong></td>
                 <td><strong>1.4K</strong></td>
-                <td><span style="font-weight: 800; color: #2E7D32;">96.2%</span></td>
               </tr>
 
               <!-- Top 5 -->
               <tr>
-                <td style="text-align: center;"><span class="rank-badge rank-other">5</span></td>
                 <td>
                   <div class="table-pack-cell">
                     <img src="../../assets/thumb_anime.svg" alt="Chibi Heroes" class="table-pack-thumb">
@@ -495,14 +457,8 @@
                 </td>
                 <td><span class="cat-pill">Chibi</span></td>
                 <td><strong>64</strong> sticker</td>
-                <td>
-                  <div class="download-mini-bar-wrap">
-                    <strong style="color: #C45832; min-width: 44px;">19.8K</strong>
-                    <div class="mini-bar-track"><div class="mini-bar-fill" style="width: 51%;"></div></div>
-                  </div>
-                </td>
+                <td><strong style="color: #C45832;">19.8K</strong></td>
                 <td><strong>1.1K</strong></td>
-                <td><span style="font-weight: 800; color: #2E7D32;">95.8%</span></td>
               </tr>
 
             </tbody>

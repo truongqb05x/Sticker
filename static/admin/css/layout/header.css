@@ -18,12 +18,13 @@
 
 .admin-topbar-inner {
   width: 100%;
-  max-width: 1600px;
+  max-width: 100%;
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 0 28px;
   display: flex;
   align-items: center;
   gap: 14px;
+  box-sizing: border-box;
 }
 
 /* Mobile Hamburger Menu Button */

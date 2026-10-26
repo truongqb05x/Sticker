@@ -223,10 +223,7 @@
                 <i data-lucide="trending-up" style="width: 18px; height: 18px; color: #C45832;"></i>
                 <span>Xu hướng tải sticker</span>
               </h3>
-              <span class="chart-unit-indicator" id="chartUnitIndicator">
-                <i data-lucide="calendar" style="width: 13px; height: 13px;"></i>
-                <span id="chartUnitText">Đơn vị: Thứ / Ngày</span>
-              </span>
+
             </div>
             <div class="chart-filter-pills">
               <button class="chart-pill-btn active" data-range="7d">7 ngày qua</button>
@@ -247,8 +244,8 @@
               <span class="y-label">0</span>
             </div>
 
-            <!-- Khu vực các cột dữ liệu tương tác -->
-            <div class="chart-bars-area" id="chartBarsArea">
+            <!-- Khu vực biểu đồ sóng mềm mại (Smooth Wave Chart) -->
+            <div class="chart-wave-area" id="chartWaveArea">
               <!-- Đường lưới ngang phụ -->
               <div class="chart-grid-line" style="top: 0%;"></div>
               <div class="chart-grid-line" style="top: 25%;"></div>
@@ -256,55 +253,40 @@
               <div class="chart-grid-line" style="top: 75%;"></div>
               <div class="chart-baseline-axis"></div>
 
-              <!-- 7 Cột biểu thị 7 ngày -->
-              <div class="chart-col" data-day="Thứ Hai" data-date="20/10/2026" data-downloads="14,250" data-change="+8.4%">
-                <div class="col-bar-track">
-                  <div class="col-bar-fill" style="height: 37%;"></div>
-                </div>
-                <span class="col-day-label">T2</span>
+              <!-- SVG Biểu Đồ Lượn Sóng Hình Sin Mềm Mại -->
+              <div class="chart-svg-container">
+                <svg class="chart-wave-svg" id="chartWaveSvg" viewBox="0 0 700 180" preserveAspectRatio="none">
+                  <defs>
+                    <linearGradient id="waveGradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#E27953" stop-opacity="0.36"/>
+                      <stop offset="50%" stop-color="#C45832" stop-opacity="0.14"/>
+                      <stop offset="100%" stop-color="#C45832" stop-opacity="0.01"/>
+                    </linearGradient>
+                    <filter id="waveGlow" x="-20%" y="-20%" width="140%" height="140%">
+                      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#C45832" flood-opacity="0.35"/>
+                    </filter>
+                  </defs>
+                  <!-- Vùng diện tích gradient phía dưới đường sóng -->
+                  <path id="waveAreaPath" class="wave-area-path" fill="url(#waveGradient)"></path>
+                  <!-- Đường cong sóng mềm mại chính -->
+                  <path id="waveLinePath" class="wave-line-path" fill="none" stroke="#C45832" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" filter="url(#waveGlow)"></path>
+                  <!-- Thước gióng dọc khi tương tác -->
+                  <line id="waveCrosshair" class="wave-crosshair" x1="0" y1="10" x2="0" y2="162" stroke="#C45832" stroke-width="1.5" stroke-dasharray="3 3"></line>
+                  <!-- Điểm sáng neo tương tác -->
+                  <g id="waveActiveMarker" class="wave-active-marker">
+                    <circle class="wave-marker-pulse" r="10" fill="rgba(196, 88, 50, 0.22)"></circle>
+                    <circle class="wave-marker-outer" r="5.5" fill="#FFFFFF" stroke="#C45832" stroke-width="2.5"></circle>
+                  </g>
+                  <!-- Các điểm mốc cố định -->
+                  <g id="waveDotsGroup" class="wave-dots-group"></g>
+                </svg>
               </div>
 
-              <div class="chart-col" data-day="Thứ Ba" data-date="21/10/2026" data-downloads="18,500" data-change="+12.1%">
-                <div class="col-bar-track">
-                  <div class="col-bar-fill" style="height: 48%;"></div>
-                </div>
-                <span class="col-day-label">T3</span>
-              </div>
+              <!-- Lớp cột bắt tương tác di chuột & cảm ứng -->
+              <div class="chart-triggers-layer" id="chartTriggersLayer"></div>
 
-              <div class="chart-col" data-day="Thứ Tư" data-date="22/10/2026" data-downloads="17,100" data-change="-2.5%">
-                <div class="col-bar-track">
-                  <div class="col-bar-fill" style="height: 44%;"></div>
-                </div>
-                <span class="col-day-label">T4</span>
-              </div>
-
-              <div class="chart-col" data-day="Thứ Năm" data-date="23/10/2026" data-downloads="25,400" data-change="+15.8%">
-                <div class="col-bar-track">
-                  <div class="col-bar-fill" style="height: 66%;"></div>
-                </div>
-                <span class="col-day-label">T5</span>
-              </div>
-
-              <div class="chart-col" data-day="Thứ Sáu" data-date="24/10/2026" data-downloads="29,800" data-change="+22.3%">
-                <div class="col-bar-track">
-                  <div class="col-bar-fill" style="height: 77%;"></div>
-                </div>
-                <span class="col-day-label">T6</span>
-              </div>
-
-              <div class="chart-col" data-day="Thứ Bảy" data-date="25/10/2026" data-downloads="27,300" data-change="+18.5%">
-                <div class="col-bar-track">
-                  <div class="col-bar-fill" style="height: 71%;"></div>
-                </div>
-                <span class="col-day-label">T7</span>
-              </div>
-
-              <div class="chart-col highlight" data-day="Chủ Nhật" data-date="26/10/2026" data-downloads="38,500" data-change="+34.2% 🔥">
-                <div class="col-bar-track">
-                  <div class="col-bar-fill" style="height: 100%;"></div>
-                </div>
-                <span class="col-day-label">CN</span>
-              </div>
+              <!-- Trục X hiển thị nhãn thời gian -->
+              <div class="chart-x-axis" id="chartXAxis"></div>
             </div>
 
             <!-- Floating Tooltip hiển thị số lượng khi di chuột -->

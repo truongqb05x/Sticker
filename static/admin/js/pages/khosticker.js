@@ -14,7 +14,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const searchInput = document.getElementById("stickerSearchInput");
   const packSelect = document.getElementById("stickerPackFilter");
   const catTabs = document.querySelectorAll(".cat-tab-btn");
-  const resetBtn = document.getElementById("resetStickerFilterBtn");
   const stickerItems = document.querySelectorAll(".sticker-grid-item");
   const countIndicator = document.getElementById("stickerVisibleCount");
 
@@ -58,17 +57,6 @@ document.addEventListener("DOMContentLoaded", function () {
       currentCategory = this.getAttribute("data-category") || "all";
       applyStickerFilters();
     });
-  });
-
-  resetBtn?.addEventListener("click", function () {
-    if (searchInput) searchInput.value = "";
-    if (packSelect) packSelect.value = "all";
-    catTabs.forEach(t => t.classList.remove("active"));
-    const allTab = document.querySelector('.cat-tab-btn[data-category="all"]');
-    allTab?.classList.add("active");
-    currentCategory = "all";
-    applyStickerFilters();
-    showToast("Đã đặt lại bộ lọc kho sticker.");
   });
 
   // 3. Xử lý Modal Tải Lên Sticker

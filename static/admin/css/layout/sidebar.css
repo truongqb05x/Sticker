@@ -7,11 +7,12 @@
 .admin-body-container {
   display: flex;
   width: 100%;
-  max-width: 1600px;
+  max-width: 100%;
   margin: 0 auto;
-  padding: 22px 24px 40px;
+  padding: 22px 28px 40px;
   gap: 24px;
   flex: 1;
+  box-sizing: border-box;
 }
 
 /* Sidebar Container */
@@ -21,6 +22,15 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+}
+
+/* Main Content Container - Stretch across available width */
+.admin-main-content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }
 
 .sidebar-card-box {

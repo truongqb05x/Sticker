@@ -10,10 +10,18 @@ document.addEventListener("DOMContentLoaded", function () {
     window.lucide.createIcons();
   }
 
-  // 2. Xử lý Biểu đồ Xu hướng Tải Sticker (Interactive Hover Tooltip & Filter)
+  // 2. Xử lý Biểu đồ Xu hướng Tải Sticker (Smooth Spline / Wave Chart SVG)
 
   const trendChartWrapper = document.getElementById("trendChartWrapper");
-  const chartBarsArea = document.getElementById("chartBarsArea");
+  const chartWaveArea = document.getElementById("chartWaveArea");
+  const chartWaveSvg = document.getElementById("chartWaveSvg");
+  const waveAreaPath = document.getElementById("waveAreaPath");
+  const waveLinePath = document.getElementById("waveLinePath");
+  const waveCrosshair = document.getElementById("waveCrosshair");
+  const waveActiveMarker = document.getElementById("waveActiveMarker");
+  const waveDotsGroup = document.getElementById("waveDotsGroup");
+  const chartTriggersLayer = document.getElementById("chartTriggersLayer");
+  const chartXAxis = document.getElementById("chartXAxis");
   const chartTooltip = document.getElementById("chartHoverTooltip");
   const tooltipHeader = document.getElementById("tooltipHeader");
   const tooltipNum = document.getElementById("tooltipNum");
@@ -57,83 +65,112 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   };
 
-  // Hàm định vị và hiển thị tooltip
-  function showColumnTooltip(col) {
-    if (!chartTooltip || !trendChartWrapper) return;
+  // Biến lưu trữ điểm hiện tại
+  let currentPoints = [];
+  let currentDataset = null;
 
-    const day = col.getAttribute("data-day") || "";
-    const date = col.getAttribute("data-date") || "";
-    const downloads = col.getAttribute("data-downloads") || "0";
-    const change = col.getAttribute("data-change") || "";
+  // Thuật toán xây dựng đường cong Catmull-Rom to Cubic Bézier (Sóng mềm mại)
+  function buildSplinePath(points) {
+    if (!points || points.length === 0) return "";
+    if (points.length === 1) return `M ${points[0].x} ${points[0].y}`;
 
-    if (tooltipHeader) tooltipHeader.textContent = `${day} • ${date}`;
-    if (tooltipNum) tooltipNum.textContent = downloads;
+    let d = `M ${points[0].x.toFixed(1)} ${points[0].y.toFixed(1)}`;
+    for (let i = 0; i < points.length - 1; i++) {
+      const p0 = points[i === 0 ? 0 : i - 1];
+      const p1 = points[i];
+      const p2 = points[i + 1];
+      const p3 = points[i + 2 < points.length ? i + 2 : i + 1];
+
+      // Hệ số làm mịn đường cong (spline smoothing factor = 1/6)
+      const cp1x = p1.x + (p2.x - p0.x) / 6;
+      const cp1y = p1.y + (p2.y - p0.y) / 6;
+
+      const cp2x = p2.x - (p3.x - p1.x) / 6;
+      const cp2y = p2.y - (p3.y - p1.y) / 6;
+
+      d += ` C ${cp1x.toFixed(1)} ${cp1y.toFixed(1)}, ${cp2x.toFixed(1)} ${cp2y.toFixed(1)}, ${p2.x.toFixed(1)} ${p2.y.toFixed(1)}`;
+    }
+    return d;
+  }
+
+  // Hiển thị tooltip và neo điểm sáng tại chỉ số mốc index
+  function highlightWavePoint(index) {
+    if (!currentPoints[index] || !currentDataset || !chartTooltip || !trendChartWrapper) return;
+
+    const pt = currentPoints[index];
+    const col = currentDataset.cols[index];
+
+    // Cập nhật tooltip
+    if (tooltipHeader) tooltipHeader.textContent = `${col.day} • ${col.date}`;
+    if (tooltipNum) tooltipNum.textContent = col.downloads;
     if (tooltipBadge) {
-      tooltipBadge.textContent = `${change} so với kỳ trước`;
-      if (change.includes("-")) {
+      tooltipBadge.textContent = `${col.change} so với kỳ trước`;
+      if (col.change.includes("-")) {
         tooltipBadge.style.color = "#F87171";
       } else {
         tooltipBadge.style.color = "#4ADE80";
       }
     }
 
+    // Cập nhật thước gióng dọc
+    if (waveCrosshair) {
+      waveCrosshair.setAttribute("x1", pt.x.toFixed(1));
+      waveCrosshair.setAttribute("x2", pt.x.toFixed(1));
+      waveCrosshair.classList.add("active");
+    }
+
+    // Cập nhật điểm sáng neo
+    if (waveActiveMarker) {
+      waveActiveMarker.setAttribute("transform", `translate(${pt.x.toFixed(1)}, ${pt.y.toFixed(1)})`);
+      waveActiveMarker.classList.add("active");
+    }
+
+    // Tính toán tọa độ pixel thực tế của tooltip
+    const svgRect = chartWaveSvg ? chartWaveSvg.getBoundingClientRect() : trendChartWrapper.getBoundingClientRect();
     const wrapperRect = trendChartWrapper.getBoundingClientRect();
-    const fillEl = col.querySelector(".col-bar-fill") || col;
-    const fillRect = fillEl.getBoundingClientRect();
+    
+    const realPixelX = (svgRect.left - wrapperRect.left) + (pt.x / 700) * svgRect.width;
+    const realPixelY = (svgRect.top - wrapperRect.top) + (pt.y / 180) * svgRect.height;
 
-    // Tọa độ tương đối trong khung trendChartWrapper
-    const centerX = (fillRect.left + fillRect.width / 2) - wrapperRect.left;
-    const topY = fillRect.top - wrapperRect.top;
-
-    // Giới hạn để tooltip không bị lệch ra ngoài khung
-    const safeLeft = Math.max(70, Math.min(centerX, wrapperRect.width - 70));
-    const safeTop = Math.max(12, topY - 10);
+    const safeLeft = Math.max(70, Math.min(realPixelX, wrapperRect.width - 70));
+    const safeTop = Math.max(10, realPixelY - 14);
 
     chartTooltip.style.left = `${safeLeft}px`;
     chartTooltip.style.top = `${safeTop}px`;
     chartTooltip.classList.add("active");
-  }
 
-  function hideColumnTooltip() {
-    if (chartTooltip) {
-      chartTooltip.classList.remove("active");
-    }
-  }
+    // Highlight nhãn X và cột trigger
+    const xTags = chartXAxis?.querySelectorAll(".wave-x-tag") || [];
+    xTags.forEach((tag, i) => {
+      tag.classList.toggle("hover-focus", i === index);
+    });
 
-  // Gắn sự kiện hover cho các cột
-  function bindChartHoverEvents() {
-    const cols = chartBarsArea?.querySelectorAll(".chart-col") || [];
-    cols.forEach(col => {
-      col.addEventListener("mouseenter", function () {
-        cols.forEach(c => c.classList.remove("hover-focus"));
-        this.classList.add("hover-focus");
-        showColumnTooltip(this);
-      });
-
-      col.addEventListener("mousemove", function () {
-        showColumnTooltip(this);
-      });
-
-      col.addEventListener("mouseleave", function () {
-        this.classList.remove("hover-focus");
-        hideColumnTooltip();
-      });
-
-      // Hỗ trợ thiết bị cảm ứng
-      col.addEventListener("touchstart", function (e) {
-        cols.forEach(c => c.classList.remove("hover-focus"));
-        this.classList.add("hover-focus");
-        showColumnTooltip(this);
-      }, { passive: true });
+    const triggers = chartTriggersLayer?.querySelectorAll(".wave-trigger-col") || [];
+    triggers.forEach((trg, i) => {
+      trg.classList.toggle("hover-focus", i === index);
     });
   }
 
-  // Render lại dữ liệu biểu đồ khi đổi filter
+  function hideWaveHighlight() {
+    if (waveCrosshair) waveCrosshair.classList.remove("active");
+    if (waveActiveMarker) waveActiveMarker.classList.remove("active");
+    if (chartTooltip) chartTooltip.classList.remove("active");
+
+    const xTags = chartXAxis?.querySelectorAll(".wave-x-tag") || [];
+    xTags.forEach(tag => tag.classList.remove("hover-focus"));
+
+    const triggers = chartTriggersLayer?.querySelectorAll(".wave-trigger-col") || [];
+    triggers.forEach(trg => trg.classList.remove("hover-focus"));
+  }
+
+  // Render lại biểu đồ lượn sóng
   function renderChart(rangeKey) {
     const dataset = chartDataSets[rangeKey];
-    if (!dataset || !chartBarsArea) return;
+    if (!dataset || !chartWaveSvg) return;
 
-    // Cập nhật trục Y nếu có
+    currentDataset = dataset;
+
+    // Cập nhật trục Y
     const yAxisContainer = document.querySelector(".chart-y-axis");
     if (yAxisContainer && dataset.yLabels) {
       yAxisContainer.innerHTML = dataset.yLabels
@@ -141,43 +178,96 @@ document.addEventListener("DOMContentLoaded", function () {
         .join("");
     }
 
-    // Cập nhật nhãn đơn vị thời gian tương ứng
-    const chartUnitText = document.getElementById("chartUnitText");
-    if (chartUnitText) {
-      if (rangeKey === "7d") chartUnitText.textContent = "Đơn vị: Thứ / Ngày (T2 - CN)";
-      else if (rangeKey === "30d") chartUnitText.textContent = "Đơn vị: Ngày trong tháng (01/10 - 26/10)";
-      else if (rangeKey === "month") chartUnitText.textContent = "Đơn vị: Tuần trong tháng (Tuần 1 - Tuần 4)";
+    const n = dataset.cols.length;
+    const margin = 45;
+    const totalW = 700;
+    const baseY = 162;
+    const minY = 24;
+    const availableH = baseY - minY;
+    const stepX = n > 1 ? (totalW - 2 * margin) / (n - 1) : 0;
+
+    // Tính toán tọa độ các điểm
+    currentPoints = dataset.cols.map((col, i) => {
+      const heightPercent = parseFloat(col.height) || 0;
+      const x = n > 1 ? margin + i * stepX : totalW / 2;
+      const y = baseY - (heightPercent / 100) * availableH;
+      return { x, y, col, index: i };
+    });
+
+    // Tạo SVG Path dạng sóng
+    const lineD = buildSplinePath(currentPoints);
+    const areaD = currentPoints.length > 0 
+      ? `${lineD} L ${currentPoints[currentPoints.length - 1].x.toFixed(1)} ${baseY} L ${currentPoints[0].x.toFixed(1)} ${baseY} Z`
+      : "";
+
+    if (waveLinePath) waveLinePath.setAttribute("d", lineD);
+    if (waveAreaPath) waveAreaPath.setAttribute("d", areaD);
+
+    // Vẽ các điểm mốc (dots)
+    if (waveDotsGroup) {
+      waveDotsGroup.innerHTML = currentPoints.map(pt => `
+        <circle class="wave-dot ${pt.col.highlight ? 'highlight' : ''}" 
+                cx="${pt.x.toFixed(1)}" 
+                cy="${pt.y.toFixed(1)}" 
+                r="${pt.col.highlight ? 5.5 : 4}" 
+                fill="#FFFFFF" 
+                stroke="#C45832" 
+                stroke-width="${pt.col.highlight ? 3 : 2.5}" 
+                data-index="${pt.index}"></circle>
+      `).join("");
     }
 
-    // Cập nhật các cột dữ liệu
-    const colsHtml = dataset.cols.map(c => `
-      <div class="chart-col ${c.highlight ? 'highlight' : ''}" 
-           data-day="${c.day}" 
-           data-date="${c.date}" 
-           data-downloads="${c.downloads}" 
-           data-change="${c.change}">
-        <div class="col-bar-track">
-          <div class="col-bar-fill" style="height: ${c.height};"></div>
+    // Vẽ các cột trigger cảm ứng/hover
+    if (chartTriggersLayer) {
+      chartTriggersLayer.innerHTML = dataset.cols.map((col, i) => `
+        <div class="wave-trigger-col ${col.highlight ? 'highlight' : ''}" data-index="${i}"></div>
+      `).join("");
+    }
+
+    // Vẽ nhãn trục X
+    if (chartXAxis) {
+      chartXAxis.innerHTML = dataset.cols.map((col, i) => `
+        <div class="wave-x-label">
+          <span class="wave-x-tag ${col.highlight ? 'highlight' : ''}" data-index="${i}">${col.label}</span>
         </div>
-        <span class="col-day-label">${c.label}</span>
-      </div>
-    `).join("");
+      `).join("");
+    }
 
-    chartBarsArea.innerHTML = `
-      <!-- Đường lưới ngang phụ -->
-      <div class="chart-grid-line" style="top: 0%;"></div>
-      <div class="chart-grid-line" style="top: 25%;"></div>
-      <div class="chart-grid-line" style="top: 50%;"></div>
-      <div class="chart-grid-line" style="top: 75%;"></div>
-      <div class="chart-baseline-axis"></div>
-      ${colsHtml}
-    `;
+    // Gắn sự kiện tương tác
+    bindWaveInteractions();
 
-    bindChartHoverEvents();
+    // Mặc định ban đầu ẩn thông tin, chỉ hiện khi người dùng rê chuột
+    hideWaveHighlight();
   }
 
-  // Khởi tạo hover ban đầu
-  bindChartHoverEvents();
+  // Gắn sự kiện hover và touch
+  function bindWaveInteractions() {
+    const triggers = chartTriggersLayer?.querySelectorAll(".wave-trigger-col") || [];
+    triggers.forEach(trg => {
+      const idx = parseInt(trg.getAttribute("data-index"), 10);
+
+      trg.addEventListener("mouseenter", function () {
+        highlightWavePoint(idx);
+      });
+
+      trg.addEventListener("mousemove", function () {
+        highlightWavePoint(idx);
+      });
+
+      trg.addEventListener("touchstart", function () {
+        highlightWavePoint(idx);
+      }, { passive: true });
+    });
+
+    if (chartWaveArea) {
+      chartWaveArea.addEventListener("mouseleave", function () {
+        hideWaveHighlight();
+      });
+    }
+  }
+
+  // Render khởi tạo biểu đồ sóng
+  renderChart("7d");
 
   // Đổi mốc thời gian khi nhấn nút filter
   chartPills.forEach(btn => {
@@ -186,7 +276,9 @@ document.addEventListener("DOMContentLoaded", function () {
       this.classList.add("active");
       const range = this.getAttribute("data-range") || "7d";
       renderChart(range);
-      showToast(`Đã cập nhật biểu đồ: ${this.textContent}`);
+      if (typeof showToast === "function") {
+        showToast(`Đã cập nhật biểu đồ xu hướng: ${this.textContent}`);
+      }
     });
   });
 

@@ -139,11 +139,6 @@
           </div>
           <p class="page-subtext">Quản lý, phân loại, phê duyệt và cập nhật trạng thái hiển thị cho toàn bộ gói sticker.</p>
         </div>
-
-        <button type="button" class="btn-add-primary" id="openAddModalBtn">
-          <i data-lucide="folder-plus" style="width: 17px; height: 17px;"></i>
-          <span>Thêm bộ sưu tập</span>
-        </button>
       </section>
 
       <!-- 2. Quick Status Tabs (Lọc nhanh theo trạng thái) -->
@@ -176,7 +171,7 @@
               type="text" 
               class="filter-search-input" 
               id="collectionSearchInput" 
-              placeholder="Tìm theo tên bộ sưu tập, tác giả..."
+              placeholder="Tìm theo tên bộ sưu tập, slug, tác giả..."
               autocomplete="off"
             >
           </div>
@@ -195,9 +190,8 @@
         </div>
 
         <div class="filter-right-group">
-          <button type="button" class="btn-reset-filter" id="resetFilterBtn">
-            <i data-lucide="rotate-ccw" style="width: 14px; height: 14px;"></i>
-            <span>Đặt lại</span>
+          <button type="button" class="btn-add-primary" id="openAddModalBtn">
+            <span>Thêm bộ sưu tập</span>
           </button>
         </div>
       </div>
@@ -221,7 +215,7 @@
             <tbody id="collectionsTableBody">
               
               <!-- 1. Cute Cats -->
-              <tr data-category="animals" data-status="active">
+              <tr data-category="animals" data-status="active" data-slug="cute-cats">
                 <td style="text-align: center; color: #9E8E84; font-weight: 700;">1</td>
                 <td>
                   <div class="table-pack-cell">
@@ -248,7 +242,7 @@
                     <a href="chitietsticker.html" class="tbl-action-btn" title="Xem chi tiết">
                       <i data-lucide="eye" style="width: 15px; height: 15px;"></i>
                     </a>
-                    <button type="button" class="tbl-action-btn" title="Chỉnh sửa" onclick="showToast('Chỉnh sửa: Cute Cats')">
+                    <button type="button" class="tbl-action-btn btn-edit-row" title="Chỉnh sửa">
                       <i data-lucide="edit-3" style="width: 15px; height: 15px;"></i>
                     </button>
                     <button type="button" class="tbl-action-btn btn-delete btn-delete-row" title="Xóa">
@@ -259,7 +253,7 @@
               </tr>
 
               <!-- 2. Anime Girls -->
-              <tr data-category="anime" data-status="active">
+              <tr data-category="anime" data-status="active" data-slug="anime-girls">
                 <td style="text-align: center; color: #9E8E84; font-weight: 700;">2</td>
                 <td>
                   <div class="table-pack-cell">
@@ -286,7 +280,7 @@
                     <a href="chitietsticker.html" class="tbl-action-btn" title="Xem chi tiết">
                       <i data-lucide="eye" style="width: 15px; height: 15px;"></i>
                     </a>
-                    <button type="button" class="tbl-action-btn" title="Chỉnh sửa" onclick="showToast('Chỉnh sửa: Anime Girls')">
+                    <button type="button" class="tbl-action-btn btn-edit-row" title="Chỉnh sửa">
                       <i data-lucide="edit-3" style="width: 15px; height: 15px;"></i>
                     </button>
                     <button type="button" class="tbl-action-btn btn-delete btn-delete-row" title="Xóa">
@@ -297,7 +291,7 @@
               </tr>
 
               <!-- 3. Funny Animals -->
-              <tr data-category="animals" data-status="active">
+              <tr data-category="animals" data-status="active" data-slug="funny-animals">
                 <td style="text-align: center; color: #9E8E84; font-weight: 700;">3</td>
                 <td>
                   <div class="table-pack-cell">
@@ -324,7 +318,7 @@
                     <button type="button" class="tbl-action-btn" title="Xem chi tiết" onclick="showToast('Xem chi tiết: Funny Animals')">
                       <i data-lucide="eye" style="width: 15px; height: 15px;"></i>
                     </button>
-                    <button type="button" class="tbl-action-btn" title="Chỉnh sửa" onclick="showToast('Chỉnh sửa: Funny Animals')">
+                    <button type="button" class="tbl-action-btn btn-edit-row" title="Chỉnh sửa">
                       <i data-lucide="edit-3" style="width: 15px; height: 15px;"></i>
                     </button>
                     <button type="button" class="tbl-action-btn btn-delete btn-delete-row" title="Xóa">
@@ -335,7 +329,7 @@
               </tr>
 
               <!-- 4. One Piece Wano (Chờ duyệt) -->
-              <tr data-category="anime" data-status="pending">
+              <tr data-category="anime" data-status="pending" data-slug="one-piece-wano">
                 <td style="text-align: center; color: #9E8E84; font-weight: 700;">4</td>
                 <td>
                   <div class="table-pack-cell">
@@ -362,7 +356,7 @@
                     <button type="button" class="tbl-action-btn btn-approve btn-approve-row" title="Phê duyệt xuất bản">
                       <i data-lucide="check" style="width: 15px; height: 15px; color: #2E7D32;"></i>
                     </button>
-                    <button type="button" class="tbl-action-btn" title="Chỉnh sửa" onclick="showToast('Chỉnh sửa: One Piece Wano')">
+                    <button type="button" class="tbl-action-btn btn-edit-row" title="Chỉnh sửa">
                       <i data-lucide="edit-3" style="width: 15px; height: 15px;"></i>
                     </button>
                     <button type="button" class="tbl-action-btn btn-delete btn-delete-row" title="Từ chối/Xóa">
@@ -373,7 +367,7 @@
               </tr>
 
               <!-- 5. Nature Vibes -->
-              <tr data-category="nature" data-status="active">
+              <tr data-category="nature" data-status="active" data-slug="nature-vibes">
                 <td style="text-align: center; color: #9E8E84; font-weight: 700;">5</td>
                 <td>
                   <div class="table-pack-cell">
@@ -400,7 +394,7 @@
                     <button type="button" class="tbl-action-btn" title="Xem chi tiết" onclick="showToast('Xem chi tiết: Nature Vibes')">
                       <i data-lucide="eye" style="width: 15px; height: 15px;"></i>
                     </button>
-                    <button type="button" class="tbl-action-btn" title="Chỉnh sửa" onclick="showToast('Chỉnh sửa: Nature Vibes')">
+                    <button type="button" class="tbl-action-btn btn-edit-row" title="Chỉnh sửa">
                       <i data-lucide="edit-3" style="width: 15px; height: 15px;"></i>
                     </button>
                     <button type="button" class="tbl-action-btn btn-delete btn-delete-row" title="Xóa">
@@ -411,7 +405,7 @@
               </tr>
 
               <!-- 6. Halloween Party (Tạm ẩn) -->
-              <tr data-category="others" data-status="hidden">
+              <tr data-category="others" data-status="hidden" data-slug="halloween-party">
                 <td style="text-align: center; color: #9E8E84; font-weight: 700;">6</td>
                 <td>
                   <div class="table-pack-cell">
@@ -438,7 +432,7 @@
                     <button type="button" class="tbl-action-btn btn-approve btn-approve-row" title="Công khai lại">
                       <i data-lucide="eye" style="width: 15px; height: 15px; color: #2E7D32;"></i>
                     </button>
-                    <button type="button" class="tbl-action-btn" title="Chỉnh sửa" onclick="showToast('Chỉnh sửa: Halloween Party')">
+                    <button type="button" class="tbl-action-btn btn-edit-row" title="Chỉnh sửa">
                       <i data-lucide="edit-3" style="width: 15px; height: 15px;"></i>
                     </button>
                     <button type="button" class="tbl-action-btn btn-delete btn-delete-row" title="Xóa">
@@ -449,7 +443,7 @@
               </tr>
 
               <!-- 7. Daily Expressions -->
-              <tr data-category="expressions" data-status="active">
+              <tr data-category="expressions" data-status="active" data-slug="daily-expressions">
                 <td style="text-align: center; color: #9E8E84; font-weight: 700;">7</td>
                 <td>
                   <div class="table-pack-cell">
@@ -476,7 +470,7 @@
                     <button type="button" class="tbl-action-btn" title="Xem chi tiết" onclick="showToast('Xem chi tiết: Daily Expressions')">
                       <i data-lucide="eye" style="width: 15px; height: 15px;"></i>
                     </button>
-                    <button type="button" class="tbl-action-btn" title="Chỉnh sửa" onclick="showToast('Chỉnh sửa: Daily Expressions')">
+                    <button type="button" class="tbl-action-btn btn-edit-row" title="Chỉnh sửa">
                       <i data-lucide="edit-3" style="width: 15px; height: 15px;"></i>
                     </button>
                     <button type="button" class="tbl-action-btn btn-delete btn-delete-row" title="Xóa">
@@ -487,7 +481,7 @@
               </tr>
 
               <!-- 8. Summer Vacation (Chờ duyệt) -->
-              <tr data-category="nature" data-status="pending">
+              <tr data-category="nature" data-status="pending" data-slug="summer-vacation">
                 <td style="text-align: center; color: #9E8E84; font-weight: 700;">8</td>
                 <td>
                   <div class="table-pack-cell">
@@ -514,7 +508,7 @@
                     <button type="button" class="tbl-action-btn btn-approve btn-approve-row" title="Phê duyệt xuất bản">
                       <i data-lucide="check" style="width: 15px; height: 15px; color: #2E7D32;"></i>
                     </button>
-                    <button type="button" class="tbl-action-btn" title="Chỉnh sửa" onclick="showToast('Chỉnh sửa: Summer Vacation')">
+                    <button type="button" class="tbl-action-btn btn-edit-row" title="Chỉnh sửa">
                       <i data-lucide="edit-3" style="width: 15px; height: 15px;"></i>
                     </button>
                     <button type="button" class="tbl-action-btn btn-delete btn-delete-row" title="Từ chối/Xóa">
@@ -635,8 +629,8 @@
     <div class="modal-dialog-box">
       <div class="modal-header-bar">
         <h3 class="modal-heading">
-          <i data-lucide="folder-plus" style="width: 20px; height: 20px; color: #C45832;"></i>
-          <span>Thêm bộ sưu tập mới</span>
+          <i data-lucide="folder-plus" id="modalHeadingIcon" style="width: 20px; height: 20px; color: #C45832;"></i>
+          <span id="modalHeadingText">Thêm bộ sưu tập mới</span>
         </h3>
         <button type="button" class="modal-close-btn" id="closeAddModalBtn" title="Đóng">
           <i data-lucide="x" style="width: 18px; height: 18px;"></i>
@@ -652,12 +646,16 @@
               <input type="text" id="packNameInput" class="form-input-text" placeholder="Ví dụ: Cún Shiba Năng Động" required>
             </div>
             <div class="form-group-item">
-              <label class="form-label" for="packAuthorInput">Tác giả / Studio</label>
-              <input type="text" id="packAuthorInput" class="form-input-text" placeholder="Ví dụ: ShibaTeam">
+              <label class="form-label" for="packSlugInput">Slug URL <span style="color: #C45832;">*</span></label>
+              <input type="text" id="packSlugInput" class="form-input-text" placeholder="Ví dụ: cun-shiba-nang-dong" required>
             </div>
           </div>
 
           <div class="form-row-2col">
+            <div class="form-group-item">
+              <label class="form-label" for="packAuthorInput">Tác giả / Studio</label>
+              <input type="text" id="packAuthorInput" class="form-input-text" placeholder="Ví dụ: ShibaTeam">
+            </div>
             <div class="form-group-item">
               <label class="form-label" for="packCategorySelect">Danh mục <span style="color: #C45832;">*</span></label>
               <select id="packCategorySelect" class="form-select-ctrl" required>
@@ -670,6 +668,9 @@
                 <option value="others">Lễ hội & Khác</option>
               </select>
             </div>
+          </div>
+
+          <div class="form-row-2col">
             <div class="form-group-item">
               <label class="form-label" for="packStatusSelect">Trạng thái phát hành</label>
               <select id="packStatusSelect" class="form-select-ctrl">
@@ -677,6 +678,10 @@
                 <option value="pending">Chờ phê duyệt</option>
                 <option value="hidden">Lưu nháp / Tạm ẩn</option>
               </select>
+            </div>
+            <div class="form-group-item">
+              <label class="form-label" for="packTagInput">Từ khóa tìm kiếm (Tags)</label>
+              <input type="text" id="packTagInput" class="form-input-text" placeholder="Ví dụ: shiba, cún, vui nhộn">
             </div>
           </div>
 
@@ -690,7 +695,7 @@
 
         <div class="modal-footer-bar">
           <button type="button" class="btn-admin-action btn-secondary-action" id="cancelAddModalBtn">Hủy bỏ</button>
-          <button type="submit" class="btn-admin-action btn-primary-action">Lưu & Xuất bản</button>
+          <button type="submit" class="btn-admin-action btn-primary-action" id="submitCollectionModalBtn">Xuất bản</button>
         </div>
       </form>
     </div>
