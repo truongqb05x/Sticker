@@ -1,0 +1,652 @@
+/**
+ * ========================================================
+ * TOP TẢI NHIỀU (MOST DOWNLOADED) SPECIFIC STYLES
+ * ========================================================
+ * Định kiểu cho trang Top tải nhiều theo giao diện scrapbook
+ * 3 cột: Sidebar trái (Danh mục + Nổi bật), Cột giữa (Banner, Filter,
+ * Grid 12 card với huy hiệu xếp hạng 1-12, nút Tải về),
+ * Sidebar phải (Top 5 hot nhất + Card khám phá sticker).
+ */
+
+/* ========================================================
+   3-COLUMN MAIN LAYOUT
+   ======================================================== */
+.top-page-wrapper {
+  max-width: 1440px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 18px 24px 40px;
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+}
+
+/* Left sidebar overrides */
+.top-page-wrapper .sidebar {
+  width: 210px;
+  flex-shrink: 0;
+}
+
+/* Center main content */
+.top-main-content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Right sidebar */
+.top-right-sidebar {
+  width: 220px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ========================================================
+   1. HERO BANNER - TOP TẢI NHIỀU
+   ======================================================== */
+.top-hero-banner {
+  background: #F4E8D7;
+  background: linear-gradient(135deg, #F6EBDB 0%, #EBDBC5 100%);
+  border: 1.5px solid #E2D2BD;
+  border-radius: 16px;
+  padding: 18px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 3px 12px rgba(44, 29, 24, 0.04);
+}
+
+/* Subtle paper speckles texture */
+.top-hero-banner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(138, 106, 75, 0.07) 1px, transparent 1px);
+  background-size: 14px 14px;
+  pointer-events: none;
+}
+
+.hero-left-col {
+  flex: 1;
+  max-width: 440px;
+  z-index: 2;
+}
+
+.hero-crown-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.crown-icon-gold {
+  color: #E5A93C;
+  fill: #E5A93C;
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  filter: drop-shadow(0 1px 2px rgba(229, 169, 60, 0.4));
+}
+
+.hero-crown-title h1 {
+  font-family: 'Comfortaa', cursive, 'Nunito', sans-serif;
+  font-size: 27px;
+  font-weight: 800;
+  color: #2D1C14;
+  line-height: 1.15;
+  letter-spacing: -0.3px;
+  margin: 0;
+}
+
+.hero-desc-text {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #6A5548;
+  line-height: 1.4;
+  margin-bottom: 8px;
+}
+
+.hero-mini-heart {
+  color: #C35631;
+  display: inline-block;
+  font-size: 13px;
+}
+
+/* Center tilted note */
+.hero-tilted-note {
+  z-index: 2;
+  margin: 0 12px;
+  background-color: #FFFDF9;
+  border: 1.5px dashed #D3BA9E;
+  padding: 10px 18px;
+  border-radius: 12px;
+  transform: rotate(-3.5deg);
+  box-shadow: 0 4px 12px rgba(44, 29, 24, 0.06);
+  text-align: center;
+  position: relative;
+  transition: transform 0.2s ease;
+}
+
+.hero-tilted-note:hover {
+  transform: rotate(-1deg) scale(1.03);
+}
+
+.tilted-note-pin {
+  position: absolute;
+  top: -7px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 12px;
+  height: 12px;
+  background-color: #E5A93C;
+  border-radius: 50%;
+  border: 1.5px solid #FFFFFF;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+}
+
+.tilted-note-line1 {
+  display: block;
+  font-family: 'Comfortaa', cursive, 'Nunito', sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  color: #5C3A21;
+}
+
+.tilted-note-line2 {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  color: #C35631;
+  margin-top: 1px;
+}
+
+/* Right Cat illustration */
+.hero-right-cat {
+  flex-shrink: 0;
+  width: 130px;
+  height: 105px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.hero-right-cat img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* ========================================================
+   2. FILTER PILLS & SORTING BAR
+   ======================================================== */
+.top-filter-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.filter-categories-pills {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.filter-cat-btn {
+  background-color: #FCFAF6;
+  border: 1.5px solid #E2D5C3;
+  color: #4A382C;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 6.5px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.filter-cat-btn:hover {
+  background-color: #EFE7DA;
+  border-color: #D4C3AC;
+  color: #2D1C14;
+}
+
+.filter-cat-btn.active {
+  background-color: #C35631;
+  border-color: #C35631;
+  color: #FFFFFF;
+  box-shadow: 0 2px 6px rgba(195, 86, 49, 0.25);
+}
+
+.sort-container-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sort-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #7E6E64;
+}
+
+.sort-select-box {
+  position: relative;
+  display: inline-block;
+}
+
+.sort-select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: #FCFAF6;
+  border: 1.5px solid #E2D5C3;
+  color: #2D1C14;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 6.5px 32px 6.5px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.sort-select:focus {
+  border-color: #C35631;
+}
+
+.sort-chevron {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: #7E6E64;
+}
+
+/* ========================================================
+   3. STICKER CARDS GRID (4 CỘT X 3 HÀNG = 12 CARDS)
+   ======================================================== */
+.top-stickers-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+.top-sticker-card {
+  background-color: #FFFFFF;
+  border: 1px solid #E8DFD3;
+  border-radius: 12px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-shadow: 0 2px 6px rgba(44, 29, 24, 0.04);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.top-sticker-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 18px rgba(44, 29, 24, 0.09);
+  border-color: #DACABE;
+}
+
+/* Rank Badges: 1 to 12 */
+.rank-badge {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  z-index: 3;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 900;
+  color: #FFFFFF;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.18);
+}
+
+/* Rank 1: Gold Crown / Starburst */
+.rank-badge.rank-1 {
+  background: #E5A93C;
+  width: 26px;
+  height: 26px;
+  box-shadow: 0 2px 6px rgba(229, 169, 60, 0.45);
+}
+
+.rank-badge.rank-1::before {
+  content: "";
+  position: absolute;
+  top: -4px;
+  width: 14px;
+  height: 7px;
+  background: #E5A93C;
+  clip-path: polygon(0% 100%, 20% 0%, 50% 50%, 80% 0%, 100% 100%);
+}
+
+/* Rank 2: Silver */
+.rank-badge.rank-2 {
+  background: #A0ABB5;
+}
+
+/* Rank 3: Bronze */
+.rank-badge.rank-3 {
+  background: #C48E59;
+}
+
+/* Rank 4 - 12: Grey / Neutral */
+.rank-badge.rank-neutral {
+  background: #607284;
+}
+
+/* Image Thumbnail Container */
+.card-preview-box {
+  width: 100%;
+  height: 106px;
+  background-color: #FCFAF6;
+  border: 1px solid #F0E8DD;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.card-preview-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.25s ease;
+}
+
+.top-sticker-card:hover .card-preview-box img {
+  transform: scale(1.04);
+}
+
+/* Card Information */
+.card-meta-info {
+  padding: 8px 4px 2px;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-pack-title {
+  font-size: 14px;
+  font-weight: 800;
+  color: #2D1C14;
+  margin: 0 0 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.25;
+}
+
+.card-sticker-count {
+  font-size: 11.5px;
+  font-weight: 500;
+  color: #8C7B70;
+  margin-bottom: 6px;
+}
+
+/* Stats Row: Downloads & Hearts */
+.card-stats-line {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #635044;
+  margin-bottom: 8px;
+}
+
+.stat-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.stat-item svg {
+  width: 12.5px;
+  height: 12.5px;
+  flex-shrink: 0;
+  color: #7E6E64;
+}
+
+/* Blue Download Button */
+.btn-card-download {
+  width: 100%;
+  height: 31px;
+  background-color: #2F80ED;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: background-color 0.15s ease, transform 0.1s ease;
+  user-select: none;
+}
+
+.btn-card-download:hover {
+  background-color: #1F70DD;
+}
+
+.btn-card-download:active {
+  transform: scale(0.98);
+}
+
+.btn-card-download svg {
+  width: 13px;
+  height: 13px;
+  stroke-width: 2.5;
+}
+
+/* ========================================================
+   4. RIGHT SIDEBAR STYLES
+   ======================================================== */
+/* Card 1: Top 5 Hot Collections */
+.hot-ranking-card {
+  background-color: #FCFAF6;
+  border: 1px solid #E6DCD0;
+  border-radius: 14px;
+  padding: 14px 12px;
+  box-shadow: 0 2px 6px rgba(44, 29, 24, 0.03);
+}
+
+.hot-ranking-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13.5px;
+  font-weight: 800;
+  color: #2D1C14;
+  margin-bottom: 12px;
+}
+
+.hot-fire-icon {
+  width: 16px;
+  height: 16px;
+  color: #E64A19;
+  flex-shrink: 0;
+}
+
+.hot-ranking-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.hot-ranking-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  padding: 4px;
+  border-radius: 8px;
+  transition: background-color 0.15s ease;
+  cursor: pointer;
+}
+
+.hot-ranking-item:hover {
+  background-color: #EFE6DA;
+}
+
+.ranking-order-num {
+  font-size: 12.5px;
+  font-weight: 800;
+  color: #4A382C;
+  width: 14px;
+  flex-shrink: 0;
+}
+
+.ranking-thumb-img {
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+  background-color: #F8F1E7;
+  border: 1px solid #EFE4D6;
+}
+
+.ranking-info-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.ranking-name {
+  font-size: 12.5px;
+  font-weight: 800;
+  color: #2D1C14;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.25;
+}
+
+.ranking-downloads {
+  font-size: 11px;
+  font-weight: 500;
+  color: #8C7B70;
+  margin-top: 1px;
+}
+
+/* Card 2: Promo Scrapbook Card */
+.promo-scrapbook-card {
+  background-color: #F8ECD9;
+  background: linear-gradient(145deg, #F9EEDD 0%, #F5E5CE 100%);
+  border: 1.5px dashed #D5BE9F;
+  border-radius: 14px;
+  padding: 18px 14px 14px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(44, 29, 24, 0.04);
+}
+
+.promo-quote-title {
+  font-family: 'Comfortaa', cursive, 'Nunito', sans-serif;
+  font-size: 15px;
+  font-weight: 800;
+  color: #55351E;
+  line-height: 1.35;
+  margin-bottom: 12px;
+}
+
+.promo-illustration-box {
+  width: 100%;
+  height: 110px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.promo-illustration-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* ========================================================
+   5. RESPONSIVE DESIGN
+   ======================================================== */
+@media (max-width: 1200px) {
+  .top-stickers-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 992px) {
+  .top-page-wrapper {
+    flex-direction: column;
+  }
+
+  .top-page-wrapper .sidebar {
+    display: none; /* Accessible via mobile drawer */
+  }
+
+  .top-right-sidebar {
+    width: 100%;
+    flex-direction: row;
+    gap: 16px;
+  }
+
+  .hot-ranking-card,
+  .promo-scrapbook-card {
+    flex: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .top-stickers-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .top-hero-banner {
+    flex-direction: column;
+    text-align: center;
+    gap: 14px;
+  }
+
+  .hero-left-col {
+    max-width: 100%;
+  }
+
+  .hero-crown-title {
+    justify-content: center;
+  }
+
+  .hero-tilted-note {
+    margin: 8px 0;
+  }
+
+  .top-right-sidebar {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .top-stickers-grid {
+    grid-template-columns: 1fr;
+  }
+}
