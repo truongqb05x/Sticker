@@ -1,0 +1,569 @@
+/**
+ * ========================================================
+ * GIỚI THIỆU (ABOUT US) SPECIFIC STYLES
+ * ========================================================
+ * Giao diện trang giới thiệu StickerHub phong cách Scrapbook / Craft Paper:
+ * - Breadcrumb: Trang chủ > Giới thiệu
+ * - Bảng lưu niệm thủ công (Scrapbook Board)
+ * - Cột trái: Thẻ polaroid bé mèo ôm tim lan tỏa yêu thương
+ * - Cột giữa: Tiêu đề, sứ mệnh, 4 thẻ tính năng nổi bật & banner cảm ơn
+ * - Cột phải: Bộ 3 polaroid xếp lớp (mèo ngủ, gấu trúc boba, núi hồ) kèm ghi chú viết tay
+ */
+
+/* ========================================================
+   MAIN ABOUT PAGE WRAPPER & BREADCRUMB
+   ======================================================== */
+.about-page-wrapper {
+  max-width: 1380px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 16px 24px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1;
+}
+
+/* Breadcrumb Navigation */
+.about-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #7E6E64;
+  user-select: none;
+}
+
+.breadcrumb-home {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #554438;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.breadcrumb-home:hover {
+  color: #2D1C14;
+}
+
+.breadcrumb-icon {
+  width: 15px;
+  height: 15px;
+}
+
+.breadcrumb-separator {
+  color: #B4A497;
+  font-weight: 500;
+}
+
+.breadcrumb-current {
+  color: #2D1C14;
+  font-weight: 700;
+}
+
+/* ========================================================
+   SCRAPBOOK MAIN BOARD CONTAINER
+   ======================================================== */
+.about-scrapbook-board {
+  background: #FCF8F2;
+  background: linear-gradient(145deg, #FCFAF6 0%, #F8F2E8 100%);
+  border: 1.5px solid #E6DCD0;
+  border-radius: 20px;
+  padding: 34px 32px 38px;
+  display: flex;
+  gap: 32px;
+  align-items: flex-start;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(44, 29, 24, 0.05);
+}
+
+/* Subtle paper texture */
+.about-scrapbook-board::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(148, 114, 82, 0.07) 1px, transparent 1px);
+  background-size: 16px 16px;
+  pointer-events: none;
+}
+
+/* ========================================================
+   CỘT TRÁI: POLAROID CRAFT CARD (BÉ MÈO ÔM TIM)
+   ======================================================== */
+.about-left-col {
+  width: 235px;
+  flex-shrink: 0;
+  z-index: 2;
+}
+
+.craft-polaroid-card {
+  background-color: #FFFDF9;
+  border: 1.5px dashed #D6C2A9;
+  border-radius: 16px;
+  padding: 18px 14px 20px;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 6px 18px rgba(44, 29, 24, 0.07);
+  transform: rotate(-2.5deg);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.craft-polaroid-card:hover {
+  transform: rotate(-0.5deg) scale(1.02);
+  box-shadow: 0 10px 24px rgba(44, 29, 24, 0.1);
+}
+
+/* Tape at top of card */
+.craft-card-tape {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 58px;
+  height: 18px;
+  background-color: rgba(229, 212, 188, 0.75);
+  border: 1px dashed rgba(160, 130, 95, 0.4);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+
+.craft-card-img-box {
+  width: 100%;
+  height: 155px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.craft-card-img-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.craft-card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.craft-brand-title {
+  font-family: 'Nunito', -apple-system, sans-serif;
+  font-size: 21px;
+  font-weight: 900;
+  color: #2D1C14;
+  letter-spacing: -0.3px;
+  margin: 0;
+}
+
+.hub-part {
+  color: #C35631;
+}
+
+.craft-card-slogan {
+  font-family: 'Comfortaa', cursive, 'Nunito', sans-serif;
+  font-size: 14.5px;
+  font-weight: 700;
+  color: #634E41;
+  line-height: 1.35;
+  margin: 0;
+}
+
+/* ========================================================
+   CỘT GIỮA: NỘI DUNG CHÍNH (SỨ MỆNH & TÍNH NĂNG)
+   ======================================================== */
+.about-center-col {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  z-index: 2;
+}
+
+/* Header chính */
+.about-header-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.about-cat-avatar {
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+}
+
+.about-main-heading {
+  font-family: 'Comfortaa', cursive, 'Nunito', sans-serif;
+  font-size: 30px;
+  font-weight: 800;
+  color: #2D1C14;
+  letter-spacing: -0.4px;
+  margin: 0;
+  line-height: 1.2;
+}
+
+/* Tagline */
+.about-main-tagline {
+  font-family: 'Nunito', sans-serif;
+  font-size: 16.5px;
+  font-weight: 800;
+  color: #4A3326;
+  margin: 0;
+  line-height: 1.35;
+}
+
+/* Đoạn văn giới thiệu */
+.about-intro-text {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.65;
+  color: #4C3C32;
+  margin: 0;
+}
+
+/* Phần: Vì sao nên chọn StickerHub? */
+.about-why-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.star-icon-why {
+  color: #E5A93C;
+  fill: #E5A93C;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.about-why-title h3 {
+  font-family: 'Comfortaa', cursive, 'Nunito', sans-serif;
+  font-size: 18.5px;
+  font-weight: 800;
+  color: #2D1C14;
+  margin: 0;
+}
+
+/* Lưới 4 tính năng */
+.about-features-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-top: 2px;
+}
+
+.feature-box {
+  background-color: #FFFFFF;
+  border: 1px solid #EBE1D5;
+  border-radius: 14px;
+  padding: 16px 12px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 2px 6px rgba(44, 29, 24, 0.03);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.feature-box:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 18px rgba(44, 29, 24, 0.08);
+  border-color: #DCCFBF;
+}
+
+.feature-icon-wrapper {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+  transition: transform 0.2s ease;
+}
+
+.feature-box:hover .feature-icon-wrapper {
+  transform: scale(1.08);
+}
+
+/* Màu biểu tượng tính năng */
+.icon-theme-orange {
+  background-color: #FFF3E5;
+  color: #D97706;
+}
+
+.icon-theme-blue {
+  background-color: #E0F2FE;
+  color: #0284C7;
+}
+
+.icon-theme-green {
+  background-color: #DCFCE7;
+  color: #16A34A;
+}
+
+.icon-theme-rose {
+  background-color: #FFE4E6;
+  color: #E11D48;
+}
+
+.feature-box-title {
+  font-size: 13.5px;
+  font-weight: 800;
+  color: #2D1C14;
+  margin: 0 0 4px;
+  line-height: 1.25;
+}
+
+.feature-box-desc {
+  font-size: 11.5px;
+  font-weight: 500;
+  color: #7E6E64;
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* Banner lời cảm ơn */
+.about-thanks-note {
+  background-color: #FFF9F0;
+  border: 1.5px dashed #DCCAB5;
+  border-radius: 14px;
+  padding: 13px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.thanks-megaphone-icon {
+  width: 32px;
+  height: 32px;
+  color: #E5A93C;
+  flex-shrink: 0;
+}
+
+.thanks-text-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.thanks-text-content strong {
+  font-size: 13.5px;
+  font-weight: 800;
+  color: #2D1C14;
+}
+
+.thanks-text-content p {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #6A5548;
+  margin: 0;
+}
+
+.heart-emoji {
+  color: #C35631;
+  display: inline-block;
+}
+
+/* ========================================================
+   CỘT PHẢI: STACK POLAROID & HÌNH DÁN TRANG TRÍ
+   ======================================================== */
+.about-right-col {
+  width: 230px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+  padding-top: 4px;
+}
+
+/* Polaroid frame */
+.polaroid-item {
+  background-color: #FFFFFF;
+  border: 1px solid #E2D6C7;
+  border-radius: 8px;
+  padding: 8px 8px 18px;
+  box-shadow: 0 4px 14px rgba(44, 29, 24, 0.08);
+  position: relative;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.polaroid-item:hover {
+  box-shadow: 0 8px 22px rgba(44, 29, 24, 0.12);
+  z-index: 5 !important;
+}
+
+.polaroid-pin-dot {
+  position: absolute;
+  top: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8px;
+  height: 8px;
+  background-color: #D4A373;
+  border-radius: 50%;
+  border: 1px solid #FFFFFF;
+}
+
+.polaroid-img-wrap {
+  width: 100%;
+  border-radius: 6px;
+  overflow: hidden;
+  background-color: #F8F2E8;
+}
+
+.polaroid-img-wrap img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Stacked polaroids positioning */
+.polaroid-cat {
+  width: 135px;
+  transform: rotate(5deg);
+  z-index: 2;
+  margin-bottom: -16px;
+}
+
+.polaroid-cat:hover {
+  transform: rotate(2deg) scale(1.04);
+}
+
+.polaroid-panda {
+  width: 140px;
+  transform: rotate(-6deg);
+  z-index: 3;
+  margin-bottom: -16px;
+}
+
+.polaroid-panda:hover {
+  transform: rotate(-2deg) scale(1.04);
+}
+
+.polaroid-nature {
+  width: 150px;
+  transform: rotate(4deg);
+  z-index: 1;
+}
+
+.polaroid-nature:hover {
+  transform: rotate(1deg) scale(1.04);
+}
+
+/* Star cookie sticker */
+.star-cookie-deco {
+  position: absolute;
+  right: 10px;
+  bottom: 85px;
+  z-index: 4;
+  transform: rotate(12deg);
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+  transition: transform 0.2s ease;
+}
+
+.star-cookie-deco:hover {
+  transform: rotate(25deg) scale(1.1);
+}
+
+/* Handwritten note & arrow */
+.handwritten-footer-note {
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transform: rotate(-5deg);
+}
+
+.note-hearts {
+  font-size: 13px;
+  color: #C35631;
+  margin-bottom: 2px;
+}
+
+.note-text-line {
+  font-family: 'Comfortaa', cursive, 'Nunito', sans-serif;
+  font-size: 15px;
+  font-weight: 800;
+  color: #4A3324;
+  line-height: 1.3;
+}
+
+.note-arrow-svg {
+  margin-top: 4px;
+}
+
+/* ========================================================
+   RESPONSIVE DESIGN
+   ======================================================== */
+@media (max-width: 1200px) {
+  .about-scrapbook-board {
+    gap: 20px;
+    padding: 28px 24px;
+  }
+
+  .about-features-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 992px) {
+  .about-scrapbook-board {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .about-left-col {
+    width: 100%;
+    max-width: 280px;
+  }
+
+  .craft-polaroid-card {
+    transform: none;
+  }
+
+  .about-right-col {
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+    padding-top: 16px;
+  }
+
+  .polaroid-cat,
+  .polaroid-panda,
+  .polaroid-nature {
+    margin-bottom: 0;
+    transform: none;
+  }
+
+  .star-cookie-deco {
+    position: static;
+  }
+}
+
+@media (max-width: 600px) {
+  .about-main-heading {
+    font-size: 24px;
+  }
+
+  .about-features-container {
+    grid-template-columns: 1fr;
+  }
+
+  .about-thanks-note {
+    flex-direction: column;
+    text-align: center;
+  }
+}

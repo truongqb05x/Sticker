@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Giới thiệu về StickerHub - Khám phá thế giới Sticker</title>
+
+  <!-- Meta Description -->
+  <meta name="description" content="Tìm hiểu về StickerHub - nền tảng chia sẻ và lưu trữ các bộ sưu tập sticker chất lượng cao hoàn toàn miễn phí, cùng lan tỏa những điều dễ thương.">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="../../assets/logo_cat.svg">
+
+  <!-- Google Fonts: Comfortaa & Nunito -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700;800&family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- MASTER LAYOUT CSS (Bao gồm variables, base, header, sidebar, drawer, footer) -->
+  <link rel="stylesheet" href="../../static/user/layout/layout.css">
+
+  <!-- CSS riêng của trang Giới thiệu -->
+  <link rel="stylesheet" href="../../static/user/pages/gioithieu.css">
+</head>
+<body>
+
+  <!-- ========================================================
+       TOP HEADER / NAVIGATION (DÙNG CHUNG THEO LAYOUT)
+       ======================================================== -->
+  <header class="site-header">
+    <div class="header-inner">
+      <!-- Left: Logo + Desktop Navigation -->
+      <div class="header-left">
+        <!-- Logo -->
+        <a href="../../index.html" class="brand-logo" id="logoLink" title="StickerHub">
+          <img src="../../assets/logo_cat.svg" alt="StickerHub Cat Logo" width="38" height="38">
+          <span class="brand-title">Sticker<span class="hub-part">Hub</span></span>
+        </a>
+
+        <!-- Navigation Tabs -->
+        <nav aria-label="Main Navigation">
+          <ul class="nav-menu">
+            <li>
+              <a href="../../index.html" class="nav-link" data-tab="home" id="navHome">
+                <svg width="15" height="15" viewBox="0 0 20 20" fill="currentColor">
+                  <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
+                </svg>
+                <span>Trang chủ</span>
+              </a>
+            </li>
+            <li>
+              <a href="bosuutap.html" class="nav-link" data-tab="collections" id="navCollections">
+                <svg width="15" height="15" viewBox="0 0 20 20" fill="currentColor">
+                  <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/>
+                </svg>
+                <span>Bộ sưu tập</span>
+              </a>
+            </li>
+            <li>
+              <a href="toptainhieu.html" class="nav-link" data-tab="top-downloaded" id="navTop">
+                <svg width="15" height="15" viewBox="0 0 20 20" fill="currentColor">
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                </svg>
+                <span>Top tải nhiều</span>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="nav-link" data-tab="guide" id="navGuide">
+                <svg width="15" height="15" viewBox="0 0 20 20" fill="currentColor">
+                  <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"/>
+                </svg>
+                <span>Hướng dẫn</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+
+      <!-- Right: Search Box & Mobile Hamburger Button -->
+      <div class="header-actions">
+        <!-- Ô Tìm Kiếm -->
+        <div class="search-box" id="searchBoxContainer">
+          <input type="text" class="search-input" id="stickerSearch" placeholder="Tìm kiếm sticker..." aria-label="Tìm kiếm sticker" autocomplete="off">
+          
+          <button class="clear-search-btn" id="clearSearchBtn" aria-label="Xóa nội dung tìm kiếm" type="button" title="Xóa">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+          
+          <button class="search-btn" id="searchBtn" aria-label="Nút tìm kiếm" type="button">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </button>
+
+          <!-- Dropdown gợi ý tìm kiếm realtime -->
+          <div class="search-suggestions" id="searchSuggestions" role="listbox" aria-label="Gợi ý bộ sưu tập sticker"></div>
+        </div>
+
+        <!-- Nút 3 gạch mở mobile drawer ở bên phải -->
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Mở menu điều hướng" type="button" title="Menu">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================================
+       MOBILE NAVIGATION DRAWER (DÙNG CHUNG THEO LAYOUT)
+       ======================================================== -->
+  <div class="mobile-drawer-backdrop" id="drawerBackdrop"></div>
+  <aside class="mobile-drawer" id="mobileDrawer" aria-label="Menu điều hướng di động">
+    <div class="drawer-header">
+      <div class="brand-logo">
+        <img src="../../assets/logo_cat.svg" alt="StickerHub" width="30" height="30">
+        <span class="brand-title" style="font-size: 20px;">Sticker<span class="hub-part">Hub</span></span>
+      </div>
+      <button class="drawer-close-btn" id="drawerCloseBtn" aria-label="Đóng menu" type="button">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+    
+    <div class="drawer-body">
+      <div>
+        <div class="drawer-section-title">Menu điều hướng</div>
+        <ul class="drawer-nav">
+          <li>
+            <a href="../../index.html" class="drawer-nav-item" data-tab="home">
+              <svg width="18" height="18" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
+              </svg>
+              <span>Trang chủ</span>
+            </a>
+          </li>
+          <li>
+            <a href="bosuutap.html" class="drawer-nav-item" data-tab="collections">
+              <svg width="18" height="18" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/>
+              </svg>
+              <span>Bộ sưu tập</span>
+            </a>
+          </li>
+          <li>
+            <a href="toptainhieu.html" class="drawer-nav-item" data-tab="top-downloaded">
+              <svg width="18" height="18" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+              </svg>
+              <span>Top tải nhiều</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="drawer-nav-item" data-tab="guide">
+              <svg width="18" height="18" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"/>
+              </svg>
+              <span>Hướng dẫn</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ========================================================
+       NỘI DUNG CHÍNH (TRANG GIỚI THIỆU - PHONG CÁCH SCRAPBOOK)
+       ======================================================== -->
+  <main class="about-page-wrapper">
+    
+    <!-- Breadcrumb: Trang chủ > Giới thiệu -->
+    <nav class="about-breadcrumb" aria-label="Breadcrumb">
+      <a href="../../index.html" class="breadcrumb-home">
+        <svg class="breadcrumb-icon" viewBox="0 0 20 20" fill="currentColor">
+          <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
+        </svg>
+        <span>Trang chủ</span>
+      </a>
+      <span class="breadcrumb-separator">&gt;</span>
+      <span class="breadcrumb-current">Giới thiệu</span>
+    </nav>
+
+    <!-- Bảng lưu niệm Scrapbook Board -->
+    <div class="about-scrapbook-board">
+
+      <!-- ================= CỘT TRÁI: THẺ POLAROID BÉ MÈO ÔM TIM ================= -->
+      <div class="about-left-col">
+        <div class="craft-polaroid-card">
+          <!-- Băng dính thủ công -->
+          <div class="craft-card-tape"></div>
+          
+          <!-- Hình ảnh bé mèo ôm tim đỏ -->
+          <div class="craft-card-img-box">
+            <img src="../../assets/promo_cat_heart.svg" alt="Bé mèo StickerHub ôm tim lan tỏa sự dễ thương">
+          </div>
+
+          <!-- Thông điệp thương hiệu -->
+          <div class="craft-card-info">
+            <h3 class="craft-brand-title">Sticker<span class="hub-part">Hub</span></h3>
+            <p class="craft-card-slogan">Cùng lan tỏa<br>những điều dễ thương!</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= CỘT GIỮA: NỘI DUNG GIỚI THIỆU & TÍNH NĂNG ================= -->
+      <div class="about-center-col">
+        
+        <!-- Tiêu đề trang với avatar bé mèo -->
+        <div class="about-header-group">
+          <img src="../../assets/logo_cat.svg" alt="Cat Logo" class="about-cat-avatar">
+          <h1 class="about-main-heading">Giới thiệu về Sticker<span class="hub-part">Hub</span></h1>
+        </div>
+
+        <!-- Tagline nổi bật -->
+        <h2 class="about-main-tagline">Kho sticker miễn phí, đa dạng chủ đề, dễ dàng tải về!</h2>
+
+        <!-- Đoạn văn giới thiệu nền tảng -->
+        <p class="about-intro-text">
+          StickerHub là nền tảng chia sẻ và lưu trữ các bộ sticker chất lượng cao hoàn toàn miễn phí. Chúng tôi mang đến cho bạn hàng ngàn bộ sticker với nhiều chủ đề phong phú như: anime, động vật, chibi, phong cảnh, tình yêu, biểu cảm,... giúp bạn thể hiện cảm xúc và làm cho cuộc trò chuyện thêm sinh động, thú vị hơn.
+        </p>
+
+        <!-- Tiêu đề: Vì sao nên chọn StickerHub? -->
+        <div class="about-why-title">
+          <svg class="star-icon-why" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+          </svg>
+          <h3>Vì sao nên chọn StickerHub?</h3>
+        </div>
+
+        <!-- 4 Thẻ tính năng -->
+        <div class="about-features-container">
+          
+          <!-- Tính năng 1: Đa dạng chủ đề -->
+          <div class="feature-box">
+            <div class="feature-icon-wrapper icon-theme-orange">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="4"></rect>
+                <path d="M3 9h18"></path>
+                <circle cx="8" cy="6" r="1" fill="currentColor"></circle>
+                <circle cx="12" cy="6" r="1" fill="currentColor"></circle>
+              </svg>
+            </div>
+            <h4 class="feature-box-title">Đa dạng chủ đề</h4>
+            <p class="feature-box-desc">Hàng ngàn bộ sticker với nhiều phong cách khác nhau.</p>
+          </div>
+
+          <!-- Tính năng 2: Tải xuống miễn phí -->
+          <div class="feature-box">
+            <div class="feature-icon-wrapper icon-theme-blue">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"></path>
+                <polyline points="12 13 12 19"></polyline>
+                <polyline points="9 16 12 19 15 16"></polyline>
+              </svg>
+            </div>
+            <h4 class="feature-box-title">Tải xuống miễn phí</h4>
+            <p class="feature-box-desc">Dễ dàng tải về và sử dụng ngay.</p>
+          </div>
+
+          <!-- Tính năng 3: Chất lượng cao -->
+          <div class="feature-box">
+            <div class="feature-icon-wrapper icon-theme-green">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                <polyline points="9 12 11 14 15 10"></polyline>
+              </svg>
+            </div>
+            <h4 class="feature-box-title">Chất lượng cao</h4>
+            <p class="feature-box-desc">Sticker sắc nét, đủ kích thước.</p>
+          </div>
+
+          <!-- Tính năng 4: Cộng đồng thân thiện -->
+          <div class="feature-box">
+            <div class="feature-icon-wrapper icon-theme-rose">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+              </svg>
+            </div>
+            <h4 class="feature-box-title">Cộng đồng thân thiện</h4>
+            <p class="feature-box-desc">Cùng chia sẻ và dùng sticker với nhau.</p>
+          </div>
+
+        </div>
+
+        <!-- Banner Lời cảm ơn -->
+        <div class="about-thanks-note">
+          <svg class="thanks-megaphone-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m3 11 18-5v12L3 14v-3z"></path>
+            <path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"></path>
+          </svg>
+          <div class="thanks-text-content">
+            <strong>Cảm ơn bạn đã ghé thăm StickerHub!</strong>
+            <p>Hãy khám phá và tải về những bộ sticker mà bạn yêu thích nhé! <span class="heart-emoji">❤</span></p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ================= CỘT PHẢI: STACK POLAROID & HÌNH DÁN ================= -->
+      <div class="about-right-col">
+        
+        <!-- Polaroid 1: Chú mèo ngủ say zzz -->
+        <div class="polaroid-item polaroid-cat">
+          <div class="polaroid-pin-dot"></div>
+          <div class="polaroid-img-wrap">
+            <img src="../../assets/polaroid_sleeping_cat.svg" alt="Bé mèo ngủ say zzz" loading="lazy">
+          </div>
+        </div>
+
+        <!-- Polaroid 2: Gấu trúc uống trà sữa boba -->
+        <div class="polaroid-item polaroid-panda">
+          <div class="polaroid-pin-dot"></div>
+          <div class="polaroid-img-wrap">
+            <img src="../../assets/polaroid_panda_boba.svg" alt="Bé gấu trúc uống trà sữa boba" loading="lazy">
+          </div>
+        </div>
+
+        <!-- Polaroid 3: Phong cảnh thiên nhiên núi tuyết và hồ nước -->
+        <div class="polaroid-item polaroid-nature">
+          <div class="polaroid-pin-dot"></div>
+          <div class="polaroid-img-wrap">
+            <img src="../../assets/polaroid_nature_mountain.svg" alt="Phong cảnh núi và hồ thiên nhiên" loading="lazy">
+          </div>
+        </div>
+
+        <!-- Sticker bánh quy ngôi sao vàng -->
+        <div class="star-cookie-deco" title="Sticker ngôi sao may mắn">
+          <svg viewBox="0 0 40 40" width="38" height="38">
+            <polygon points="20,2 25,14 38,15 28,24 31,37 20,30 9,37 12,24 2,15 15,14" fill="#FBBF24" stroke="#8C4A15" stroke-width="2.5" stroke-linejoin="round"/>
+            <circle cx="16" cy="18" r="1.5" fill="#8C4A15"/>
+            <circle cx="24" cy="18" r="1.5" fill="#8C4A15"/>
+            <path d="M 18 22 Q 20 25 22 22" fill="none" stroke="#8C4A15" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+
+        <!-- Ghi chú viết tay kèm mũi tên uốn lượn -->
+        <div class="handwritten-footer-note">
+          <div class="note-hearts">✨ ❤</div>
+          <div class="note-text-line">
+            <span>Sticker nhỏ</span><br>
+            <span>Niềm vui lớn!</span>
+          </div>
+          <svg class="note-arrow-svg" width="92" height="32" viewBox="0 0 92 32" fill="none">
+            <path d="M 8 12 C 30 28 65 28 82 14" stroke="#8C5C36" stroke-width="2" stroke-linecap="round" stroke-dasharray="4 3"/>
+            <polyline points="74 13 83 14 80 23" stroke="#8C5C36" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- ========================================================
+       FOOTER (DÙNG CHUNG THEO LAYOUT)
+       ======================================================== -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-copy">
+        © 2026 StickerHub. All rights reserved.
+      </div>
+
+      <div class="footer-right">
+        <ul class="footer-links">
+          <li><a href="gioithieu.html" class="footer-link">Giới thiệu</a></li>
+          <li><a href="dieukhoansudung.html" class="footer-link">Điều khoản sử dụng</a></li>
+          <li><a href="javascript:void(0)" class="footer-link">Liên hệ</a></li>
+        </ul>
+
+        <div class="footer-socials">
+          <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="Facebook">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+            </svg>
+          </a>
+          <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="Instagram">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+            </svg>
+          </a>
+          <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="YouTube">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- ========================================================
+       MASTER LAYOUT JAVASCRIPT
+       ======================================================== -->
+  <script src="../../static/user/layout/layout.js"></script>
+
+</body>
+</html>

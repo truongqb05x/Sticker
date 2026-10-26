@@ -1,0 +1,528 @@
+/**
+ * ========================================================
+ * ĐIỀU KHOẢN SỬ DỤNG (TERMS OF SERVICE) SPECIFIC STYLES
+ * ========================================================
+ * Phong cách Scrapbook / Craft Paper đồng bộ với StickerHub:
+ * - Breadcrumb: Trang chủ > Điều khoản sử dụng
+ * - Cột trái: Thẻ cộng đồng văn minh (Kraft sticky note + bé mèo ôm tim)
+ * - Cột phải: Bảng điều khoản viền nét đứt (Dashed board card)
+ *   + Tiêu đề kèm icon tài liệu dễ thương
+ *   + Bé mèo nhòm ngộ nghĩnh kèm bóng thoại "Sử dụng có trách nhiệm nhé! ❤"
+ *   + 5 mục điều khoản với badge số tròn và pill tiêu đề
+ *   + Lời nhắn cảm ơn nét vẽ tay ở góc dưới phải
+ */
+
+/* ========================================================
+   MAIN PAGE WRAPPER & BREADCRUMB
+   ======================================================== */
+.terms-page-wrapper {
+  max-width: 1360px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 16px 24px 52px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  flex: 1;
+}
+
+/* Breadcrumb Navigation */
+.terms-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #7E6E64;
+  user-select: none;
+}
+
+.breadcrumb-home {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #554438;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.breadcrumb-home:hover {
+  color: #2D1C14;
+}
+
+.breadcrumb-icon {
+  width: 15px;
+  height: 15px;
+}
+
+.breadcrumb-separator {
+  color: #B4A497;
+  font-weight: 500;
+}
+
+.breadcrumb-current {
+  color: #2D1C14;
+  font-weight: 700;
+}
+
+/* ========================================================
+   2-COLUMN LAYOUT GRID
+   ======================================================== */
+.terms-layout-grid {
+  display: grid;
+  grid-template-columns: 295px 1fr;
+  gap: 28px;
+  align-items: start;
+}
+
+/* ========================================================
+   CỘT TRÁI: THẺ CỘNG ĐỒNG VĂN MINH
+   ======================================================== */
+.terms-community-card {
+  background: #FFFDF9;
+  border: 1.5px solid #EADBCC;
+  border-radius: 20px;
+  padding: 24px 18px 20px;
+  box-shadow: 0 4px 18px rgba(44, 29, 24, 0.04);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+/* Kraft Sticky Note */
+.kraft-sticky-note {
+  background: #F3E5D4;
+  background: linear-gradient(150deg, #F8EFE4 0%, #EEDECB 100%);
+  border: 1px dashed #D3C1AD;
+  border-radius: 14px;
+  padding: 30px 16px 24px;
+  width: 100%;
+  position: relative;
+  box-shadow: 0 4px 12px rgba(44, 29, 24, 0.04);
+  text-align: center;
+}
+
+/* Washi tapes on note corners */
+.washi-tape-left {
+  position: absolute;
+  top: -9px;
+  left: 12px;
+  width: 62px;
+  height: 20px;
+  background-color: rgba(226, 203, 172, 0.85);
+  transform: rotate(-22deg);
+  border: 1px dashed rgba(160, 128, 92, 0.45);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.washi-tape-right {
+  position: absolute;
+  top: -9px;
+  right: 12px;
+  width: 54px;
+  height: 20px;
+  background-color: rgba(226, 203, 172, 0.85);
+  transform: rotate(18deg);
+  border: 1px dashed rgba(160, 128, 92, 0.45);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.kraft-note-text {
+  font-family: 'Comfortaa', cursive, 'Nunito', sans-serif;
+  font-size: 16.5px;
+  font-weight: 700;
+  color: #3E291B;
+  line-height: 1.55;
+  margin: 0;
+  letter-spacing: -0.2px;
+}
+
+.kraft-note-heart {
+  display: inline-block;
+  font-size: 18px;
+  color: #C45832;
+  margin-top: 8px;
+}
+
+/* Cat hugging heart illustration */
+.terms-cat-illu-box {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4px 6px;
+}
+
+.terms-community-cat-img {
+  width: 100%;
+  max-width: 230px;
+  height: auto;
+  display: block;
+  object-fit: contain;
+  transition: transform 0.28s ease;
+}
+
+.terms-community-card:hover .terms-community-cat-img {
+  transform: scale(1.035);
+}
+
+/* ========================================================
+   CỘT PHẢI: BẢNG ĐIỀU KHOẢN (DASHED BOARD CARD)
+   ======================================================== */
+.terms-board-card {
+  background: #FFFDF9;
+  border: 2px dashed #C8B5A2;
+  border-radius: 22px;
+  padding: 38px 44px 44px;
+  position: relative;
+  box-shadow: 0 4px 20px rgba(44, 29, 24, 0.04);
+}
+
+/* Card Header */
+.terms-board-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  padding-bottom: 24px;
+  margin-bottom: 28px;
+  border-bottom: 1.5px dashed #E5D7C7;
+  position: relative;
+}
+
+.terms-title-group {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+/* Cute document icon */
+.terms-doc-icon {
+  width: 44px;
+  height: 52px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.terms-title-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.terms-main-title {
+  font-family: 'Comfortaa', cursive, 'Nunito', sans-serif;
+  font-size: 32px;
+  font-weight: 800;
+  color: #2D1C14;
+  letter-spacing: -0.5px;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.terms-subtitle {
+  font-size: 15px;
+  font-weight: 500;
+  color: #7A6759;
+  margin: 8px 0 0 0;
+  line-height: 1.45;
+}
+
+/* Header Decor: Peeking Kitten + Speech Bubble */
+.terms-header-decor {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+  position: relative;
+}
+
+/* Speech bubble */
+.cat-speech-bubble {
+  background: #FFFDF9;
+  border: 1.5px dashed #A68770;
+  border-radius: 20px;
+  padding: 8px 14px;
+  font-family: 'Comfortaa', cursive, 'Nunito', sans-serif;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #3A2518;
+  text-align: center;
+  line-height: 1.35;
+  position: relative;
+  box-shadow: 0 2px 6px rgba(44, 29, 24, 0.04);
+  white-space: nowrap;
+}
+
+/* Bubble tail pointing to cat */
+.cat-speech-bubble::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: -8px;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  border-left: 8px solid #FFFDF9;
+  z-index: 2;
+}
+
+.cat-speech-bubble::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: -10px;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+  border-left: 9px solid #A68770;
+  z-index: 1;
+}
+
+.bubble-heart {
+  color: #C45832;
+  display: inline-block;
+  margin-left: 2px;
+}
+
+/* Peeking kitten mascot */
+.cat-peeking-mascot {
+  width: 72px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.cat-peeking-mascot svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Floating sparkle dots around cat */
+.cat-sparkles-decor {
+  position: absolute;
+  top: -8px;
+  right: -6px;
+  color: #D4A373;
+  font-size: 14px;
+  user-select: none;
+}
+
+/* ========================================================
+   5 TERMS SECTIONS LIST
+   ======================================================== */
+.terms-sections-list {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+
+.terms-section-item {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Section Header (Number badge + Title pill) */
+.terms-item-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.terms-item-badge {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #2D1C14;
+  color: #FFFFFF;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 2px 4px rgba(44, 29, 24, 0.12);
+}
+
+.terms-item-title-pill {
+  background: #F3ECE2;
+  color: #2D1C14;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  font-size: 16.5px;
+  padding: 4px 14px;
+  border-radius: 8px;
+  letter-spacing: -0.2px;
+}
+
+/* Section content bullet list */
+.terms-item-content {
+  list-style: none;
+  padding-left: 38px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.terms-item-content li {
+  position: relative;
+  font-size: 14.5px;
+  font-weight: 500;
+  color: #4A3728;
+  line-height: 1.6;
+}
+
+/* Custom bullet dot */
+.terms-item-content li::before {
+  content: "•";
+  position: absolute;
+  left: -15px;
+  top: -1px;
+  font-size: 16px;
+  color: #2D1C14;
+  font-weight: 900;
+}
+
+/* Email link */
+.terms-email-link {
+  font-weight: 700;
+  color: #2D1C14;
+  text-decoration: underline;
+  text-decoration-color: #D6A87C;
+  text-underline-offset: 3px;
+  transition: color 0.15s ease, text-decoration-color 0.15s ease;
+}
+
+.terms-email-link:hover {
+  color: #C45832;
+  text-decoration-color: #C45832;
+}
+
+/* ========================================================
+   BOTTOM-RIGHT THANK YOU DOODLE
+   ======================================================== */
+.terms-bottom-doodle {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 18px;
+  user-select: none;
+}
+
+.doodle-sparkles-icon {
+  width: 18px;
+  height: 18px;
+  color: #C45832;
+  margin-bottom: 12px;
+}
+
+.doodle-text {
+  font-family: 'Comfortaa', cursive, 'Nunito', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: #5C4434;
+  line-height: 1.4;
+  text-align: right;
+  letter-spacing: -0.2px;
+}
+
+.doodle-heart {
+  color: #C45832;
+  display: inline-block;
+  margin-left: 2px;
+}
+
+/* ========================================================
+   RESPONSIVE BREAKPOINTS
+   ======================================================== */
+@media (max-width: 1024px) {
+  .terms-layout-grid {
+    grid-template-columns: 260px 1fr;
+    gap: 20px;
+  }
+
+  .terms-board-card {
+    padding: 30px 28px 36px;
+  }
+
+  .terms-main-title {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 860px) {
+  .terms-page-wrapper {
+    padding: 14px 16px 40px;
+  }
+
+  .terms-layout-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .terms-community-card {
+    max-width: 420px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .terms-board-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .terms-header-decor {
+    align-self: flex-start;
+  }
+
+  .terms-board-card {
+    padding: 26px 20px 30px;
+  }
+
+  .terms-item-content {
+    padding-left: 28px;
+  }
+
+  .terms-main-title {
+    font-size: 25px;
+  }
+}
+
+@media (max-width: 480px) {
+  .cat-speech-bubble {
+    white-space: normal;
+    font-size: 11.5px;
+    padding: 6px 10px;
+  }
+
+  .terms-title-group {
+    gap: 12px;
+  }
+
+  .terms-doc-icon {
+    width: 36px;
+    height: 42px;
+  }
+
+  .terms-main-title {
+    font-size: 22px;
+  }
+
+  .terms-item-title-pill {
+    font-size: 15px;
+    padding: 3px 10px;
+  }
+}
