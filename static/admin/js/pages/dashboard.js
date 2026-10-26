@@ -5,20 +5,13 @@
  */
 
 document.addEventListener("DOMContentLoaded", function () {
-  // 1. Khởi tạo Lucide Icons
+  // 1. Khởi tạo Lucide Icons nếu chưa khởi tạo
   if (window.lucide) {
     window.lucide.createIcons();
   }
 
-  // 2. Toggle Mobile Sidebar
-  const sidebarToggleBtn = document.getElementById("sidebarToggleBtn");
-  const adminSidebar = document.getElementById("adminSidebar");
+  // 2. Xử lý Biểu đồ Xu hướng Tải Sticker (Interactive Hover Tooltip & Filter)
 
-  sidebarToggleBtn?.addEventListener("click", function () {
-    adminSidebar?.classList.toggle("show-mobile");
-  });
-
-  // 3. Xử lý Biểu đồ Xu hướng Tải Sticker (Interactive Hover Tooltip & Filter)
   const trendChartWrapper = document.getElementById("trendChartWrapper");
   const chartBarsArea = document.getElementById("chartBarsArea");
   const chartTooltip = document.getElementById("chartHoverTooltip");
@@ -148,6 +141,14 @@ document.addEventListener("DOMContentLoaded", function () {
         .join("");
     }
 
+    // Cập nhật nhãn đơn vị thời gian tương ứng
+    const chartUnitText = document.getElementById("chartUnitText");
+    if (chartUnitText) {
+      if (rangeKey === "7d") chartUnitText.textContent = "Đơn vị: Thứ / Ngày (T2 - CN)";
+      else if (rangeKey === "30d") chartUnitText.textContent = "Đơn vị: Ngày trong tháng (01/10 - 26/10)";
+      else if (rangeKey === "month") chartUnitText.textContent = "Đơn vị: Tuần trong tháng (Tuần 1 - Tuần 4)";
+    }
+
     // Cập nhật các cột dữ liệu
     const colsHtml = dataset.cols.map(c => `
       <div class="chart-col ${c.highlight ? 'highlight' : ''}" 
@@ -168,7 +169,7 @@ document.addEventListener("DOMContentLoaded", function () {
       <div class="chart-grid-line" style="top: 25%;"></div>
       <div class="chart-grid-line" style="top: 50%;"></div>
       <div class="chart-grid-line" style="top: 75%;"></div>
-      <div class="chart-grid-line" style="top: 100%;"></div>
+      <div class="chart-baseline-axis"></div>
       ${colsHtml}
     `;
 
@@ -218,47 +219,7 @@ document.addEventListener("DOMContentLoaded", function () {
   tableFilterSelect?.addEventListener("change", filterTable);
   tableSearchInput?.addEventListener("input", filterTable);
 
-  // 5. Xử lý Modal Thêm Bộ Sưu Tập Mới
-  const openAddModalBtn = document.getElementById("openAddModalBtn");
-  const addModalBackdrop = document.getElementById("addCollectionModal");
-  const closeAddModalBtn = document.getElementById("closeAddModalBtn");
-  const cancelAddModalBtn = document.getElementById("cancelAddModalBtn");
-  const addCollectionForm = document.getElementById("addCollectionForm");
-
-  function openAddModal() {
-    if (addModalBackdrop) {
-      addModalBackdrop.classList.add("active");
-      document.body.style.overflow = "hidden";
-    }
-  }
-
-  function closeAddModal() {
-    if (addModalBackdrop) {
-      addModalBackdrop.classList.remove("active");
-      document.body.style.overflow = "";
-      addCollectionForm?.reset();
-    }
-  }
-
-  openAddModalBtn?.addEventListener("click", openAddModal);
-  closeAddModalBtn?.addEventListener("click", closeAddModal);
-  cancelAddModalBtn?.addEventListener("click", closeAddModal);
-
-  addCollectionForm?.addEventListener("submit", function (e) {
-    e.preventDefault();
-    const name = document.getElementById("packNameInput")?.value.trim();
-    const cat = document.getElementById("packCatSelect")?.value;
-
-    if (!name) {
-      showToast("⚠️ Vui lòng nhập tên bộ sưu tập!");
-      return;
-    }
-
-    closeAddModal();
-    showToast(`✅ Đã thêm mới thành công bộ sưu tập: "${name}" (${cat})!`);
-  });
-
-  // 6. Xử lý Xóa / Khóa Bộ sưu tập
+  // 5. Xử lý Xóa / Khóa Bộ sưu tập
   const deleteButtons = document.querySelectorAll(".btn-delete-row");
   deleteButtons.forEach(btn => {
     btn.addEventListener("click", function (e) {
@@ -272,23 +233,14 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   });
-
-  // 7. Click outside modal để đóng
-  addModalBackdrop?.addEventListener("click", function (e) {
-    if (e.target === addModalBackdrop) {
-      closeAddModal();
-    }
-  });
-
-  document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape" && addModalBackdrop?.classList.contains("active")) {
-      closeAddModal();
-    }
-  });
 });
 
 // Toast Notification Helper
 function showToast(message) {
+  if (typeof window.showToast === "function") {
+    window.showToast(message);
+    return;
+  }
   let container = document.getElementById("toastContainer");
   if (!container) {
     container = document.createElement("div");
@@ -309,3 +261,4 @@ function showToast(message) {
     setTimeout(() => toast.remove(), 250);
   }, 2800);
 }
+

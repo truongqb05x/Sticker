@@ -229,7 +229,7 @@
 .trend-chart-wrapper {
   position: relative;
   width: 100%;
-  height: 230px;
+  height: 240px;
   display: flex;
   gap: 14px;
   padding: 16px 6px 4px 0;
@@ -241,7 +241,7 @@
   justify-content: space-between;
   width: 34px;
   text-align: right;
-  padding-bottom: 24px;
+  padding-bottom: 34px;
   user-select: none;
 }
 
@@ -259,7 +259,6 @@
   justify-content: space-between;
   align-items: flex-end;
   height: 100%;
-  padding-bottom: 24px;
 }
 
 .chart-grid-line {
@@ -271,9 +270,22 @@
   pointer-events: none;
 }
 
+/* Baseline trục hoành phân cách rõ rệt cột và nhãn thời gian phía dưới */
+.chart-baseline-axis {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 34px;
+  height: 2px;
+  background-color: #DFD3C4;
+  border-radius: 1px;
+  pointer-events: none;
+  z-index: 1;
+}
+
 .chart-col {
   flex: 1;
-  max-width: 50px;
+  max-width: 58px;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -285,12 +297,16 @@
   padding: 0 4px;
 }
 
+/* Highlight hover chỉ bao bọc phần cột phía trên baseline */
 .chart-col::before {
   content: "";
   position: absolute;
-  inset: -6px -4px 22px;
+  top: -8px;
+  left: -4px;
+  right: -4px;
+  bottom: 34px;
   background: rgba(196, 88, 50, 0.06);
-  border-radius: 10px;
+  border-radius: 10px 10px 0 0;
   opacity: 0;
   transition: opacity 0.16s ease;
   pointer-events: none;
@@ -301,21 +317,23 @@
   opacity: 1;
 }
 
+/* Cột dữ liệu: đặt hoàn toàn phía trên baseline mốc 0 */
 .col-bar-track {
   width: 100%;
   max-width: 32px;
-  height: 100%;
+  height: calc(100% - 42px);
+  margin-bottom: 42px;
   display: flex;
   align-items: flex-end;
   background-color: #FAF4EB;
-  border-radius: 8px;
+  border-radius: 8px 8px 0 0;
   overflow: hidden;
-  padding: 3px;
+  padding: 3px 3px 0 3px;
 }
 
 .col-bar-fill {
   width: 100%;
-  border-radius: 6px;
+  border-radius: 6px 6px 0 0;
   background: linear-gradient(180deg, #E27953 0%, #C45832 100%);
   transition: height 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.2s ease;
 }
@@ -331,23 +349,45 @@
   box-shadow: 0 4px 14px rgba(196, 88, 50, 0.35);
 }
 
+/* Nhãn đơn vị thời gian (Ngày, Tuần, Tháng, Giờ) tách rời hoàn toàn xuống phía dưới */
 .col-day-label {
   position: absolute;
-  bottom: 0;
+  bottom: 2px;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 11.5px;
+  height: 24px;
+  padding: 0 7px;
+  background-color: #FAF5EE;
+  border: 1px solid #EBE0D2;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
   font-weight: 800;
-  color: var(--text-muted, #7E6E64);
+  color: #554337;
   user-select: none;
-  transition: color 0.16s ease;
   white-space: nowrap;
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 1px 3px rgba(44, 29, 24, 0.04);
 }
 
 .chart-col:hover .col-day-label,
 .chart-col.hover-focus .col-day-label {
+  background-color: #FFF2EC;
+  border-color: #F0B8AA;
   color: var(--brand-orange, #C45832);
+  transform: translateX(-50%) translateY(-2px);
+  box-shadow: 0 2px 6px rgba(196, 88, 50, 0.14);
 }
+
+.chart-col.highlight .col-day-label {
+  background-color: #FFF0EA;
+  border-color: #E89A84;
+  color: var(--brand-orange, #C45832);
+  font-weight: 900;
+}
+
 
 /* Hover Tooltip */
 .chart-hover-tooltip {
@@ -626,11 +666,143 @@
   to   { opacity: 1; transform: translateY(0); }
 }
 
+/* Responsive Design for Mobile */
 @media (max-width: 900px) {
+  .admin-page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+
   .analytics-metrics-grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
   }
+
   .analytics-charts-grid {
     grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .chart-header-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
   }
 }
+
+@media (max-width: 640px) {
+  .page-main-heading {
+    font-size: 18px;
+  }
+
+  .page-subtext {
+    font-size: 12.5px;
+  }
+
+  .analytics-metrics-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .analytic-kpi-card {
+    padding: 12px;
+    border-radius: 14px;
+  }
+
+  .kpi-num {
+    font-size: 20px;
+  }
+
+  .kpi-title {
+    font-size: 11.5px;
+  }
+
+  .kpi-badge {
+    font-size: 10px;
+    padding: 2px 5px;
+  }
+
+  .chart-box-card {
+    padding: 16px 14px;
+    border-radius: 14px;
+  }
+
+  .chart-title {
+    font-size: 15px;
+  }
+
+  .chart-filter-pills {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .chart-pill-btn {
+    flex: 1;
+    text-align: center;
+    font-size: 11px;
+    padding: 5px 2px;
+  }
+
+  .trend-chart-wrapper {
+    height: 195px;
+    padding: 8px 0 0 0;
+  }
+
+  .chart-y-axis {
+    width: 26px;
+  }
+
+  .y-label {
+    font-size: 9.5px;
+  }
+
+  .col-bar-track {
+    max-width: 26px;
+  }
+
+  .col-day-label {
+    font-size: 10px;
+  }
+
+  .table-card-container {
+    border-radius: 14px;
+  }
+
+  .table-header-box {
+    padding: 14px 16px;
+  }
+
+  .table-responsive {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+  }
+
+  .admin-data-table {
+    min-width: 660px;
+    font-size: 12.5px;
+  }
+
+  .admin-data-table th,
+  .admin-data-table td {
+    padding: 10px 12px;
+  }
+}
+
+@media (max-width: 380px) {
+  .analytics-metrics-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .analytic-kpi-card {
+    padding: 10px;
+  }
+
+  .kpi-num {
+    font-size: 18px;
+  }
+}
+

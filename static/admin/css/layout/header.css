@@ -23,14 +23,43 @@
   padding: 0 24px;
   display: flex;
   align-items: center;
+  gap: 14px;
 }
 
+/* Mobile Hamburger Menu Button */
+.admin-menu-toggle-btn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm, 8px);
+  background-color: var(--bg-subtle, #FAF5EE);
+  border: 1px solid var(--border-strong, #DFD3C4);
+  color: var(--text-main, #2D1C14);
+  cursor: pointer;
+  transition: all 0.18s ease;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.admin-menu-toggle-btn:hover {
+  background-color: #EFE4D6;
+  color: var(--brand-orange, #C45832);
+}
+
+.admin-menu-toggle-btn:active {
+  transform: scale(0.96);
+}
+
+/* Brand Logo & Name */
 .admin-brand {
   display: inline-flex;
   align-items: center;
   gap: 10px;
   text-decoration: none;
   user-select: none;
+  flex-shrink: 0;
 }
 
 .admin-brand img {
@@ -51,8 +80,35 @@
   color: var(--brand-orange, #C45832);
 }
 
-@media (max-width: 600px) {
+/* Responsive Topbar on Tablet & Mobile */
+@media (max-width: 900px) {
+  .admin-topbar {
+    height: 58px;
+  }
+
   .admin-topbar-inner {
     padding: 0 16px;
+    gap: 10px;
+  }
+
+  .admin-menu-toggle-btn {
+    display: inline-flex;
+  }
+
+  .admin-brand img {
+    width: 32px;
+    height: 32px;
+  }
+
+  .admin-brand-title {
+    font-size: 19px;
   }
 }
+
+@media (max-width: 540px) {
+  .admin-topbar-inner {
+    padding: 0 12px;
+  }
+}
+
+

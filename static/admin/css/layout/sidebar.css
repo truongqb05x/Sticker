@@ -130,7 +130,51 @@
   color: #C4381C;
 }
 
-/* Responsive Sidebar */
+/* Mobile Drawer Close Button & Header (Hidden on Desktop) */
+.sidebar-mobile-header {
+  display: none;
+}
+
+.btn-sidebar-close {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm, 8px);
+  background-color: var(--bg-subtle, #FAF5EE);
+  border: 1px solid var(--border-strong, #DFD3C4);
+  color: var(--text-main, #2D1C14);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.16s ease;
+  padding: 0;
+}
+
+.btn-sidebar-close:hover {
+  background-color: #FFF2EE;
+  color: #C4381C;
+  border-color: #F0B8AA;
+}
+
+/* Mobile Sidebar Backdrop */
+.admin-sidebar-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(36, 23, 18, 0.55);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  z-index: 995;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.26s ease;
+}
+
+.admin-sidebar-backdrop.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Responsive Sidebar: Transform to Off-Canvas Mobile Drawer */
 @media (max-width: 900px) {
   .admin-body-container {
     flex-direction: column;
@@ -139,10 +183,52 @@
   }
 
   .admin-sidebar {
-    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 285px;
+    max-width: 84vw;
+    height: 100vh;
+    height: 100dvh;
+    background-color: #FFFFFF;
+    z-index: 1000;
+    padding: 18px 16px 24px;
+    box-shadow: 6px 0 28px rgba(44, 29, 24, 0.22);
+    transform: translateX(-105%);
+    transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     display: flex;
-    position: static;
-    box-shadow: none;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .admin-sidebar.show-mobile {
+    transform: translateX(0);
+  }
+
+  .sidebar-mobile-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border-color, #EBE0D2);
+    margin-bottom: 4px;
+  }
+
+  .sidebar-card-box {
+    border: none;
     padding: 0;
+    box-shadow: none;
+    background: transparent;
   }
 }
+
+@media (max-width: 540px) {
+  .admin-body-container {
+    padding: 12px 12px 28px;
+    gap: 14px;
+  }
+}
+

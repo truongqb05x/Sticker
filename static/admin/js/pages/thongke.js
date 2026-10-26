@@ -155,9 +155,10 @@ document.addEventListener("DOMContentLoaded", function () {
       <div class="chart-grid-line" style="top: 25%;"></div>
       <div class="chart-grid-line" style="top: 50%;"></div>
       <div class="chart-grid-line" style="top: 75%;"></div>
-      <div class="chart-grid-line" style="top: 100%;"></div>
+      <div class="chart-baseline-axis"></div>
       ${colsHtml}
     `;
+
 
     bindHoverEvents();
   }

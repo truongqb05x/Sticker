@@ -33,12 +33,20 @@
        ======================================================== -->
   <header class="admin-topbar">
     <div class="admin-topbar-inner">
+      <!-- Nút bật menu trên điện thoại -->
+      <button type="button" class="admin-menu-toggle-btn" id="sidebarToggleBtn" aria-label="Mở menu quản trị" title="Menu quản trị">
+        <i data-lucide="menu" style="width: 22px; height: 22px;"></i>
+      </button>
       <a href="dashboard.html" class="admin-brand" title="Trang tổng quan StickerHub">
         <img src="../../assets/logo_cat.svg" alt="StickerHub Cat Logo" width="36" height="36">
         <span class="admin-brand-title">Sticker<span class="hub-part">Hub</span></span>
       </a>
     </div>
   </header>
+
+
+  <!-- Lớp phủ mờ (Backdrop) khi mở menu trên điện thoại -->
+  <div class="admin-sidebar-backdrop" id="adminSidebarBackdrop" aria-hidden="true"></div>
 
   <!-- ========================================================
        BODY WRAPPER: SIDEBAR + MAIN CONTENT
@@ -47,6 +55,17 @@
     
     <!-- LEFT SIDEBAR -->
     <aside class="admin-sidebar" id="adminSidebar">
+      <!-- Header hiển thị riêng trên Drawer di động -->
+      <div class="sidebar-mobile-header">
+        <div class="admin-brand">
+          <img src="../../assets/logo_cat.svg" alt="StickerHub Cat Logo" width="28" height="28">
+          <span class="admin-brand-title" style="font-size: 19px;">Sticker<span class="hub-part">Hub</span></span>
+        </div>
+        <button type="button" class="btn-sidebar-close" id="sidebarCloseBtn" aria-label="Đóng menu">
+          <i data-lucide="x" style="width: 20px; height: 20px;"></i>
+        </button>
+      </div>
+
       <!-- Card Menu Điều Hướng -->
       <div class="sidebar-card-box">
         <div class="admin-nav-group-title">Quản lý hệ thống</div>
@@ -101,8 +120,6 @@
         </ul>
       </div>
 
-
-
       <!-- Nút Đăng Xuất -->
       <a href="login.html" class="btn-sidebar-logout" title="Đăng xuất khỏi trang quản trị">
         <i data-lucide="log-out" style="width: 16px; height: 16px;"></i>
@@ -122,6 +139,7 @@
           </p>
         </div>
       </section>
+
 
       <!-- 2. 4 Thẻ Thống Kê Chỉ Số KPI Trọng Yếu -->
       <section class="admin-metrics-grid">
@@ -200,10 +218,16 @@
         <!-- Biểu đồ Xu hướng lượt tải có tooltip tương tác -->
         <div class="chart-card-box">
           <div class="card-title-row">
-            <h3 class="card-heading">
-              <i data-lucide="trending-up" style="width: 18px; height: 18px; color: #C45832;"></i>
-              <span>Xu hướng tải sticker</span>
-            </h3>
+            <div class="card-title-group">
+              <h3 class="card-heading">
+                <i data-lucide="trending-up" style="width: 18px; height: 18px; color: #C45832;"></i>
+                <span>Xu hướng tải sticker</span>
+              </h3>
+              <span class="chart-unit-indicator" id="chartUnitIndicator">
+                <i data-lucide="calendar" style="width: 13px; height: 13px;"></i>
+                <span id="chartUnitText">Đơn vị: Thứ / Ngày</span>
+              </span>
+            </div>
             <div class="chart-filter-pills">
               <button class="chart-pill-btn active" data-range="7d">7 ngày qua</button>
               <button class="chart-pill-btn" data-range="30d">30 ngày qua</button>
@@ -230,7 +254,7 @@
               <div class="chart-grid-line" style="top: 25%;"></div>
               <div class="chart-grid-line" style="top: 50%;"></div>
               <div class="chart-grid-line" style="top: 75%;"></div>
-              <div class="chart-grid-line" style="top: 100%;"></div>
+              <div class="chart-baseline-axis"></div>
 
               <!-- 7 Cột biểu thị 7 ngày -->
               <div class="chart-col" data-day="Thứ Hai" data-date="20/10/2026" data-downloads="14,250" data-change="+8.4%">
@@ -374,31 +398,6 @@
               <i data-lucide="layers" style="width: 18px; height: 18px; color: #C45832;"></i>
               <span>Bộ sưu tập trên hệ thống</span>
             </h3>
-
-            <!-- Lọc theo danh mục -->
-            <select class="table-filter-select" id="tableCategoryFilter" aria-label="Lọc theo danh mục">
-              <option value="all">Tất cả danh mục</option>
-              <option value="animals">Động vật</option>
-              <option value="anime">Anime & Manga</option>
-              <option value="nature">Phong cảnh</option>
-              <option value="love">Tình yêu</option>
-              <option value="expressions">Biểu cảm</option>
-              <option value="chibi">Chibi</option>
-            </select>
-          </div>
-
-          <div class="table-actions-right">
-            <!-- Tìm kiếm trong bảng -->
-            <div style="position: relative;">
-              <i data-lucide="search" style="position: absolute; left: 10px; top: 11px; width: 14px; height: 14px; color: #9E8E84;"></i>
-              <input 
-                type="text" 
-                id="tableSearchInput" 
-                class="admin-input" 
-                style="height: 38px; padding-left: 32px; font-size: 13px; width: 220px;" 
-                placeholder="Lọc tên bộ sưu tập..."
-              >
-            </div>
           </div>
         </div>
 
@@ -655,7 +654,6 @@
               <i data-lucide="activity" style="width: 18px; height: 18px; color: #C45832;"></i>
               <span>Nhật ký hoạt động</span>
             </h3>
-            <span style="font-size: 12px; font-weight: 700; color: #7E6E64;">Thời gian thực</span>
           </div>
 
           <div class="activity-list">
@@ -751,69 +749,6 @@
 
   </div>
 
-  <!-- ========================================================
-       MODAL: THÊM BỘ SƯU TẬP MỚI
-       ======================================================== -->
-  <div class="admin-modal-backdrop" id="addCollectionModal" role="dialog" aria-modal="true" aria-labelledby="modalAddTitle">
-    <div class="modal-dialog-box">
-      <div class="modal-header-bar">
-        <h3 class="modal-title-text" id="modalAddTitle">Thêm bộ sưu tập mới</h3>
-        <button type="button" class="tbl-action-btn" id="closeAddModalBtn" aria-label="Đóng cửa sổ">
-          <i data-lucide="x" style="width: 16px; height: 16px;"></i>
-        </button>
-      </div>
-
-      <form id="addCollectionForm">
-        <div class="modal-body-scroll">
-          <div class="modal-form-row">
-            <label class="modal-form-label" for="packNameInput">Tên bộ sưu tập *</label>
-            <input type="text" id="packNameInput" class="modal-input" placeholder="Ví dụ: Chibi Động Vật Dễ Thương" required>
-          </div>
-
-          <div class="modal-form-row">
-            <label class="modal-form-label" for="packCatSelect">Danh mục chủ đề *</label>
-            <select id="packCatSelect" class="table-filter-select" style="width: 100%;">
-              <option value="Anime & Manga">Anime & Manga</option>
-              <option value="Động vật">Động vật</option>
-              <option value="Chibi">Chibi</option>
-              <option value="Phong cảnh">Phong cảnh</option>
-              <option value="Tình yêu">Tình yêu</option>
-              <option value="Biểu cảm">Biểu cảm</option>
-              <option value="Khác">Chủ đề khác</option>
-            </select>
-          </div>
-
-          <div class="modal-form-row">
-            <label class="modal-form-label" for="packDescInput">Mô tả ngắn</label>
-            <textarea id="packDescInput" class="modal-input" style="height: 70px; padding: 10px;" placeholder="Giới thiệu sơ lược về phong cách và số lượng sticker trong bộ..."></textarea>
-          </div>
-
-          <div class="modal-form-row">
-            <label class="modal-form-label">Định dạng hỗ trợ tải về</label>
-            <div style="display: flex; gap: 14px; flex-wrap: wrap; margin-top: 4px;">
-              <label style="display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; cursor: pointer;">
-                <input type="checkbox" checked style="accent-color: #C45832;"> PNG Trong Suốt
-              </label>
-              <label style="display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; cursor: pointer;">
-                <input type="checkbox" checked style="accent-color: #C45832;"> Vector SVG
-              </label>
-              <label style="display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; cursor: pointer;">
-                <input type="checkbox" checked style="accent-color: #C45832;"> Telegram Pack
-              </label>
-              <label style="display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; cursor: pointer;">
-                <input type="checkbox" checked style="accent-color: #C45832;"> WhatsApp Pack
-              </label>
-            </div>
-          </div>
-        </div>
-
-        <div class="modal-footer-bar">
-          <button type="button" class="btn-admin-action btn-secondary-action" id="cancelAddModalBtn">Hủy bỏ</button>
-          <button type="submit" class="btn-admin-action btn-primary-action">Lưu & Xuất bản</button>
-        </div>
-      </form>
-    </div>
-  </div>
 
   <!-- Toast Container -->
   <div class="toast-container" id="toastContainer"></div>
@@ -821,8 +756,9 @@
   <!-- ========================================================
        SCRIPTS
        ======================================================== -->
-  <script src="../../static/user/layout/layout.js"></script>
+  <script src="../../static/admin/js/layout/layout.js"></script>
   <script src="../../static/admin/js/pages/dashboard.js"></script>
+
 
 </body>
 </html>

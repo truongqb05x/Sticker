@@ -284,14 +284,45 @@
    ======================================================== */
 @media (max-width: 480px) {
   .admin-login-wrapper {
-    padding: 24px 16px;
+    padding: 20px 14px;
+  }
+
+  .admin-login-card {
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(44, 29, 24, 0.1);
   }
 
   .admin-card-header {
-    padding: 30px 22px 10px;
+    padding: 24px 18px 8px;
+  }
+
+  .admin-avatar-box {
+    width: 68px;
+    height: 68px;
+  }
+
+  .admin-avatar-box img {
+    width: 46px;
+    height: 46px;
+  }
+
+  .admin-card-title {
+    font-size: 20px;
   }
 
   .admin-card-body {
-    padding: 18px 22px 28px;
+    padding: 16px 18px 24px;
+    gap: 16px;
+  }
+
+  .admin-input {
+    height: 46px;
+    font-size: 14px;
+  }
+
+  .admin-submit-btn {
+    height: 46px;
+    font-size: 15px;
   }
 }
+

@@ -33,12 +33,19 @@
        ======================================================== -->
   <header class="admin-topbar">
     <div class="admin-topbar-inner">
+      <!-- Nút bật menu trên điện thoại -->
+      <button type="button" class="admin-menu-toggle-btn" id="sidebarToggleBtn" aria-label="Mở menu quản trị" title="Menu quản trị">
+        <i data-lucide="menu" style="width: 22px; height: 22px;"></i>
+      </button>
       <a href="dashboard.html" class="admin-brand" title="Trang tổng quan StickerHub">
         <img src="../../assets/logo_cat.svg" alt="StickerHub Cat Logo" width="36" height="36">
         <span class="admin-brand-title">Sticker<span class="hub-part">Hub</span></span>
       </a>
     </div>
   </header>
+
+  <!-- Lớp phủ mờ (Backdrop) khi mở menu trên điện thoại -->
+  <div class="admin-sidebar-backdrop" id="adminSidebarBackdrop" aria-hidden="true"></div>
 
   <!-- ========================================================
        BODY WRAPPER: SIDEBAR + MAIN CONTENT
@@ -47,8 +54,20 @@
     
     <!-- LEFT SIDEBAR -->
     <aside class="admin-sidebar" id="adminSidebar">
+      <!-- Header hiển thị riêng trên Drawer di động -->
+      <div class="sidebar-mobile-header">
+        <div class="admin-brand">
+          <img src="../../assets/logo_cat.svg" alt="StickerHub Cat Logo" width="28" height="28">
+          <span class="admin-brand-title" style="font-size: 19px;">Sticker<span class="hub-part">Hub</span></span>
+        </div>
+        <button type="button" class="btn-sidebar-close" id="sidebarCloseBtn" aria-label="Đóng menu">
+          <i data-lucide="x" style="width: 20px; height: 20px;"></i>
+        </button>
+      </div>
+
       <!-- Card Menu Điều Hướng -->
       <div class="sidebar-card-box">
+
         <div class="admin-nav-group-title">Quản lý hệ thống</div>
         <ul class="admin-nav-list">
           <li>
@@ -194,7 +213,6 @@
                 <th>Danh mục</th>
                 <th>Số sticker</th>
                 <th>Lượt tải</th>
-                <th>Nền tảng</th>
                 <th>Trạng thái</th>
                 <th>Ngày cập nhật</th>
                 <th style="text-align: right; min-width: 110px;">Thao tác</th>
@@ -217,13 +235,7 @@
                 <td><span class="category-tag-badge">Động vật</span></td>
                 <td><strong>120</strong> sticker</td>
                 <td><strong>38.5K</strong></td>
-                <td>
-                  <div class="platform-icons-row">
-                    <span class="platform-pill pill-tg" title="Telegram">TG</span>
-                    <span class="platform-pill pill-wa" title="WhatsApp">WA</span>
-                    <span class="platform-pill pill-zip" title="ZIP">ZIP</span>
-                  </div>
-                </td>
+
                 <td>
                   <span class="status-badge status-badge-active">
                     <i data-lucide="check-circle" style="width: 12px; height: 12px;"></i>
@@ -261,12 +273,7 @@
                 <td><span class="category-tag-badge">Anime & Manga</span></td>
                 <td><strong>96</strong> sticker</td>
                 <td><strong>25.3K</strong></td>
-                <td>
-                  <div class="platform-icons-row">
-                    <span class="platform-pill pill-tg" title="Telegram">TG</span>
-                    <span class="platform-pill pill-wa" title="WhatsApp">WA</span>
-                  </div>
-                </td>
+
                 <td>
                   <span class="status-badge status-badge-active">
                     <i data-lucide="check-circle" style="width: 12px; height: 12px;"></i>
@@ -304,12 +311,7 @@
                 <td><span class="category-tag-badge">Động vật</span></td>
                 <td><strong>74</strong> sticker</td>
                 <td><strong>18.7K</strong></td>
-                <td>
-                  <div class="platform-icons-row">
-                    <span class="platform-pill pill-tg" title="Telegram">TG</span>
-                    <span class="platform-pill pill-zip" title="ZIP">ZIP</span>
-                  </div>
-                </td>
+
                 <td>
                   <span class="status-badge status-badge-active">
                     <i data-lucide="check-circle" style="width: 12px; height: 12px;"></i>
@@ -347,13 +349,7 @@
                 <td><span class="category-tag-badge">Anime & Manga</span></td>
                 <td><strong>83</strong> sticker</td>
                 <td><strong>22.4K</strong></td>
-                <td>
-                  <div class="platform-icons-row">
-                    <span class="platform-pill pill-tg" title="Telegram">TG</span>
-                    <span class="platform-pill pill-wa" title="WhatsApp">WA</span>
-                    <span class="platform-pill pill-zip" title="ZIP">ZIP</span>
-                  </div>
-                </td>
+
                 <td>
                   <span class="status-badge status-badge-pending">
                     <i data-lucide="clock" style="width: 12px; height: 12px;"></i>
@@ -391,12 +387,7 @@
                 <td><span class="category-tag-badge">Phong cảnh</span></td>
                 <td><strong>62</strong> sticker</td>
                 <td><strong>16.4K</strong></td>
-                <td>
-                  <div class="platform-icons-row">
-                    <span class="platform-pill pill-wa" title="WhatsApp">WA</span>
-                    <span class="platform-pill pill-zip" title="ZIP">ZIP</span>
-                  </div>
-                </td>
+
                 <td>
                   <span class="status-badge status-badge-active">
                     <i data-lucide="check-circle" style="width: 12px; height: 12px;"></i>
@@ -434,11 +425,7 @@
                 <td><span class="category-tag-badge">Lễ hội & Khác</span></td>
                 <td><strong>40</strong> sticker</td>
                 <td><strong>15.1K</strong></td>
-                <td>
-                  <div class="platform-icons-row">
-                    <span class="platform-pill pill-tg" title="Telegram">TG</span>
-                  </div>
-                </td>
+
                 <td>
                   <span class="status-badge status-badge-hidden">
                     <i data-lucide="eye-off" style="width: 12px; height: 12px;"></i>
@@ -476,13 +463,7 @@
                 <td><span class="category-tag-badge">Biểu cảm</span></td>
                 <td><strong>90</strong> sticker</td>
                 <td><strong>31.0K</strong></td>
-                <td>
-                  <div class="platform-icons-row">
-                    <span class="platform-pill pill-tg" title="Telegram">TG</span>
-                    <span class="platform-pill pill-wa" title="WhatsApp">WA</span>
-                    <span class="platform-pill pill-zip" title="ZIP">ZIP</span>
-                  </div>
-                </td>
+
                 <td>
                   <span class="status-badge status-badge-active">
                     <i data-lucide="check-circle" style="width: 12px; height: 12px;"></i>
@@ -520,12 +501,7 @@
                 <td><span class="category-tag-badge">Phong cảnh</span></td>
                 <td><strong>45</strong> sticker</td>
                 <td><strong>12.8K</strong></td>
-                <td>
-                  <div class="platform-icons-row">
-                    <span class="platform-pill pill-tg" title="Telegram">TG</span>
-                    <span class="platform-pill pill-zip" title="ZIP">ZIP</span>
-                  </div>
-                </td>
+
                 <td>
                   <span class="status-badge status-badge-pending">
                     <i data-lucide="clock" style="width: 12px; height: 12px;"></i>
@@ -563,12 +539,7 @@
                 <td><span class="category-tag-badge">Chibi</span></td>
                 <td><strong>64</strong> sticker</td>
                 <td><strong>19.8K</strong></td>
-                <td>
-                  <div class="platform-icons-row">
-                    <span class="platform-pill pill-tg" title="Telegram">TG</span>
-                    <span class="platform-pill pill-wa" title="WhatsApp">WA</span>
-                  </div>
-                </td>
+
                 <td>
                   <span class="status-badge status-badge-active">
                     <i data-lucide="check-circle" style="width: 12px; height: 12px;"></i>
@@ -606,13 +577,7 @@
                 <td><span class="category-tag-badge">Tình yêu</span></td>
                 <td><strong>50</strong> sticker</td>
                 <td><strong>21.2K</strong></td>
-                <td>
-                  <div class="platform-icons-row">
-                    <span class="platform-pill pill-tg" title="Telegram">TG</span>
-                    <span class="platform-pill pill-wa" title="WhatsApp">WA</span>
-                    <span class="platform-pill pill-zip" title="ZIP">ZIP</span>
-                  </div>
-                </td>
+
                 <td>
                   <span class="status-badge status-badge-active">
                     <i data-lucide="check-circle" style="width: 12px; height: 12px;"></i>
@@ -720,20 +685,6 @@
             <textarea id="packDescInput" class="form-textarea-ctrl" rows="2" placeholder="Ghi chú tóm tắt nội dung bộ sticker..."></textarea>
           </div>
 
-          <div class="form-group-item">
-            <label class="form-label">Định dạng hỗ trợ xuất bản</label>
-            <div style="display: flex; gap: 18px; margin-top: 4px;">
-              <label style="display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; cursor: pointer;">
-                <input type="checkbox" checked style="accent-color: #C45832;"> Telegram Pack
-              </label>
-              <label style="display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; cursor: pointer;">
-                <input type="checkbox" checked style="accent-color: #C45832;"> WhatsApp Pack
-              </label>
-              <label style="display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; cursor: pointer;">
-                <input type="checkbox" checked style="accent-color: #C45832;"> File nén ZIP
-              </label>
-            </div>
-          </div>
 
         </div>
 
@@ -751,8 +702,9 @@
   <!-- ========================================================
        SCRIPTS
        ======================================================== -->
-  <script src="../../static/user/layout/layout.js"></script>
+  <script src="../../static/admin/js/layout/layout.js"></script>
   <script src="../../static/admin/js/pages/bosuutap.js"></script>
+
 
 </body>
 </html>

@@ -33,12 +33,19 @@
        ======================================================== -->
   <header class="admin-topbar">
     <div class="admin-topbar-inner">
+      <!-- Nút bật menu trên điện thoại -->
+      <button type="button" class="admin-menu-toggle-btn" id="sidebarToggleBtn" aria-label="Mở menu quản trị" title="Menu quản trị">
+        <i data-lucide="menu" style="width: 22px; height: 22px;"></i>
+      </button>
       <a href="dashboard.html" class="admin-brand" title="Trang tổng quan StickerHub">
         <img src="../../assets/logo_cat.svg" alt="StickerHub Cat Logo" width="36" height="36">
         <span class="admin-brand-title">Sticker<span class="hub-part">Hub</span></span>
       </a>
     </div>
   </header>
+
+  <!-- Lớp phủ mờ (Backdrop) khi mở menu trên điện thoại -->
+  <div class="admin-sidebar-backdrop" id="adminSidebarBackdrop" aria-hidden="true"></div>
 
   <!-- ========================================================
        BODY WRAPPER: SIDEBAR + MAIN CONTENT
@@ -47,8 +54,20 @@
     
     <!-- LEFT SIDEBAR -->
     <aside class="admin-sidebar" id="adminSidebar">
+      <!-- Header hiển thị riêng trên Drawer di động -->
+      <div class="sidebar-mobile-header">
+        <div class="admin-brand">
+          <img src="../../assets/logo_cat.svg" alt="StickerHub Cat Logo" width="28" height="28">
+          <span class="admin-brand-title" style="font-size: 19px;">Sticker<span class="hub-part">Hub</span></span>
+        </div>
+        <button type="button" class="btn-sidebar-close" id="sidebarCloseBtn" aria-label="Đóng menu">
+          <i data-lucide="x" style="width: 20px; height: 20px;"></i>
+        </button>
+      </div>
+
       <!-- Card Menu Điều Hướng -->
       <div class="sidebar-card-box">
+
         <div class="admin-nav-group-title">Quản lý hệ thống</div>
         <ul class="admin-nav-list">
           <li>
@@ -226,7 +245,7 @@
               <div class="chart-grid-line" style="top: 25%;"></div>
               <div class="chart-grid-line" style="top: 50%;"></div>
               <div class="chart-grid-line" style="top: 75%;"></div>
-              <div class="chart-grid-line" style="top: 100%;"></div>
+              <div class="chart-baseline-axis"></div>
 
               <div class="chart-col" data-day="Thứ Hai" data-date="20/10/2026" data-downloads="14,250" data-change="+8.4%">
                 <div class="col-bar-track"><div class="col-bar-fill" style="height: 37%;"></div></div>
@@ -500,8 +519,9 @@
   <!-- ========================================================
        SCRIPTS
        ======================================================== -->
-  <script src="../../static/user/layout/layout.js"></script>
+  <script src="../../static/admin/js/layout/layout.js"></script>
   <script src="../../static/admin/js/pages/thongke.js"></script>
+
 
 </body>
 </html>
