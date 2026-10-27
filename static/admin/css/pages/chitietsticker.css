@@ -673,34 +673,6 @@
   color: var(--text-main, #2D1C14);
 }
 
-/* Toast Container */
-.toast-container {
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
-  z-index: 2000;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  pointer-events: none;
-}
-
-.toast {
-  background-color: #2D1C14;
-  color: #FFFFFF;
-  padding: 12px 18px;
-  border-radius: 10px;
-  font-size: 13.5px;
-  font-weight: 700;
-  box-shadow: 0 8px 24px rgba(44, 29, 24, 0.28);
-  pointer-events: auto;
-  animation: toastSlideUp 0.24s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-@keyframes toastSlideUp {
-  from { opacity: 0; transform: translateY(14px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
 
 /* Responsive Design for Mobile */
 @media (max-width: 900px) {
