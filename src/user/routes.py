@@ -6,7 +6,7 @@ Quản lý các tuyến đường giao diện người dùng (User Portal) và R
 
 import uuid
 from flask import Blueprint, render_template, request, jsonify, make_response, redirect, url_for
-from src.database import get_db
+from src.database import get_db, Category, StickerPack
 from .services import HomeService, CollectionService, PackDetailService, TopDownloadService
 
 user_bp = Blueprint("user", __name__)
@@ -61,6 +61,20 @@ def api_get_home_packs():
     return jsonify({"success": True, "packs": packs})
 
 
+@user_bp.route("/api/categories", methods=["GET"])
+def api_get_categories():
+    """REST API cung cấp danh sách danh mục kèm số lượng gói và số sticker thực tế từ CSDL"""
+    active_slug = request.args.get("active") or request.args.get("category")
+    with get_db() as db:
+        categories = CollectionService.get_categories_summary(db, active_slug=active_slug)
+
+    return jsonify({
+        "success": True,
+        "total": len(categories),
+        "categories": categories,
+    })
+
+
 @user_bp.route("/api/search/suggestions", methods=["GET"])
 def api_search_suggestions():
     """REST API cung cấp danh sách gợi ý tìm kiếm realtime từ CSDL"""
@@ -104,15 +118,48 @@ def api_download_pack(pack_id: int):
 # ========================================================
 
 @user_bp.route("/bosuutap")
-def collections():
-    """Trang danh sách bộ sưu tập: SSR đầy đủ danh mục, danh sách nổi bật và lưới 12 bộ sưu tập đầu tiên"""
-    category = request.args.get("category")
-    filter_type = request.args.get("filter", "all")
-    search = request.args.get("search")
-    page = request.args.get("page", 1, type=int)
-    limit = request.args.get("limit", 12, type=int)
+def redirect_legacy_bosuutap():
+    """Chuyển hướng 301 từ URL cũ /bosuutap sang URL chuẩn /bo-suu-tap"""
+    qs = request.query_string.decode("utf-8")
+    target = "/bo-suu-tap"
+    if qs:
+        target = f"{target}?{qs}"
+    return redirect(target, code=301)
 
+
+@user_bp.route("/bosuutap/<category_slug>")
+def redirect_legacy_bosuutap_cat(category_slug):
+    """Chuyển hướng 301 từ URL cũ /bosuutap/<category_slug> sang URL chuẩn /bo-suu-tap/<category_slug>"""
+    qs = request.query_string.decode("utf-8")
+    target = f"/bo-suu-tap/{category_slug}"
+    if qs:
+        target = f"{target}?{qs}"
+    return redirect(target, code=301)
+
+
+@user_bp.route("/bo-suu-tap")
+@user_bp.route("/bo-suu-tap/<category_slug>")
+def collections(category_slug=None):
+    """Trang danh sách bộ sưu tập: Hỗ trợ URL chuẩn /bo-suu-tap và /bo-suu-tap/<theloai>"""
     with get_db() as db:
+        # Kiểm tra xem category_slug có phải là tên một pack không (phòng trường hợp URL cũ truy cập 1 đoạn)
+        if category_slug and category_slug != "all":
+            cat_exists = db.query(Category).filter_by(slug=category_slug).first()
+            if not cat_exists:
+                pack_exists = db.query(StickerPack).filter_by(slug=category_slug).first()
+                if pack_exists:
+                    real_cat_slug = pack_exists.category.slug if pack_exists.category else "others"
+                    return redirect(url_for("user.pack_detail", category_slug=real_cat_slug, slug=pack_exists.slug), code=301)
+
+        category = category_slug or request.args.get("category")
+        if category == "all":
+            category = None
+
+        filter_type = request.args.get("filter", "all")
+        search = request.args.get("search")
+        page = request.args.get("page", 1, type=int)
+        limit = request.args.get("limit", 12, type=int)
+
         data = CollectionService.get_collections(
             db,
             category_slug=category,
@@ -166,16 +213,20 @@ def api_get_collections():
 # TRANG CHI TIẾT BỘ SƯU TẬP & REST API LIÊN QUAN
 # ========================================================
 
-@user_bp.route("/pack/<slug>")
-@user_bp.route("/collection/<slug>")
-def pack_detail(slug=None):
-    """Trang chi tiết một bộ sưu tập: SSR toàn bộ thông tin gói, danh sách sticker, bộ sưu tập liên quan"""
+@user_bp.route("/bo-suu-tap/<category_slug>/<slug>")
+def pack_detail(category_slug, slug):
+    """Trang chi tiết một bộ sưu tập: Chuẩn URL /bo-suu-tap/the-loai/ten-bo-suu-tap"""
     session_token, is_new = get_or_create_session_token()
 
     with get_db() as db:
         pack = PackDetailService.get_pack_by_slug_or_id(db, slug or "cute-cats", session_token=session_token)
         if not pack:
             return redirect(url_for("user.collections"))
+
+        # Nếu category_slug trên URL khác category_slug thực tế của gói thì redirect 301 về đúng chuẩn
+        real_cat_slug = pack.get("category_slug") or "others"
+        if category_slug != real_cat_slug:
+            return redirect(url_for("user.pack_detail", category_slug=real_cat_slug, slug=pack["slug"]), code=301)
 
         categories = CollectionService.get_categories_summary(db, active_slug=pack["category_slug"])
         related_packs = PackDetailService.get_related_packs(
@@ -209,6 +260,24 @@ def pack_detail(slug=None):
             samesite="Lax",
         )
     return resp
+
+
+@user_bp.route("/pack/<category_slug>/<slug>")
+def redirect_pack_category(category_slug, slug):
+    """Chuyển hướng tương thích ngược từ /pack/<category>/<slug> sang /bo-suu-tap/<category>/<slug>"""
+    return redirect(url_for("user.pack_detail", category_slug=category_slug, slug=slug), code=301)
+
+
+@user_bp.route("/pack/<slug_or_id>")
+@user_bp.route("/collection/<slug_or_id>")
+def legacy_pack_redirect(slug_or_id):
+    """Tự động chuyển hướng tương thích ngược từ URL cũ /pack/<slug> sang /bo-suu-tap/<category>/<slug>"""
+    with get_db() as db:
+        pack = PackDetailService.get_pack_by_slug_or_id(db, slug_or_id)
+        if pack:
+            cat_slug = pack.get("category_slug") or "others"
+            return redirect(url_for("user.pack_detail", category_slug=cat_slug, slug=pack["slug"]), code=301)
+    return redirect(url_for("user.collections"))
 
 
 @user_bp.route("/api/packs/<slug_or_id>", methods=["GET"])
@@ -289,9 +358,10 @@ def api_download_sticker(sticker_id: int):
 # ========================================================
 
 @user_bp.route("/top-tai-nhieu")
-def top_downloaded():
-    """Trang bảng xếp hạng sticker top tải nhiều: SSR toàn bộ bảng xếp hạng 12 bộ sưu tập đầu, sidebar và hot top 5"""
-    category = request.args.get("category", "all")
+@user_bp.route("/top-tai-nhieu/<category_slug>")
+def top_downloaded(category_slug=None):
+    """Trang bảng xếp hạng sticker top tải nhiều: Hỗ trợ URL chuẩn /top-tai-nhieu và /top-tai-nhieu/<theloai>"""
+    category = category_slug or request.args.get("category", "all")
     sort = request.args.get("sort", "downloads")
 
     with get_db() as db:

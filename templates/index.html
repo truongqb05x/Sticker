@@ -41,7 +41,7 @@
               </a>
             </li>
             <li>
-              <a href="/bosuutap" class="nav-link" data-tab="collections" id="navCollections">
+              <a href="/bo-suu-tap" class="nav-link" data-tab="collections" id="navCollections">
                 <i data-lucide="folder-heart" style="width: 15px; height: 15px;"></i>
                 <span>Bộ sưu tập</span>
               </a>
@@ -110,7 +110,7 @@
             </a>
           </li>
           <li>
-            <a href="/bosuutap" class="drawer-nav-item" data-tab="collections">
+            <a href="/bo-suu-tap" class="drawer-nav-item" data-tab="collections">
               <i data-lucide="folder-heart" style="width: 18px; height: 18px;"></i>
               <span>Bộ sưu tập</span>
             </a>
@@ -140,7 +140,7 @@
           <div class="drawer-accordion-content">
             <ul class="drawer-sub-list" id="drawerCategoryList">
               <li>
-                <a href="javascript:void(0)" class="drawer-sub-item active" data-category="all">
+                <a href="/" class="drawer-sub-item active" data-category="all" data-name="Tất cả danh mục" data-icon="flame">
                   <span class="cat-info">
                     <i data-lucide="layout-grid" class="cat-icon" style="width: 17px; height: 17px;"></i>
                     <span>Tất cả</span>
@@ -149,7 +149,7 @@
               </li>
               {% for cat in categories %}
               <li>
-                <a href="javascript:void(0)" class="drawer-sub-item" data-category="{{ cat.slug }}">
+                <a href="/bo-suu-tap/{{ cat.slug }}" class="drawer-sub-item" data-category="{{ cat.slug }}" data-name="{{ cat.name }}" data-icon="{{ cat.icon_name or 'tag' }}">
                   <span class="cat-info">
                     <i data-lucide="{{ cat.icon_name }}" class="cat-icon" style="width: 17px; height: 17px;"></i>
                     <span>{{ cat.name }}</span>
@@ -174,7 +174,7 @@
           <div class="drawer-accordion-content">
             <div class="drawer-sub-list">
               {% for fp in featured_packs %}
-              <a href="/pack/{{ fp.slug }}" class="drawer-featured-item" style="cursor: pointer; text-decoration: none;">
+              <a href="/bo-suu-tap/{{ fp.category_slug }}/{{ fp.slug }}" class="drawer-featured-item" style="cursor: pointer; text-decoration: none;">
                 <img src="{{ fp.cover_image }}" alt="{{ fp.title }}" class="drawer-featured-thumb" onerror="this.src='/assets/pack_cats.jpg'">
                 <div class="drawer-featured-info">
                   <span class="drawer-featured-title">{{ fp.title }}</span>
@@ -203,7 +203,7 @@
         </div>
         <ul class="category-list" id="categoryList">
           <li>
-            <a href="javascript:void(0)" class="category-item active" data-category="all">
+            <a href="/" class="category-item active" data-category="all" data-name="Tất cả danh mục" data-icon="flame">
               <span class="cat-info">
                 <i data-lucide="layout-grid" class="cat-icon" style="width: 17px; height: 17px;"></i>
                 <span>Tất cả danh mục</span>
@@ -212,7 +212,7 @@
           </li>
           {% for cat in categories %}
           <li>
-            <a href="javascript:void(0)" class="category-item" data-category="{{ cat.slug }}">
+            <a href="/bo-suu-tap/{{ cat.slug }}" class="category-item" data-category="{{ cat.slug }}" data-name="{{ cat.name }}" data-icon="{{ cat.icon_name or 'tag' }}">
               <span class="cat-info">
                 <i data-lucide="{{ cat.icon_name }}" class="cat-icon" style="width: 17px; height: 17px;"></i>
                 <span>{{ cat.name }}</span>
@@ -232,7 +232,7 @@
         </div>
         <div class="featured-list" id="featuredList">
           {% for fp in featured_packs %}
-          <a href="/pack/{{ fp.slug }}" class="featured-item" style="text-decoration: none;">
+          <a href="/bo-suu-tap/{{ fp.category_slug }}/{{ fp.slug }}" class="featured-item" style="text-decoration: none;">
             <img src="{{ fp.cover_image }}" alt="{{ fp.title }}" class="featured-thumb" onerror="this.src='/assets/pack_cats.jpg'">
             <div class="featured-meta">
               <span class="featured-name">{{ fp.title }}</span>
@@ -273,11 +273,13 @@
       <!-- SECTION: BỘ SƯU TẬP MỚI NHẤT -->
       <div class="section-header">
         <h2 class="section-title">
-          <i data-lucide="flame" style="color: #E64A38;"></i>
-          <span>Bộ sưu tập mới nhất</span>
+          <span class="section-title-icon" id="sectionTitleIcon">
+            <i data-lucide="flame" style="color: #E64A38; fill: #E64A38;"></i>
+          </span>
+          <span id="sectionTitleText">Bộ sưu tập mới nhất</span>
         </h2>
-        <a href="/bosuutap" class="see-all-link" id="seeAllBtn">
-          <span>Xem tất cả</span>
+        <a href="/bo-suu-tap" class="see-all-link" id="seeAllBtn" title="Xem tất cả bộ sưu tập">
+          <span id="seeAllText">Xem tất cả</span>
           <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i>
         </a>
       </div>
@@ -286,12 +288,12 @@
       <div class="sticker-grid" id="stickerGrid">
         {% for pack in latest_packs %}
         <div class="sticker-card" data-id="{{ pack.id }}" data-slug="{{ pack.slug }}" data-category="{{ pack.category_slug }}" data-tags="{{ pack.tags_str }}" data-name="{{ pack.title }}">
-          <a href="/pack/{{ pack.slug }}" class="card-preview" title="Xem chi tiết {{ pack.title }}">
+          <a href="/bo-suu-tap/{{ pack.category_slug }}/{{ pack.slug }}" class="card-preview" title="Xem chi tiết {{ pack.title }}">
             <img src="{{ pack.cover_image }}" alt="{{ pack.title }}" loading="lazy" onerror="this.src='/assets/pack_cats.jpg'">
           </a>
           <div class="card-info">
             <div class="card-text">
-              <a href="/pack/{{ pack.slug }}" class="card-title-link" style="text-decoration: none; color: inherit;">
+              <a href="/bo-suu-tap/{{ pack.category_slug }}/{{ pack.slug }}" class="card-title-link" style="text-decoration: none; color: inherit;">
                 <h3 class="card-title">{{ pack.title }}</h3>
               </a>
               <span class="card-subtitle">{{ pack.total_stickers }} sticker • {{ pack.total_downloads_fmt }} tải</span>

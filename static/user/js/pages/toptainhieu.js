@@ -1,15 +1,3 @@
-/**
- * ========================================================
- * TOP TẢI NHIỀU (MOST DOWNLOADED) - REAL INTERACTION SCRIPT
- * ========================================================
- * Quản lý tương tác trang bảng xếp hạng sticker top tải nhiều:
- * 1. Khởi tạo & nạp dữ liệu hydrat hóa từ Server (SSR)
- * 2. Lọc theo danh mục chủ đề (Tất cả, Anime, Động vật, Chibi, Phong cảnh, Khác)
- * 3. Sắp xếp danh sách (Tải nhiều nhất, Yêu thích nhất, Tên A-Z) qua REST API
- * 4. Tải nhanh bộ sticker trực tiếp từ thẻ card (/api/packs/<id>/download)
- * 5. Tái sử dụng Toast dùng chung toàn hệ thống (window.showToast)
- */
-
 document.addEventListener("DOMContentLoaded", function () {
   // 1. Khởi tạo Lucide Icons
   const initLucide = () => {
@@ -76,18 +64,64 @@ document.addEventListener("DOMContentLoaded", function () {
   // DOM Elements
   const grid = document.getElementById("topStickersGrid");
   const filterCatBtns = document.querySelectorAll(".filter-cat-btn");
+  const catItems = document.querySelectorAll(".category-item");
+  const drawerSubItems = document.querySelectorAll(".drawer-sub-item");
   const sortSelect = document.getElementById("sortSelect");
+
+  // Đồng bộ trạng thái active trên Sidebar, Drawer và Nút lọc ngang
+  function syncCategoryActiveUI(categorySlug) {
+    const targetSlug = (!categorySlug || categorySlug === "all") ? "all" : categorySlug.toLowerCase();
+    const isOther = (targetSlug === "other" || targetSlug === "others");
+
+    catItems.forEach((c) => {
+      const cat = (c.getAttribute("data-category") || "all").toLowerCase();
+      const match = (cat === targetSlug) || (isOther && (cat === "other" || cat === "others"));
+      c.classList.toggle("active", match);
+    });
+
+    drawerSubItems.forEach((d) => {
+      const cat = (d.getAttribute("data-category") || "all").toLowerCase();
+      const match = (cat === targetSlug) || (isOther && (cat === "other" || cat === "others"));
+      d.classList.toggle("active", match);
+    });
+
+    filterCatBtns.forEach((b) => {
+      const cat = (b.getAttribute("data-filter") || "all").toLowerCase();
+      const match = (cat === targetSlug) || (isOther && (cat === "other" || cat === "others"));
+      b.classList.toggle("active", match);
+    });
+  }
+
+  // Cập nhật cấu trúc URL trên thanh địa chỉ: /top-tai-nhieu hoặc /top-tai-nhieu/<theloai>
+  function updateHistoryUrl() {
+    const basePath = (state.category && state.category !== "all")
+      ? `/top-tai-nhieu/${encodeURIComponent(state.category)}`
+      : `/top-tai-nhieu`;
+
+    const params = new URLSearchParams();
+    if (state.sort && state.sort !== "downloads") {
+      params.set("sort", state.sort);
+    }
+
+    const qs = params.toString();
+    const fullUrl = qs ? `${basePath}?${qs}` : basePath;
+    window.history.pushState(
+      { category: state.category, sort: state.sort },
+      "",
+      fullUrl
+    );
+  }
 
   // 3. Render giao diện thẻ Card Bảng xếp hạng
   function renderTopCard(pack) {
     return `
       <div class="top-sticker-card" data-category="${escapeHtml(pack.category_slug)}" data-id="${pack.id}" data-downloads="${pack.total_downloads}" data-favorites="${pack.total_favorites}" data-name="${escapeHtml(pack.title)}">
         <span class="rank-badge ${pack.rank_badge_class}" title="Hạng ${pack.rank}">${pack.rank}</span>
-        <a href="/pack/${escapeHtml(pack.slug)}" class="card-preview-box">
+        <a href="/bo-suu-tap/${escapeHtml(pack.category_slug || 'others')}/${escapeHtml(pack.slug)}" class="card-preview-box">
           <img src="${escapeHtml(pack.cover_image)}" alt="${escapeHtml(pack.title)}" loading="lazy">
         </a>
         <div class="card-meta-info">
-          <a href="/pack/${escapeHtml(pack.slug)}" style="text-decoration: none; color: inherit;">
+          <a href="/bo-suu-tap/${escapeHtml(pack.category_slug || 'others')}/${escapeHtml(pack.slug)}" style="text-decoration: none; color: inherit;">
             <h3 class="card-pack-title">${escapeHtml(pack.title)}</h3>
           </a>
           <span class="card-sticker-count">${pack.total_stickers || 0} sticker</span>
@@ -191,27 +225,70 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // 5. Sự kiện Lọc theo Danh mục
-  filterCatBtns.forEach((btn) => {
-    btn.addEventListener("click", function () {
-      if (this.classList.contains("active")) return;
+  // 5. Sự kiện Lọc theo Danh mục bên Sidebar
+  catItems.forEach(function (cat) {
+    cat.addEventListener("click", function (e) {
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.which === 2 || e.button === 1) return;
+      e.preventDefault();
+      const category = this.getAttribute("data-category") || "all";
+      if (state.category === category) return;
 
-      filterCatBtns.forEach((b) => b.classList.remove("active"));
-      this.classList.add("active");
+      state.category = category;
+      syncCategoryActiveUI(category);
+      updateHistoryUrl();
 
-      state.category = this.getAttribute("data-filter") || "all";
-      const catName = this.textContent.trim();
-
+      const catName = this.querySelector(".cat-info span")?.textContent || "Danh mục";
       fetchTopDownloads().then(() => {
         notify(`Đang xem bảng xếp hạng: ${catName}`);
       });
     });
   });
 
-  // 6. Sự kiện Sắp xếp Dropdown
+  // 6. Sự kiện Lọc theo Danh mục trong Mobile Drawer
+  drawerSubItems.forEach(function (sub) {
+    sub.addEventListener("click", function (e) {
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.which === 2 || e.button === 1) return;
+      e.preventDefault();
+      const category = this.getAttribute("data-category") || "all";
+      if (state.category === category) return;
+
+      state.category = category;
+      syncCategoryActiveUI(category);
+      updateHistoryUrl();
+
+      if (typeof window.closeDrawer === "function") {
+        window.closeDrawer();
+      }
+
+      const catName = this.querySelector(".cat-info span")?.textContent || "Danh mục";
+      fetchTopDownloads().then(() => {
+        notify(`Đang xem bảng xếp hạng: ${catName}`);
+      });
+    });
+  });
+
+  // 7. Sự kiện Lọc theo Nút Danh mục ngang (Pills)
+  filterCatBtns.forEach((btn) => {
+    btn.addEventListener("click", function () {
+      const category = this.getAttribute("data-filter") || "all";
+      if (state.category === category) return;
+
+      state.category = category;
+      syncCategoryActiveUI(category);
+      updateHistoryUrl();
+
+      const catName = this.textContent.trim();
+      fetchTopDownloads().then(() => {
+        notify(`Đang xem bảng xếp hạng: ${catName}`);
+      });
+    });
+  });
+
+  // 8. Sự kiện Sắp xếp Dropdown
   if (sortSelect) {
     sortSelect.addEventListener("change", function () {
       state.sort = this.value;
+      updateHistoryUrl();
       const sortText = this.options[this.selectedIndex].text;
 
       fetchTopDownloads().then(() => {
@@ -219,4 +296,20 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     });
   }
+
+  // 9. Lắng nghe sự kiện popstate (Back/Forward trình duyệt)
+  window.addEventListener("popstate", function (e) {
+    if (e.state) {
+      state.category = e.state.category || "all";
+      state.sort = e.state.sort || "downloads";
+    } else {
+      const parts = window.location.pathname.split("/").filter(Boolean);
+      state.category = (parts.length >= 2 && parts[0] === "top-tai-nhieu") ? decodeURIComponent(parts[1]) : "all";
+      const sp = new URLSearchParams(window.location.search);
+      state.sort = sp.get("sort") || "downloads";
+    }
+    syncCategoryActiveUI(state.category);
+    if (sortSelect) sortSelect.value = state.sort;
+    fetchTopDownloads();
+  });
 });

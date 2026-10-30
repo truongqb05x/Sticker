@@ -38,15 +38,15 @@ def normalize_asset_url(path: Optional[str]) -> str:
     if not path:
         return "/assets/pack_cats.jpg"
     p = path.strip()
-    if p.startswith("../../assets/"):
-        p = p.replace("../../assets/", "/assets/")
-    elif p.startswith("../assets/"):
-        p = p.replace("../assets/", "/assets/")
-    elif p.startswith("assets/"):
-        p = "/" + p
-    elif not p.startswith("/") and not p.startswith("http"):
-        p = "/" + p
-    return p
+    if p.startswith("http://") or p.startswith("https://"):
+        return p
+    while p.startswith("../"):
+        p = p[3:]
+    while p.startswith("./"):
+        p = p[2:]
+    while p.startswith("/"):
+        p = p[1:]
+    return "/" + p
 
 
 class CollectionService:
@@ -172,25 +172,11 @@ class CollectionService:
             .all()
         )
 
-        fallback_counts = {
-            "anime": 179,
-            "animals": 194,
-            "chibi": 64,
-            "nature": 62,
-            "love": 58,
-            "animation": 63,
-            "expressions": 90,
-            "others": 40,
-        }
-
         result = []
         for c in cats_orm:
             active_packs = [p for p in c.sticker_packs if p.status == "active"] if c.sticker_packs else []
             pack_count = len(active_packs)
             sticker_count = sum(p.total_stickers or 0 for p in active_packs)
-
-            # Nếu chưa có sticker nào liên kết, dùng fallback hiển thị đẹp mắt
-            display_count = sticker_count if sticker_count > 0 else fallback_counts.get(c.slug, 45)
 
             result.append({
                 "id": c.id,
@@ -199,7 +185,7 @@ class CollectionService:
                 "icon_name": c.icon_name or "tag",
                 "badge_bg_class": c.badge_bg_class or "badge-bg-1",
                 "pack_count": pack_count,
-                "sticker_count": display_count,
+                "sticker_count": sticker_count,
                 "is_active": (c.slug == active_slug),
             })
 
@@ -230,6 +216,7 @@ class CollectionService:
                 "total_downloads_compact": format_compact(p.total_downloads or 0),
                 "total_favorites": p.total_favorites or 0,
                 "category_name": p.category.name if p.category else "Chung",
+                "category_slug": p.category.slug if p.category else "others",
             })
 
         return result

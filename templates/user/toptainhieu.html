@@ -51,7 +51,7 @@
               </a>
             </li>
             <li>
-              <a href="/bosuutap" class="nav-link" data-tab="collections" id="navCollections">
+              <a href="/bo-suu-tap" class="nav-link" data-tab="collections" id="navCollections">
                 <i data-lucide="folder-heart" style="width: 15px; height: 15px;"></i>
                 <span>Bộ sưu tập</span>
               </a>
@@ -63,7 +63,7 @@
               </a>
             </li>
             <li>
-              <a href="/bosuutap?filter=favorite" class="nav-link" data-tab="favorites" id="navFavorites">
+              <a href="/bo-suu-tap?filter=favorite" class="nav-link" data-tab="favorites" id="navFavorites">
                 <i data-lucide="heart" style="width: 15px; height: 15px;"></i>
                 <span>Yêu thích</span>
               </a>
@@ -125,7 +125,7 @@
             </a>
           </li>
           <li>
-            <a href="/bosuutap" class="drawer-nav-item" data-tab="collections">
+            <a href="/bo-suu-tap" class="drawer-nav-item" data-tab="collections">
               <i data-lucide="folder-heart" style="width: 18px; height: 18px;"></i>
               <span>Bộ sưu tập</span>
             </a>
@@ -137,7 +137,7 @@
             </a>
           </li>
           <li>
-            <a href="/bosuutap?filter=favorite" class="drawer-nav-item" data-tab="favorites">
+            <a href="/bo-suu-tap?filter=favorite" class="drawer-nav-item" data-tab="favorites">
               <i data-lucide="heart" style="width: 18px; height: 18px;"></i>
               <span>Yêu thích</span>
             </a>
@@ -159,15 +159,15 @@
             <i data-lucide="chevron-down" class="drawer-chevron" style="width: 16px; height: 16px;"></i>
           </button>
           <div class="drawer-accordion-content">
-            <ul class="drawer-sub-list">
+            <ul class="drawer-sub-list" id="drawerCategoryList">
               <li>
-                <a href="/top-tai-nhieu" class="drawer-sub-item {% if active_category == 'all' %}active{% endif %}">
+                <a href="/top-tai-nhieu" class="drawer-sub-item {% if active_category == 'all' %}active{% endif %}" data-category="all">
                   <span class="cat-info"><span>Tất cả</span></span>
                 </a>
               </li>
               {% for cat in categories %}
               <li>
-                <a href="/top-tai-nhieu?category={{ cat.slug }}" class="drawer-sub-item {% if cat.slug == active_category %}active{% endif %}">
+                <a href="/top-tai-nhieu/{{ cat.slug }}" class="drawer-sub-item {% if cat.is_active or cat.slug == active_category %}active{% endif %}" data-category="{{ cat.slug }}">
                   <span class="cat-info"><span>{{ cat.name }}</span></span>
                   <span class="cat-count">({{ cat.sticker_count }})</span>
                 </a>
@@ -189,7 +189,7 @@
           <div class="drawer-accordion-content">
             <div class="drawer-sub-list">
               {% for feat in featured_packs %}
-              <a href="/pack/{{ feat.slug }}" class="drawer-featured-item" style="text-decoration: none; color: inherit;">
+              <a href="/bo-suu-tap/{{ feat.category_slug }}/{{ feat.slug }}" class="drawer-featured-item" style="text-decoration: none; color: inherit;">
                 <span class="drawer-featured-title">{{ feat.title }}</span>
                 <span class="drawer-featured-count">{{ feat.total_stickers }} sticker</span>
               </a>
@@ -225,7 +225,7 @@
           </li>
           {% for cat in categories %}
           <li>
-            <a href="/top-tai-nhieu?category={{ cat.slug }}" class="category-item {% if cat.slug == active_category %}active{% endif %}" data-category="{{ cat.slug }}">
+            <a href="/top-tai-nhieu/{{ cat.slug }}" class="category-item {% if cat.is_active or cat.slug == active_category %}active{% endif %}" data-category="{{ cat.slug }}">
               <span class="cat-info">
                 <i data-lucide="{{ cat.icon_name or 'tag' }}" class="cat-icon" style="width: 17px; height: 17px;"></i>
                 <span>{{ cat.name }}</span>
@@ -245,7 +245,7 @@
         </div>
         <div class="featured-list" id="featuredList">
           {% for feat in featured_packs %}
-          <a href="/pack/{{ feat.slug }}" class="featured-item" style="text-decoration: none; color: inherit;">
+          <a href="/bo-suu-tap/{{ feat.category_slug }}/{{ feat.slug }}" class="featured-item" style="text-decoration: none; color: inherit;">
             <img src="{{ feat.cover_image }}" alt="{{ feat.title }}" class="featured-thumb" loading="lazy">
             <div class="featured-meta">
               <span class="featured-name">{{ feat.title }}</span>
@@ -296,7 +296,7 @@
           <button class="filter-cat-btn {% if active_category == 'animals' %}active{% endif %}" data-filter="animals" type="button">Động vật</button>
           <button class="filter-cat-btn {% if active_category == 'chibi' %}active{% endif %}" data-filter="chibi" type="button">Chibi</button>
           <button class="filter-cat-btn {% if active_category == 'nature' %}active{% endif %}" data-filter="nature" type="button">Phong cảnh</button>
-          <button class="filter-cat-btn {% if active_category in ['other', 'others'] %}active{% endif %}" data-filter="other" type="button">Khác</button>
+          <button class="filter-cat-btn {% if active_category in ['other', 'others'] %}active{% endif %}" data-filter="others" type="button">Khác</button>
         </div>
 
         <!-- Bộ chọn sắp xếp -->
@@ -319,11 +319,11 @@
           {% for pack in top_packs %}
           <div class="top-sticker-card" data-category="{{ pack.category_slug }}" data-id="{{ pack.id }}" data-downloads="{{ pack.total_downloads }}" data-favorites="{{ pack.total_favorites }}" data-name="{{ pack.title }}">
             <span class="rank-badge {{ pack.rank_badge_class }}" title="Hạng {{ pack.rank }}">{{ pack.rank }}</span>
-            <a href="/pack/{{ pack.slug }}" class="card-preview-box">
+            <a href="/bo-suu-tap/{{ pack.category_slug }}/{{ pack.slug }}" class="card-preview-box">
               <img src="{{ pack.cover_image }}" alt="{{ pack.title }}" loading="lazy">
             </a>
             <div class="card-meta-info">
-              <a href="/pack/{{ pack.slug }}" style="text-decoration: none; color: inherit;">
+              <a href="/bo-suu-tap/{{ pack.category_slug }}/{{ pack.slug }}" style="text-decoration: none; color: inherit;">
                 <h3 class="card-pack-title">{{ pack.title }}</h3>
               </a>
               <span class="card-sticker-count">{{ pack.total_stickers }} sticker</span>
@@ -367,7 +367,7 @@
 
         <div class="hot-ranking-list" id="hotRankingList">
           {% for item in hot_ranking %}
-          <a href="/pack/{{ item.slug }}" class="hot-ranking-item">
+          <a href="/bo-suu-tap/{{ item.category_slug }}/{{ item.slug }}" class="hot-ranking-item">
             <span class="ranking-order-num">{{ item.order }}</span>
             <img src="{{ item.cover_image }}" alt="{{ item.title }}" class="ranking-thumb-img" loading="lazy">
             <div class="ranking-info-text">

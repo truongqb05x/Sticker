@@ -1,17 +1,3 @@
-/**
- * ========================================================
- * STICKER CHI TIẾT (STICKER DETAIL) - REAL INTERACTION SCRIPT
- * ========================================================
- * Quản lý tương tác trang chi tiết bộ sưu tập sticker:
- * 1. Khởi tạo & nạp dữ liệu hydrat hóa từ Server (SSR)
- * 2. Yêu thích (Favorite Toggle) kết nối REST API /api/packs/<id>/favorite
- * 3. Tải trọn bộ ZIP kết nối REST API /api/packs/<id>/download
- * 4. Modal Lightbox xem trước & tải sticker đơn lẻ (/api/stickers/<id>/download)
- * 5. Phân trang xem trước sticker (/api/packs/<id>/stickers?page=X)
- * 6. Chia sẻ mạng xã hội & sao chép liên kết
- * 7. Tái sử dụng Toast dùng chung toàn hệ thống (window.showToast)
- */
-
 document.addEventListener("DOMContentLoaded", function () {
   // 1. Khởi tạo Lucide Icons
   const initLucide = () => {
@@ -265,11 +251,23 @@ document.addEventListener("DOMContentLoaded", function () {
   function renderStickersGrid(stickers) {
     if (!stickerPreviewGrid) return;
     stickerPreviewGrid.innerHTML = stickers.map(s => `
-      <div class="sticker-item-box" title="Bấm để xem và tải ảnh" onclick="openStickerModal('${s.file_path}', '${s.title}', ${s.id})">
-        <img src="${s.file_path}" alt="${s.title}" loading="lazy">
+      <div class="sticker-item-box" title="Bấm để xem và tải ảnh" data-src="${escapeHtml(s.file_path)}" data-title="${escapeHtml(s.title)}" data-id="${s.id}">
+        <img src="${escapeHtml(s.file_path)}" alt="${escapeHtml(s.title)}" loading="lazy">
       </div>
     `).join("");
     initLucide();
+  }
+
+  // Sự kiện click mở modal xem sticker lớn (Event Delegation cho cả SSR và AJAX)
+  if (stickerPreviewGrid) {
+    stickerPreviewGrid.addEventListener("click", function (e) {
+      const box = e.target.closest(".sticker-item-box");
+      if (!box) return;
+      const src = box.getAttribute("data-src") || "";
+      const name = box.getAttribute("data-title") || "";
+      const id = box.getAttribute("data-id") || null;
+      window.openStickerModal(src, name, id);
+    });
   }
 
   function updateStickerPaginationUI(pagination) {

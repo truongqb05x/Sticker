@@ -51,7 +51,7 @@
               </a>
             </li>
             <li>
-              <a href="/bosuutap" class="nav-link active" data-tab="collections" id="navCollections">
+              <a href="/bo-suu-tap" class="nav-link active" data-tab="collections" id="navCollections">
                 <i data-lucide="folder-heart" style="width: 15px; height: 15px;"></i>
                 <span>Bộ sưu tập</span>
               </a>
@@ -125,7 +125,7 @@
             </a>
           </li>
           <li>
-            <a href="/bosuutap" class="drawer-nav-item active" data-tab="collections">
+            <a href="/bo-suu-tap" class="drawer-nav-item active" data-tab="collections">
               <i data-lucide="folder-heart" style="width: 18px; height: 18px;"></i>
               <span>Bộ sưu tập</span>
             </a>
@@ -161,13 +161,13 @@
           <div class="drawer-accordion-content">
             <ul class="drawer-sub-list">
               <li>
-                <a href="javascript:void(0)" class="drawer-sub-item {% if active_category == 'all' %}active{% endif %}" data-category="all">
+                <a href="/bo-suu-tap" class="drawer-sub-item {% if active_category == 'all' %}active{% endif %}" data-category="all">
                   <span class="cat-info"><span>Tất cả</span></span>
                 </a>
               </li>
               {% for cat in categories %}
               <li>
-                <a href="javascript:void(0)" class="drawer-sub-item {% if cat.is_active %}active{% endif %}" data-category="{{ cat.slug }}">
+                <a href="/bo-suu-tap/{{ cat.slug }}" class="drawer-sub-item {% if cat.is_active %}active{% endif %}" data-category="{{ cat.slug }}">
                   <span class="cat-info"><span>{{ cat.name }}</span></span>
                   <span class="cat-count">({{ cat.sticker_count }})</span>
                 </a>
@@ -189,7 +189,7 @@
           <div class="drawer-accordion-content">
             <div class="drawer-sub-list">
               {% for feat in featured_packs %}
-              <a href="/pack/{{ feat.slug }}" class="drawer-featured-item" style="text-decoration: none; color: inherit;">
+              <a href="/bo-suu-tap/{{ feat.category_slug }}/{{ feat.slug }}" class="drawer-featured-item" style="text-decoration: none; color: inherit;">
                 <span class="drawer-featured-title">{{ feat.title }}</span>
                 <span class="drawer-featured-count">{{ feat.total_stickers }} sticker</span>
               </a>
@@ -216,7 +216,7 @@
         </div>
         <ul class="category-list" id="categoryList">
           <li>
-            <a href="javascript:void(0)" class="category-item {% if active_category == 'all' %}active{% endif %}" data-category="all">
+            <a href="/bo-suu-tap" class="category-item {% if active_category == 'all' %}active{% endif %}" data-category="all">
               <span class="cat-info">
                 <i data-lucide="layout-grid" class="cat-icon" style="width: 17px; height: 17px;"></i>
                 <span>Tất cả</span>
@@ -225,7 +225,7 @@
           </li>
           {% for cat in categories %}
           <li>
-            <a href="javascript:void(0)" class="category-item {% if cat.is_active %}active{% endif %}" data-category="{{ cat.slug }}">
+            <a href="/bo-suu-tap/{{ cat.slug }}" class="category-item {% if cat.is_active %}active{% endif %}" data-category="{{ cat.slug }}">
               <span class="cat-info">
                 <i data-lucide="{{ cat.icon_name or 'tag' }}" class="cat-icon" style="width: 17px; height: 17px;"></i>
                 <span>{{ cat.name }}</span>
@@ -245,7 +245,7 @@
         </div>
         <div class="featured-list" id="featuredList">
           {% for feat in featured_packs %}
-          <a href="/pack/{{ feat.slug }}" class="featured-item" style="text-decoration: none; color: inherit;">
+          <a href="/bo-suu-tap/{{ feat.category_slug }}/{{ feat.slug }}" class="featured-item" style="text-decoration: none; color: inherit;">
             <img src="{{ feat.cover_image }}" alt="{{ feat.title }}" class="featured-thumb" loading="lazy">
             <div class="featured-meta">
               <span class="featured-name">{{ feat.title }}</span>
@@ -313,7 +313,7 @@
       <div class="collections-grid" id="collectionsGrid">
         {% if packs %}
           {% for pack in packs %}
-          <a href="/pack/{{ pack.slug }}" class="collection-card" data-id="{{ pack.id }}" data-category="{{ pack.category_slug }}">
+          <a href="/bo-suu-tap/{{ pack.category_slug }}/{{ pack.slug }}" class="collection-card" data-id="{{ pack.id }}" data-category="{{ pack.category_slug }}">
             <div class="card-thumb-container">
               <img src="{{ pack.cover_image }}" alt="{{ pack.title }}" class="card-thumb-img" loading="lazy">
               {% if pack.is_featured %}

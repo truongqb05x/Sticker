@@ -153,14 +153,20 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-wrap: wrap;
 }
 
 .section-title i,
 .section-title svg {
   color: #E25822;
-  fill: #E25822;
   width: 20px;
   height: 20px;
+}
+
+.section-title-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .see-all-link {
@@ -172,6 +178,8 @@
   align-items: center;
   gap: 4px;
   transition: gap 0.2s, color 0.2s;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .see-all-link:hover {

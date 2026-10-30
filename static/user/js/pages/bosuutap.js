@@ -1,16 +1,3 @@
-/**
- * ========================================================
- * BỘ SƯU TẬP (COLLECTIONS LISTING) - REAL INTERACTION SCRIPT
- * ========================================================
- * Quản lý tương tác trang danh sách bộ sưu tập sticker:
- * 1. Khởi tạo & nạp dữ liệu hydrat hóa từ Server (SSR)
- * 2. Lọc theo danh mục thực tế từ CSDL (Desktop Sidebar & Mobile Drawer)
- * 3. Lọc theo tiêu chí: Tất cả, Mới nhất, Tải nhiều nhất, Yêu thích
- * 4. Phân trang dữ liệu thông qua REST API /api/collections
- * 5. Tích hợp tìm kiếm theo từ khóa thời gian thực
- * 6. Tái sử dụng Toast dùng chung toàn hệ thống (window.showToast)
- */
-
 document.addEventListener("DOMContentLoaded", function () {
   // 1. Khởi tạo biểu tượng Lucide
   const initLucide = () => {
@@ -91,7 +78,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     return `
-      <a href="/pack/${escapeHtml(pack.slug)}" class="collection-card" data-id="${pack.id}" data-category="${escapeHtml(pack.category_slug)}">
+      <a href="/bo-suu-tap/${escapeHtml(pack.category_slug || 'others')}/${escapeHtml(pack.slug)}" class="collection-card" data-id="${pack.id}" data-category="${escapeHtml(pack.category_slug)}">
         <div class="card-thumb-container">
           <img src="${escapeHtml(pack.cover_image)}" alt="${escapeHtml(pack.title)}" class="card-thumb-img" loading="lazy">
           ${badgeHtml}
@@ -210,6 +197,7 @@ document.addEventListener("DOMContentLoaded", function () {
       this.classList.add("active");
 
       state.filter = this.getAttribute("data-filter") || "all";
+      updateHistoryUrl();
       const filterName = this.textContent.trim();
 
       fetchCollections(true).then(() => {
@@ -231,14 +219,42 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  // Cập nhật URL trên thanh địa chỉ trình duyệt theo chuẩn /bo-suu-tap hoặc /bo-suu-tap/<theloai>
+  function updateHistoryUrl() {
+    const basePath = (state.category && state.category !== "all")
+      ? `/bo-suu-tap/${encodeURIComponent(state.category)}`
+      : `/bo-suu-tap`;
+
+    const params = new URLSearchParams();
+    if (state.filter && state.filter !== "all") {
+      params.set("filter", state.filter);
+    }
+    if (state.search) {
+      params.set("search", state.search);
+    }
+    if (state.page > 1) {
+      params.set("page", state.page);
+    }
+
+    const qs = params.toString();
+    const fullUrl = qs ? `${basePath}?${qs}` : basePath;
+    window.history.pushState(
+      { category: state.category, filter: state.filter, search: state.search, page: state.page },
+      "",
+      fullUrl
+    );
+  }
+
   // Xử lý Lọc theo Danh mục bên Sidebar
   catItems.forEach(function (cat) {
-    cat.addEventListener("click", function () {
+    cat.addEventListener("click", function (e) {
+      e.preventDefault();
       const category = this.getAttribute("data-category") || "all";
       if (state.category === category && !state.search) return;
 
       state.category = category;
       syncCategoryActiveUI(category);
+      updateHistoryUrl();
 
       const catName = this.querySelector(".cat-info span")?.textContent || "Danh mục";
       fetchCollections(true).then(() => {
@@ -249,10 +265,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Xử lý Lọc theo Danh mục trong Mobile Drawer
   drawerSubItems.forEach(function (sub) {
-    sub.addEventListener("click", function () {
+    sub.addEventListener("click", function (e) {
+      e.preventDefault();
       const category = this.getAttribute("data-category") || "all";
       state.category = category;
       syncCategoryActiveUI(category);
+      updateHistoryUrl();
 
       if (typeof window.closeDrawer === "function") {
         window.closeDrawer();
@@ -314,4 +332,24 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     }
   }
+
+  // 10. Lắng nghe sự kiện Back / Forward của trình duyệt để đồng bộ bộ lọc
+  window.addEventListener("popstate", function (e) {
+    if (e.state) {
+      state.category = e.state.category || "all";
+      state.filter = e.state.filter || "all";
+      state.search = e.state.search || "";
+      state.page = e.state.page || 1;
+    } else {
+      const parts = window.location.pathname.split("/").filter(Boolean);
+      state.category = (parts.length >= 2 && (parts[0] === "bo-suu-tap" || parts[0] === "bosuutap")) ? parts[1] : "all";
+      const sp = new URLSearchParams(window.location.search);
+      state.filter = sp.get("filter") || "all";
+      state.search = sp.get("search") || "";
+      state.page = parseInt(sp.get("page") || "1", 10);
+    }
+    syncCategoryActiveUI(state.category);
+    filterBtns.forEach(b => b.classList.toggle("active", (b.getAttribute("data-filter") || "all") === state.filter));
+    fetchCollections(false);
+  });
 });

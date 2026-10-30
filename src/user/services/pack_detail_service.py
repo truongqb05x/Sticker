@@ -41,15 +41,15 @@ def normalize_asset_url(path: Optional[str]) -> str:
     if not path:
         return "/assets/pack_cats.jpg"
     p = path.strip()
-    if p.startswith("../../assets/"):
-        p = p.replace("../../assets/", "/assets/")
-    elif p.startswith("../assets/"):
-        p = p.replace("../assets/", "/assets/")
-    elif p.startswith("assets/"):
-        p = "/" + p
-    elif not p.startswith("/") and not p.startswith("http"):
-        p = "/" + p
-    return p
+    if p.startswith("http://") or p.startswith("https://"):
+        return p
+    while p.startswith("../"):
+        p = p[3:]
+    while p.startswith("./"):
+        p = p[2:]
+    while p.startswith("/"):
+        p = p[1:]
+    return "/" + p
 
 
 class PackDetailService:
@@ -255,6 +255,7 @@ class PackDetailService:
                 "total_downloads": p.total_downloads or 0,
                 "total_downloads_compact": format_compact(p.total_downloads or 0),
                 "category_name": p.category.name if p.category else "Chung",
+                "category_slug": p.category.slug if p.category else "others",
             })
 
         # 2. Nếu chưa đủ limit, bù thêm các gói active khác
@@ -282,6 +283,7 @@ class PackDetailService:
                     "total_downloads": p.total_downloads or 0,
                     "total_downloads_compact": format_compact(p.total_downloads or 0),
                     "category_name": p.category.name if p.category else "Chung",
+                    "category_slug": p.category.slug if p.category else "others",
                 })
 
         return result

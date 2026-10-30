@@ -53,11 +53,15 @@ def normalize_asset_url(path: Optional[str]) -> str:
     if not path:
         return "/assets/pack_cats.jpg"
     p = path.strip()
-    if p.startswith("../"):
-        p = p.replace("../", "/")
-    elif not p.startswith("/") and not p.startswith("http"):
-        p = "/" + p
-    return p
+    if p.startswith("http://") or p.startswith("https://"):
+        return p
+    while p.startswith("../"):
+        p = p[3:]
+    while p.startswith("./"):
+        p = p[2:]
+    while p.startswith("/"):
+        p = p[1:]
+    return "/" + p
 
 
 class HomeService:
@@ -100,7 +104,7 @@ class HomeService:
                     "title": "Sticker Mèo Cưng Siêu Kawaii",
                     "subtitle": "Bộ sưu tập mèo con cute với biểu cảm độc lạ!",
                     "image_url": "/assets/pack_cats.jpg",
-                    "target_url": "/pack/cute-cats",
+                    "target_url": "/bo-suu-tap/animals/cute-cats",
                     "sort_order": 1,
                 },
                 {
@@ -108,7 +112,7 @@ class HomeService:
                     "title": "Manga Chibi Hải Tặc One Piece",
                     "subtitle": "Luffy, Zoro, Sanji tái xuất cực vui nhộn!",
                     "image_url": "/assets/pack_onepiece.svg",
-                    "target_url": "/pack/one-piece-wano",
+                    "target_url": "/bo-suu-tap/anime/one-piece-wano",
                     "sort_order": 2,
                 },
                 {
@@ -133,26 +137,11 @@ class HomeService:
             .all()
         )
 
-        # Fallback ước tính khi danh mục chưa liên kết nhiều gói sticker
-        fallback_counts = {
-            "anime": 179,
-            "animals": 194,
-            "chibi": 64,
-            "nature": 62,
-            "love": 58,
-            "animation": 63,
-            "expressions": 90,
-            "others": 40,
-        }
-
         result = []
         for c in cats_orm:
             active_packs = [p for p in c.sticker_packs if p.status == "active"] if c.sticker_packs else []
             pack_count = len(active_packs)
             sticker_count = sum(p.total_stickers or 0 for p in active_packs)
-
-            # Nếu danh mục chưa có sticker nào liên kết, dùng fallback hiển thị đẹp mắt
-            display_count = sticker_count if sticker_count > 0 else fallback_counts.get(c.slug, 45)
 
             result.append({
                 "id": c.id,
@@ -161,7 +150,7 @@ class HomeService:
                 "icon_name": c.icon_name or "tag",
                 "badge_bg_class": c.badge_bg_class or "badge-bg-1",
                 "pack_count": pack_count,
-                "sticker_count": display_count,
+                "sticker_count": sticker_count,
             })
 
         return result

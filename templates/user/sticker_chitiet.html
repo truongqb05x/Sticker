@@ -51,7 +51,7 @@
               </a>
             </li>
             <li>
-              <a href="/bosuutap" class="nav-link active" data-tab="collections" id="navCollections">
+              <a href="/bo-suu-tap" class="nav-link active" data-tab="collections" id="navCollections">
                 <i data-lucide="folder-heart" style="width: 15px; height: 15px;"></i>
                 <span>Bộ sưu tập</span>
               </a>
@@ -63,7 +63,7 @@
               </a>
             </li>
             <li>
-              <a href="/bosuutap?filter=favorite" class="nav-link" data-tab="favorites" id="navFavorites">
+              <a href="/bo-suu-tap?filter=favorite" class="nav-link" data-tab="favorites" id="navFavorites">
                 <i data-lucide="heart" style="width: 15px; height: 15px;"></i>
                 <span>Yêu thích</span>
               </a>
@@ -125,7 +125,7 @@
             </a>
           </li>
           <li>
-            <a href="/bosuutap" class="drawer-nav-item active" data-tab="collections">
+            <a href="/bo-suu-tap" class="drawer-nav-item active" data-tab="collections">
               <i data-lucide="folder-heart" style="width: 18px; height: 18px;"></i>
               <span>Bộ sưu tập</span>
             </a>
@@ -137,7 +137,7 @@
             </a>
           </li>
           <li>
-            <a href="/bosuutap?filter=favorite" class="drawer-nav-item" data-tab="favorites">
+            <a href="/bo-suu-tap?filter=favorite" class="drawer-nav-item" data-tab="favorites">
               <i data-lucide="heart" style="width: 18px; height: 18px;"></i>
               <span>Yêu thích</span>
             </a>
@@ -161,13 +161,13 @@
           <div class="drawer-accordion-content">
             <ul class="drawer-sub-list">
               <li>
-                <a href="/bosuutap" class="drawer-sub-item">
+                <a href="/bo-suu-tap" class="drawer-sub-item">
                   <span class="cat-info"><span>Tất cả danh mục</span></span>
                 </a>
               </li>
               {% for cat in categories %}
               <li>
-                <a href="/bosuutap?category={{ cat.slug }}" class="drawer-sub-item {% if cat.slug == pack.category_slug %}active{% endif %}">
+                <a href="/bo-suu-tap/{{ cat.slug }}" class="drawer-sub-item {% if cat.slug == pack.category_slug %}active{% endif %}">
                   <span class="cat-info"><span>{{ cat.name }}</span></span>
                   <span class="cat-count">({{ cat.sticker_count }})</span>
                 </a>
@@ -189,7 +189,7 @@
           <div class="drawer-accordion-content">
             <div class="drawer-sub-list">
               {% for rel in related_packs %}
-              <a href="/pack/{{ rel.slug }}" class="drawer-featured-item" style="text-decoration: none; color: inherit;">
+              <a href="/bo-suu-tap/{{ rel.category_slug }}/{{ rel.slug }}" class="drawer-featured-item" style="text-decoration: none; color: inherit;">
                 <span class="drawer-featured-title">{{ rel.title }}</span>
                 <span class="drawer-featured-count">{{ rel.total_stickers }} sticker</span>
               </a>
@@ -213,9 +213,9 @@
         <span>Trang chủ</span>
       </a>
       <span class="breadcrumb-sep">&gt;</span>
-      <a href="/bosuutap" class="breadcrumb-item">Bộ sưu tập</a>
+      <a href="/bo-suu-tap" class="breadcrumb-item">Bộ sưu tập</a>
       <span class="breadcrumb-sep">&gt;</span>
-      <a href="/bosuutap?category={{ pack.category_slug }}" class="breadcrumb-item">{{ pack.category_name }}</a>
+      <a href="/bo-suu-tap/{{ pack.category_slug }}" class="breadcrumb-item">{{ pack.category_name }}</a>
       <span class="breadcrumb-sep">&gt;</span>
       <span class="breadcrumb-current">{{ pack.title }}</span>
     </nav>
@@ -235,7 +235,7 @@
           </div>
           <ul class="category-list" id="categoryList">
             <li>
-              <a href="/bosuutap" class="category-item">
+              <a href="/bo-suu-tap" class="category-item">
                 <span class="cat-info">
                   <i data-lucide="layout-grid" class="cat-icon" style="width: 17px; height: 17px;"></i>
                   <span>Tất cả</span>
@@ -244,7 +244,7 @@
             </li>
             {% for cat in categories %}
             <li>
-              <a href="/bosuutap?category={{ cat.slug }}" class="category-item {% if cat.slug == pack.category_slug %}active{% endif %}" data-category="{{ cat.slug }}">
+              <a href="/bo-suu-tap/{{ cat.slug }}" class="category-item {% if cat.slug == pack.category_slug %}active{% endif %}" data-category="{{ cat.slug }}">
                 <span class="cat-info">
                   <i data-lucide="{{ cat.icon_name or 'tag' }}" class="cat-icon" style="width: 17px; height: 17px;"></i>
                   <span>{{ cat.name }}</span>
@@ -264,7 +264,7 @@
           </div>
           <div class="related-list" id="relatedList">
             {% for rel in related_packs %}
-            <a href="/pack/{{ rel.slug }}" class="related-item">
+            <a href="/bo-suu-tap/{{ rel.category_slug }}/{{ rel.slug }}" class="related-item">
               <div class="related-thumb-box">
                 <img src="{{ rel.cover_image }}" alt="{{ rel.title }}" loading="lazy">
               </div>
@@ -299,7 +299,7 @@
               <!-- Thẻ tag phân loại -->
               <div class="hero-tags-row">
                 {% for tag in pack.tags %}
-                <a href="/bosuutap?search={{ tag }}" class="tag-pill">{{ tag }}</a>
+                <a href="/bo-suu-tap?search={{ tag }}" class="tag-pill">{{ tag }}</a>
                 {% endfor %}
               </div>
 
@@ -341,7 +341,7 @@
           <!-- Lưới 5 cột x 4 hàng = 20 Sticker -->
           <div class="sticker-preview-grid" id="stickerPreviewGrid">
             {% for s in stickers %}
-            <div class="sticker-item-box" title="Bấm để xem và tải ảnh" onclick="openStickerModal('{{ s.file_path }}', '{{ s.title }}', {{ s.id }})">
+            <div class="sticker-item-box" title="Bấm để xem và tải ảnh" data-src="{{ s.file_path }}" data-title="{{ s.title }}" data-id="{{ s.id }}">
               <img src="{{ s.file_path }}" alt="{{ s.title }}" loading="lazy">
             </div>
             {% endfor %}

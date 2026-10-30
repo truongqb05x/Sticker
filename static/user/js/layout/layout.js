@@ -1,16 +1,3 @@
-/**
- * ========================================================
- * MASTER LAYOUT JAVASCRIPT (SHARED ACROSS ALL USER PAGES)
- * ========================================================
- * Chứa logic dùng chung cho:
- * 1. Thanh tìm kiếm & Gợi ý tìm kiếm realtime (Realtime Search Suggestions)
- * 2. Điều hướng bàn phím trên dropdown gợi ý (Arrow Up/Down, Enter, Esc)
- * 3. Mở/đóng Mobile Navigation Drawer & Backdrop
- * 4. Thu gọn / mở rộng Accordion trong Drawer (Danh mục & Bộ sưu tập)
- * 5. Toast Notifications thông báo tương tác
- * 6. Khởi tạo biểu tượng Lucide Icons
- */
-
 // Dữ liệu sticker dùng chung cho chức năng tìm kiếm & gợi ý (đồng bộ hoặc dự phòng)
 window.packsData = window.packsData || [];
 
@@ -108,10 +95,11 @@ async function renderSuggestions(query) {
         const safeName = escapeHtml(pack.name || '');
         const safeSlug = escapeHtml(pack.slug || '');
         const safeCategory = escapeHtml(pack.category || '');
+        const safeCategorySlug = escapeHtml(pack.category_slug || 'others');
         const safeSubtitle = escapeHtml(pack.subtitle || '');
 
         return `
-          <li class="suggestion-item" data-index="${idx}" data-slug="${safeSlug}" data-name="${safeName}" onclick="goToPack('${safeSlug}')">
+          <li class="suggestion-item" data-index="${idx}" data-category="${safeCategorySlug}" data-slug="${safeSlug}" data-name="${safeName}" onclick="goToPack('${safeCategorySlug}', '${safeSlug}')">
             <img src="${safeImg}" alt="${safeName}" class="suggestion-thumb" loading="lazy" onerror="this.src='/assets/pack_cats.jpg'">
             <div class="suggestion-details">
               <span class="suggestion-title">${highlightedTitle}</span>
@@ -168,12 +156,13 @@ async function renderSuggestions(query) {
   }
 }
 
-// Chuyển hướng trực tiếp tới trang chi tiết bộ sưu tập khi click vào gợi ý
-function goToPack(slug) {
+// Chuyển hướng trực tiếp tới trang chi tiết bộ sưu tập theo cấu trúc /bo-suu-tap/the-loai/ten-bo-suu-tap
+function goToPack(categorySlug, slug) {
   if (!slug) return;
   const searchSuggestions = document.getElementById('searchSuggestions');
   searchSuggestions?.classList.remove('active');
-  window.location.href = `/pack/${encodeURIComponent(slug)}`;
+  const cat = categorySlug || 'others';
+  window.location.href = `/bo-suu-tap/${encodeURIComponent(cat)}/${encodeURIComponent(slug)}`;
 }
 
 // Thực hiện tìm kiếm: nếu đang ở /bosuutap thì lọc tức thì, nếu ở trang khác thì chuyển hướng sang /bosuutap?search=...
@@ -185,7 +174,7 @@ function submitSearch(query) {
   const searchSuggestions = document.getElementById('searchSuggestions');
   searchSuggestions?.classList.remove('active');
 
-  if (window.location.pathname === '/bosuutap') {
+  if (window.location.pathname.startsWith('/bo-suu-tap') || window.location.pathname.startsWith('/bosuutap')) {
     if (searchInput && searchInput.value !== rawQuery) {
       searchInput.value = rawQuery;
     }
@@ -199,7 +188,7 @@ function submitSearch(query) {
     window.history.pushState({}, '', url.toString());
   } else {
     // Điều hướng sang trang bộ sưu tập kèm từ khóa
-    window.location.href = `/bosuutap?search=${encodeURIComponent(rawQuery)}`;
+    window.location.href = `/bo-suu-tap?search=${encodeURIComponent(rawQuery)}`;
   }
 }
 
@@ -224,7 +213,7 @@ function resetSearch() {
   searchSuggestions?.classList.remove('active');
   selectedSuggestionIndex = -1;
 
-  if (window.location.pathname === '/bosuutap') {
+  if (window.location.pathname.startsWith('/bo-suu-tap') || window.location.pathname.startsWith('/bosuutap')) {
     if (searchInput) {
       searchInput.dispatchEvent(new Event('input', { bubbles: true }));
     }
@@ -337,8 +326,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (isSuggestionsActive && selectedSuggestionIndex >= 0 && selectedSuggestionIndex < items.length) {
           const selectedItem = items[selectedSuggestionIndex];
           const slug = selectedItem.getAttribute('data-slug');
+          const catSlug = selectedItem.getAttribute('data-category') || 'others';
           if (slug) {
-            goToPack(slug);
+            goToPack(catSlug, slug);
           } else {
             const name = selectedItem.getAttribute('data-name');
             submitSearch(name);
@@ -415,4 +405,44 @@ document.addEventListener('DOMContentLoaded', () => {
       handleTabClick(tab);
     });
   });
+
+  // Tự động đồng bộ số lượng danh mục từ data thực REST API (/api/categories)
+  syncCategoryCountsFromApi();
 });
+
+// ========================================================
+// ĐỒNG BỘ SỐ LƯỢNG DANH MỤC TỪ REST API THỰC TẾ
+// ========================================================
+async function syncCategoryCountsFromApi() {
+  try {
+    const res = await fetch('/api/categories');
+    if (!res.ok) return;
+    const data = await res.json();
+    if (!data.success || !Array.isArray(data.categories)) return;
+
+    data.categories.forEach(cat => {
+      if (!cat || !cat.slug) return;
+      const count = cat.sticker_count !== undefined ? cat.sticker_count : 0;
+      const countText = `(${count})`;
+
+      // Cập nhật tất cả các liên kết danh mục có data-category matching trong sidebar và mobile drawer
+      const catElements = document.querySelectorAll(`[data-category="${cat.slug}"]`);
+      catElements.forEach(el => {
+        let countEl = el.querySelector('.cat-count');
+        if (countEl) {
+          countEl.textContent = countText;
+        } else {
+          countEl = document.createElement('span');
+          countEl.className = 'cat-count';
+          countEl.textContent = countText;
+          el.appendChild(countEl);
+        }
+      });
+    });
+  } catch (err) {
+    console.warn('Lỗi khi tải số lượng danh mục từ API:', err);
+  }
+}
+
+// Cho phép gọi thủ công khi cần
+window.syncCategoryCountsFromApi = syncCategoryCountsFromApi;
