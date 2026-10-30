@@ -1,15 +1,3 @@
-/**
- * ========================================================
- * ADMIN DASHBOARD PAGE STYLESHEET - STICKERHUB
- * ========================================================
- * Chứa CSS riêng cho trang Bảng điều khiển (Dashboard Content):
- * - Banner chào mừng (Welcome Banner)
- * - Lưới 4 thẻ thống kê KPI (Metrics Grid)
- * - Khu vực biểu đồ xu hướng & cơ cấu danh mục (Charts Grid)
- * - Bảng quản lý bộ sưu tập & bộ lọc (Collections Table)
- * - Dòng sự kiện hoạt động gần đây & top thịnh hành
- * - Modal thêm / sửa bộ sưu tập
- */
 
 /* ========================================================
    1. DASHBOARD CONTENT MAIN AREA

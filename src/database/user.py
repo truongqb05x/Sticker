@@ -33,5 +33,15 @@ class User(Base):
         """Kiểm tra mật khẩu nhập vào có khớp với mật khẩu băm"""
         return check_password_hash(self.password_hash, password)
 
+    def to_safe_dict(self) -> dict:
+        """Trả về thông tin an toàn của người dùng (loại trừ password_hash)"""
+        return {
+            "id": self.id,
+            "username": self.username,
+            "last_login_at": self.last_login_at.isoformat() if self.last_login_at else None,
+            "created_at": self.created_at.isoformat() if self.created_at else None,
+            "updated_at": self.updated_at.isoformat() if self.updated_at else None,
+        }
+
     def __repr__(self) -> str:
         return f"<User id={self.id} username='{self.username}'>"

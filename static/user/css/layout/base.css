@@ -81,3 +81,23 @@ body {
     transform: translateY(0);
   }
 }
+
+/* Responsive Toast for Mobile */
+@media (max-width: 600px) {
+  .toast-container {
+    bottom: 16px;
+    left: 14px;
+    right: 14px;
+    align-items: center;
+  }
+
+  .toast {
+    width: auto;
+    max-width: calc(100vw - 28px);
+    font-size: 13px;
+    padding: 10px 16px;
+    justify-content: center;
+    text-align: center;
+    border-radius: 10px;
+  }
+}

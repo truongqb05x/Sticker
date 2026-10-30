@@ -50,7 +50,4 @@ app = create_app()
 if __name__ == "__main__":
     port = int(os.getenv("PORT", 5000))
     debug = os.getenv("FLASK_DEBUG", "True").lower() in ("true", "1")
-    print(f"\n🚀 StickerHub dang khoi chay tai: http://127.0.0.1:{port}")
-    print(f"👉 Trang chu User: http://127.0.0.1:{port}/")
-    print(f"👉 Trang Admin:    http://127.0.0.1:{port}/admin/login\n")
     app.run(host="0.0.0.0", port=port, debug=debug)

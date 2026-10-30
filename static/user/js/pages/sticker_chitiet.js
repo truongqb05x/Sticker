@@ -148,19 +148,3 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   };
 });
-
-// Toast notification helper dùng chung
-function showToast(message) {
-  const container = document.getElementById("toastContainer");
-  if (!container) return;
-  const toast = document.createElement("div");
-  toast.className = "toast";
-  toast.innerHTML = `<span>${message}</span>`;
-  container.appendChild(toast);
-  setTimeout(function () {
-    toast.style.opacity = "0";
-    toast.style.transform = "translateY(10px)";
-    toast.style.transition = "all 0.25s ease";
-    setTimeout(() => toast.remove(), 250);
-  }, 2600);
-}

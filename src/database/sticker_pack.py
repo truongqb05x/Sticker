@@ -53,7 +53,7 @@ class StickerPack(Base):
     updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
 
     # Quan hệ với Danh mục cha
-    category: Mapped["Category"] = relationship("Category", back_populates="sticker_packs")
+    category: Mapped["Category"] = relationship("Category", back_populates="sticker_packs", lazy="joined")
 
     # Quan hệ 1-N với danh sách sticker con
     stickers: Mapped[List["Sticker"]] = relationship(

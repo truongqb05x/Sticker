@@ -1,14 +1,37 @@
 /**
  * ========================================================
  * ADMIN BÁO CÁO & THỐNG KÊ (ANALYTICS) - JAVASCRIPT
- * Tương thích bộ lọc thời gian toàn diện (Hôm nay, 7 ngày, 30 ngày, Năm nay, Tất cả)
+ * Tích hợp REST API CSDL thực, hỗ trợ các mốc thời gian:
+ * Hôm nay, 7 ngày, 30 ngày, Năm nay, Tất cả
  * ========================================================
  */
+
+// Chống tấn công XSS khi render chuỗi động
+function escapeHtml(str) {
+  if (str === null || str === undefined) return "";
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
 
 document.addEventListener("DOMContentLoaded", function () {
   // 1. Khởi tạo Lucide Icons
   if (window.lucide) {
     window.lucide.createIcons();
+  }
+
+  // Helper hiển thị thông báo dùng chung từ utils/showToast.js
+  function notify(msg) {
+    if (typeof window.showToast === "function") {
+      window.showToast(msg);
+    } else if (typeof showToast === "function") {
+      showToast(msg);
+    } else {
+      console.log("[Toast]", msg);
+    }
   }
 
   // 2. Elements Biểu đồ Xu hướng Tải (Wave Chart)
@@ -69,296 +92,79 @@ document.addEventListener("DOMContentLoaded", function () {
   const tableTimeframeNote = document.getElementById("tableTimeframeNote");
   const topPacksTableBody = document.getElementById("topPacksTableBody");
 
-  // ========================================================
-  // BỘ DỮ LIỆU ĐỒNG BỘ THEO MỐC THỜI GIAN
-  // ========================================================
-
-  // Dữ liệu 4 Thẻ KPI
-  const kpiDataSets = {
-    "today": {
-      downloadsLabel: "Lượt tải hôm nay",
-      downloadsVal: "15.98K",
-      downloadsChange: "+8.4%",
-      dailyLabel: "Lượt tải TB / giờ",
-      dailyVal: "1,332",
-      dailyChange: "+5.2%",
-      topPackLabel: "Top #1 hôm nay",
-      topPackName: "Cute Cats",
-      topPackDownloads: "4.1K tải",
-      trafficLabel: "Lưu lượng truy cập hôm nay",
-      trafficVal: "32.0K",
-      trafficChange: "+14.2%"
-    },
-    "7d": {
-      downloadsLabel: "Lượt tải 7 ngày qua",
-      downloadsVal: "169.8K",
-      downloadsChange: "+18.2%",
-      dailyLabel: "Lượt tải TB / ngày",
-      dailyVal: "24,250",
-      dailyChange: "+12.4%",
-      topPackLabel: "Bộ sưu tập #1 Top",
-      topPackName: "Cute Cats",
-      topPackDownloads: "38.5K tải",
-      trafficLabel: "Lưu lượng truy cập 7 ngày",
-      trafficVal: "264.4K",
-      trafficChange: "+22.6%"
-    },
-    "30d": {
-      downloadsLabel: "Lượt tải 30 ngày qua",
-      downloadsVal: "182.4K",
-      downloadsChange: "+16.5%",
-      dailyLabel: "Lượt tải TB / ngày",
-      dailyVal: "6,080",
-      dailyChange: "+10.2%",
-      topPackLabel: "Bộ sưu tập #1 Top",
-      topPackName: "Cute Cats",
-      topPackDownloads: "62.8K tải",
-      trafficLabel: "Lưu lượng truy cập 30 ngày",
-      trafficVal: "342.8K",
-      trafficChange: "+24.6%"
-    },
-    "year": {
-      downloadsLabel: "Lượt tải năm nay",
-      downloadsVal: "624.1K",
-      downloadsChange: "+32.8%",
-      dailyLabel: "Lượt tải TB / tháng",
-      dailyVal: "52,008",
-      dailyChange: "+21.4%",
-      topPackLabel: "Bộ sưu tập #1 Năm nay",
-      topPackName: "Cute Cats",
-      topPackDownloads: "145.2K tải",
-      trafficLabel: "Lưu lượng truy cập năm nay",
-      trafficVal: "1.28M",
-      trafficChange: "+44.2%"
-    },
-    "all": {
-      downloadsLabel: "Tổng lượt tải toàn thời gian",
-      downloadsVal: "1.85M",
-      downloadsChange: "+58.4%",
-      dailyLabel: "Lượt tải TB / năm",
-      dailyVal: "462.5K",
-      dailyChange: "+35.0%",
-      topPackLabel: "Bộ sưu tập #1 Kỷ lục",
-      topPackName: "Cute Cats",
-      topPackDownloads: "386.4K tải",
-      trafficLabel: "Tổng lưu lượng truy cập",
-      trafficVal: "3.92M",
-      trafficChange: "+62.1%"
-    }
-  };
-
-  // Dữ liệu Biểu đồ Xu hướng Lượt tải
-  const analyticsDataSets = {
-    "today": {
-      yLabels: ["4K", "3K", "2K", "1K", "0"],
-      cols: [
-        { label: "00h-04h", day: "Đêm muộn", date: "Hôm nay", downloads: "820", change: "+4.1%", height: "20%" },
-        { label: "04h-08h", day: "Sáng sớm", date: "Hôm nay", downloads: "1,450", change: "+8.3%", height: "36%" },
-        { label: "08h-12h", day: "Buổi sáng", date: "Hôm nay", downloads: "3,200", change: "+15.6%", height: "80%" },
-        { label: "12h-16h", day: "Buổi chiều", date: "Hôm nay", downloads: "2,840", change: "+11.2%", height: "71%" },
-        { label: "16h-20h", day: "Chiều tối", date: "Hôm nay", downloads: "4,050", change: "+24.5% 🔥", height: "100%", highlight: true },
-        { label: "20h-24h", day: "Đêm", date: "Hôm nay", downloads: "3,620", change: "+18.0%", height: "89%" }
-      ]
-    },
-    "7d": {
-      yLabels: ["40K", "30K", "20K", "10K", "0"],
-      cols: [
-        { label: "T2", day: "Thứ Hai", date: "20/10/2026", downloads: "14,250", change: "+8.4%", height: "37%" },
-        { label: "T3", day: "Thứ Ba", date: "21/10/2026", downloads: "18,500", change: "+12.1%", height: "48%" },
-        { label: "T4", day: "Thứ Tư", date: "22/10/2026", downloads: "17,100", change: "-2.5%", height: "44%" },
-        { label: "T5", day: "Thứ Năm", date: "23/10/2026", downloads: "25,400", change: "+15.8%", height: "66%" },
-        { label: "T6", day: "Thứ Sáu", date: "24/10/2026", downloads: "29,800", change: "+22.3%", height: "77%" },
-        { label: "T7", day: "Thứ Bảy", date: "25/10/2026", downloads: "27,300", change: "+18.5%", height: "71%" },
-        { label: "CN", day: "Chủ Nhật", date: "26/10/2026", downloads: "38,500", change: "+34.2% 🔥", height: "100%", highlight: true }
-      ]
-    },
-    "30d": {
-      yLabels: ["60K", "45K", "30K", "15K", "0"],
-      cols: [
-        { label: "Tuần 1", day: "01/10 - 07/10", date: "Tuần 1", downloads: "34,200", change: "+6.8%", height: "57%" },
-        { label: "Tuần 2", day: "08/10 - 14/10", date: "Tuần 2", downloads: "42,800", change: "+15.3%", height: "71%" },
-        { label: "Tuần 3", day: "15/10 - 21/10", date: "Tuần 3", downloads: "58,600", change: "+36.9% 🔥", height: "98%", highlight: true },
-        { label: "Tuần 4", day: "22/10 - 28/10", date: "Tuần 4", downloads: "46,800", change: "+12.4%", height: "78%" }
-      ]
-    },
-    "year": {
-      yLabels: ["200K", "150K", "100K", "50K", "0"],
-      cols: [
-        { label: "Q1", day: "Quý 1", date: "T1 - T3", downloads: "112,000", change: "+14.2%", height: "56%" },
-        { label: "Q2", day: "Quý 2", date: "T4 - T6", downloads: "145,500", change: "+29.8%", height: "72%" },
-        { label: "Q3", day: "Quý 3", date: "T7 - T9", downloads: "168,200", change: "+15.6%", height: "84%" },
-        { label: "Q4", day: "Quý 4", date: "T10 - T12", downloads: "198,400", change: "+41.0% 🔥", height: "100%", highlight: true }
-      ]
-    },
-    "all": {
-      yLabels: ["800K", "600K", "400K", "200K", "0"],
-      cols: [
-        { label: "2023", day: "Năm 2023", date: "01/01 - 31/12/2023", downloads: "310,000", change: "+42.5%", height: "39%" },
-        { label: "2024", day: "Năm 2024", date: "01/01 - 31/12/2024", downloads: "485,000", change: "+56.4%", height: "61%" },
-        { label: "2025", day: "Năm 2025", date: "01/01 - 31/12/2025", downloads: "635,000", change: "+30.9%", height: "79%" },
-        { label: "2026", day: "Năm 2026", date: "01/01 - 26/10/2026", downloads: "798,000", change: "+25.7% 🔥", height: "100%", highlight: true }
-      ]
-    }
-  };
-
-  // Dữ liệu Biểu đồ Lưu lượng truy cập hệ thống (chỉ thống kê lưu lượng)
-  const trafficDataSets = {
-    "today": {
-      yLabels: ["10K", "7.5K", "5K", "2.5K", "0"],
-      cols: [
-        { label: "00h-04h", day: "Đêm muộn", date: "Hôm nay", traffic: "1,650", change: "+4.2%", height: "20%" },
-        { label: "04h-08h", day: "Sáng sớm", date: "Hôm nay", traffic: "2,890", change: "+6.8%", height: "35%" },
-        { label: "08h-12h", day: "Buổi sáng", date: "Hôm nay", traffic: "6,400", change: "+14.1%", height: "78%" },
-        { label: "12h-16h", day: "Buổi chiều", date: "Hôm nay", traffic: "5,720", change: "-2.3%", height: "69%" },
-        { label: "16h-20h", day: "Chiều tối", date: "Hôm nay", traffic: "8,100", change: "+18.9%", height: "98%", highlight: true },
-        { label: "20h-24h", day: "Đêm", date: "Hôm nay", traffic: "7,240", change: "+11.5%", height: "87%" }
-      ]
-    },
-    "7d": {
-      yLabels: ["60K", "45K", "30K", "15K", "0"],
-      cols: [
-        { label: "T2", day: "Thứ Hai", date: "20/10/2026", traffic: "22,400", change: "+9.2%", height: "37%" },
-        { label: "T3", day: "Thứ Ba", date: "21/10/2026", traffic: "28,900", change: "+14.5%", height: "48%" },
-        { label: "T4", day: "Thứ Tư", date: "22/10/2026", traffic: "26,700", change: "-3.1%", height: "44%" },
-        { label: "T5", day: "Thứ Năm", date: "23/10/2026", traffic: "38,200", change: "+18.4%", height: "64%" },
-        { label: "T6", day: "Thứ Sáu", date: "24/10/2026", traffic: "46,500", change: "+25.8%", height: "77%" },
-        { label: "T7", day: "Thứ Bảy", date: "25/10/2026", traffic: "42,800", change: "+21.3%", height: "71%" },
-        { label: "CN", day: "Chủ Nhật", date: "26/10/2026", traffic: "58,900", change: "+38.5% 🔥", height: "98%", highlight: true }
-      ]
-    },
-    "30d": {
-      yLabels: ["90K", "68K", "45K", "23K", "0"],
-      cols: [
-        { label: "Tuần 1", day: "01/10 - 07/10", date: "Tuần 1", traffic: "52,400", change: "+11.2%", height: "58%" },
-        { label: "Tuần 2", day: "08/10 - 14/10", date: "Tuần 2", traffic: "65,200", change: "+15.8%", height: "72%" },
-        { label: "Tuần 3", day: "15/10 - 21/10", date: "Tuần 3", traffic: "88,400", change: "+28.4% 🔥", height: "98%", highlight: true },
-        { label: "Tuần 4", day: "22/10 - 28/10", date: "Tuần 4", traffic: "71,500", change: "+19.1%", height: "79%" }
-      ]
-    },
-    "year": {
-      yLabels: ["300K", "225K", "150K", "75K", "0"],
-      cols: [
-        { label: "Q1", day: "Quý 1", date: "T1 - T3", traffic: "168,000", change: "+14.6%", height: "56%" },
-        { label: "Q2", day: "Quý 2", date: "T4 - T6", traffic: "218,000", change: "+22.4%", height: "73%" },
-        { label: "Q3", day: "Quý 3", date: "T7 - T9", traffic: "252,000", change: "+18.8%", height: "84%" },
-        { label: "Q4", day: "Quý 4", date: "T10 - T12", traffic: "298,000", change: "+31.2% 🔥", height: "99%", highlight: true }
-      ]
-    },
-    "all": {
-      yLabels: ["1.6M", "1.2M", "800K", "400K", "0"],
-      cols: [
-        { label: "2023", day: "Năm 2023", date: "01/01 - 31/12/2023", traffic: "640,000", change: "+52.1%", height: "40%" },
-        { label: "2024", day: "Năm 2024", date: "01/01 - 31/12/2024", traffic: "980,000", change: "+53.1%", height: "61%" },
-        { label: "2025", day: "Năm 2025", date: "01/01 - 31/12/2025", traffic: "1,320,000", change: "+34.7%", height: "82%" },
-        { label: "2026", day: "Năm 2026", date: "01/01 - 26/10/2026", traffic: "1,580,000", change: "+19.7% 🔥", height: "99%", highlight: true }
-      ]
-    }
-  };
-
-  // Dữ liệu Bảng Top Bộ Sưu Tập
-  const topPacksDataSets = {
-    "today": {
-      note: "(Hôm nay)",
-      items: [
-        { thumb: "../../assets/pack_cats.jpg", title: "Cute Cats", author: "MiuMiu Studio", cat: "Động vật", count: 120, downloads: "4.1K", likes: "320" },
-        { thumb: "../../assets/stickers/cat_02.svg", title: "Sweet Couple", author: "LoveStory", cat: "Tình yêu", count: 50, downloads: "3.2K", likes: "240" },
-        { thumb: "../../assets/pack_anime.jpg", title: "Anime Girls", author: "Sakura Art", cat: "Anime & Manga", count: 96, downloads: "2.9K", likes: "190" },
-        { thumb: "../../assets/pack_onepiece.svg", title: "One Piece Wano", author: "OtakuZone", cat: "Anime & Manga", count: 83, downloads: "2.4K", likes: "180" },
-        { thumb: "../../assets/thumb_anime.svg", title: "Chibi Heroes", author: "ComicChibi", cat: "Chibi", count: 64, downloads: "1.8K", likes: "110" }
-      ]
-    },
-    "7d": {
-      note: "(7 ngày qua)",
-      items: [
-        { thumb: "../../assets/pack_cats.jpg", title: "Cute Cats", author: "MiuMiu Studio", cat: "Động vật", count: 120, downloads: "38.5K", likes: "2.4K" },
-        { thumb: "../../assets/pack_anime.jpg", title: "Anime Girls", author: "Sakura Art", cat: "Anime & Manga", count: 96, downloads: "25.3K", likes: "1.8K" },
-        { thumb: "../../assets/pack_onepiece.svg", title: "One Piece Wano", author: "OtakuZone", cat: "Anime & Manga", count: 83, downloads: "22.4K", likes: "1.5K" },
-        { thumb: "../../assets/stickers/cat_02.svg", title: "Sweet Couple", author: "LoveStory", cat: "Tình yêu", count: 50, downloads: "21.2K", likes: "1.4K" },
-        { thumb: "../../assets/thumb_anime.svg", title: "Chibi Heroes", author: "ComicChibi", cat: "Chibi", count: 64, downloads: "19.8K", likes: "1.1K" }
-      ]
-    },
-    "30d": {
-      note: "(30 ngày qua)",
-      items: [
-        { thumb: "../../assets/pack_cats.jpg", title: "Cute Cats", author: "MiuMiu Studio", cat: "Động vật", count: 120, downloads: "62.8K", likes: "4.8K" },
-        { thumb: "../../assets/pack_anime.jpg", title: "Anime Girls", author: "Sakura Art", cat: "Anime & Manga", count: 96, downloads: "42.1K", likes: "3.2K" },
-        { thumb: "../../assets/stickers/cat_02.svg", title: "Sweet Couple", author: "LoveStory", cat: "Tình yêu", count: 50, downloads: "36.4K", likes: "2.9K" },
-        { thumb: "../../assets/pack_onepiece.svg", title: "One Piece Wano", author: "OtakuZone", cat: "Anime & Manga", count: 83, downloads: "31.8K", likes: "2.4K" },
-        { thumb: "../../assets/thumb_anime.svg", title: "Chibi Heroes", author: "ComicChibi", cat: "Chibi", count: 64, downloads: "28.5K", likes: "2.0K" }
-      ]
-    },
-    "year": {
-      note: "(Năm nay)",
-      items: [
-        { thumb: "../../assets/pack_cats.jpg", title: "Cute Cats", author: "MiuMiu Studio", cat: "Động vật", count: 120, downloads: "145.2K", likes: "11.2K" },
-        { thumb: "../../assets/pack_anime.jpg", title: "Anime Girls", author: "Sakura Art", cat: "Anime & Manga", count: 96, downloads: "112.4K", likes: "8.6K" },
-        { thumb: "../../assets/pack_onepiece.svg", title: "One Piece Wano", author: "OtakuZone", cat: "Anime & Manga", count: 83, downloads: "96.5K", likes: "7.4K" },
-        { thumb: "../../assets/stickers/cat_02.svg", title: "Sweet Couple", author: "LoveStory", cat: "Tình yêu", count: 50, downloads: "88.0K", likes: "6.8K" },
-        { thumb: "../../assets/thumb_anime.svg", title: "Chibi Heroes", author: "ComicChibi", cat: "Chibi", count: 64, downloads: "75.3K", likes: "5.2K" }
-      ]
-    },
-    "all": {
-      note: "(Toàn thời gian)",
-      items: [
-        { thumb: "../../assets/pack_cats.jpg", title: "Cute Cats", author: "MiuMiu Studio", cat: "Động vật", count: 120, downloads: "386.4K", likes: "28.5K" },
-        { thumb: "../../assets/pack_anime.jpg", title: "Anime Girls", author: "Sakura Art", cat: "Anime & Manga", count: 96, downloads: "294.2K", likes: "21.8K" },
-        { thumb: "../../assets/pack_onepiece.svg", title: "One Piece Wano", author: "OtakuZone", cat: "Anime & Manga", count: 83, downloads: "245.0K", likes: "18.2K" },
-        { thumb: "../../assets/stickers/cat_02.svg", title: "Sweet Couple", author: "LoveStory", cat: "Tình yêu", count: 50, downloads: "210.8K", likes: "15.6K" },
-        { thumb: "../../assets/thumb_anime.svg", title: "Chibi Heroes", author: "ComicChibi", cat: "Chibi", count: 64, downloads: "188.6K", likes: "13.4K" }
-      ]
-    }
-  };
+  // Bộ nhớ cache tạm thời theo mốc thời gian để chuyển tab tức thì
+  const statsCache = {};
 
   // ========================================================
   // RENDER HÀM CẬP NHẬT GIAO DIỆN
   // ========================================================
 
   // Cập nhật 4 Thẻ KPI
-  function renderKPIs(rangeKey) {
-    const kpi = kpiDataSets[rangeKey];
+  function renderKPIs(kpi) {
     if (!kpi) return;
 
-    if (kpiDownloadsLabel) kpiDownloadsLabel.textContent = kpi.downloadsLabel;
-    if (kpiDownloadsVal) kpiDownloadsVal.textContent = kpi.downloadsVal;
-    if (kpiDownloadsChange) kpiDownloadsChange.textContent = kpi.downloadsChange;
+    if (kpiDownloadsLabel) kpiDownloadsLabel.textContent = kpi.downloadsLabel || "Lượt tải";
+    if (kpiDownloadsVal) kpiDownloadsVal.textContent = kpi.downloadsVal || "0";
+    if (kpiDownloadsChange) kpiDownloadsChange.textContent = kpi.downloadsChange || "+0%";
+    if (kpiDownloadsBadge) {
+      const isDown = (kpi.downloadsChange || "").includes("-");
+      kpiDownloadsBadge.className = `analytic-badge ${isDown ? "badge-growth-down" : "badge-growth-up"}`;
+    }
 
-    if (kpiDailyLabel) kpiDailyLabel.textContent = kpi.dailyLabel;
-    if (kpiDailyVal) kpiDailyVal.textContent = kpi.dailyVal;
-    if (kpiDailyChange) kpiDailyChange.textContent = kpi.dailyChange;
+    if (kpiDailyLabel) kpiDailyLabel.textContent = kpi.dailyLabel || "Lượt tải TB";
+    if (kpiDailyVal) kpiDailyVal.textContent = kpi.dailyVal || "0";
+    if (kpiDailyChange) kpiDailyChange.textContent = kpi.dailyChange || "+0%";
+    if (kpiDailyBadge) {
+      const isDown = (kpi.dailyChange || "").includes("-");
+      kpiDailyBadge.className = `analytic-badge ${isDown ? "badge-growth-down" : "badge-growth-up"}`;
+    }
 
-    if (kpiTopPackLabel) kpiTopPackLabel.textContent = kpi.topPackLabel;
-    if (kpiTopPackName) kpiTopPackName.textContent = kpi.topPackName;
-    if (kpiTopPackDownloads) kpiTopPackDownloads.textContent = kpi.topPackDownloads;
+    if (kpiTopPackLabel) kpiTopPackLabel.textContent = kpi.topPackLabel || "Top #1";
+    if (kpiTopPackName) kpiTopPackName.textContent = kpi.topPackName || "---";
+    if (kpiTopPackDownloads) kpiTopPackDownloads.textContent = kpi.topPackDownloads || "0 tải";
 
-    if (kpiTrafficLabel) kpiTrafficLabel.textContent = kpi.trafficLabel;
-    if (kpiTrafficVal) kpiTrafficVal.textContent = kpi.trafficVal;
-    if (kpiTrafficChange) kpiTrafficChange.textContent = kpi.trafficChange;
+    if (kpiTrafficLabel) kpiTrafficLabel.textContent = kpi.trafficLabel || "Lưu lượng truy cập";
+    if (kpiTrafficVal) kpiTrafficVal.textContent = kpi.trafficVal || "0";
+    if (kpiTrafficChange) kpiTrafficChange.textContent = kpi.trafficChange || "+0%";
+    if (kpiTrafficBadge) {
+      const isDown = (kpi.trafficChange || "").includes("-");
+      kpiTrafficBadge.className = `analytic-badge ${isDown ? "badge-growth-down" : "badge-growth-up"}`;
+    }
   }
 
   // Cập nhật Bảng Top Bộ Sưu Tập
-  function renderTopPacksTable(rangeKey) {
-    const tableData = topPacksDataSets[rangeKey];
-    if (!tableData || !topPacksTableBody) return;
+  function renderTopPacksTable(items, note) {
+    if (tableTimeframeNote && note) {
+      tableTimeframeNote.textContent = note;
+    }
+    if (!topPacksTableBody) return;
 
-    if (tableTimeframeNote) {
-      tableTimeframeNote.textContent = tableData.note;
+    if (!items || items.length === 0) {
+      topPacksTableBody.innerHTML = `
+        <tr>
+          <td colspan="5" style="text-align: center; padding: 32px; color: #A89A90;">
+            Chưa có dữ liệu thống kê cho mốc thời gian này
+          </td>
+        </tr>
+      `;
+      return;
     }
 
-    topPacksTableBody.innerHTML = tableData.items.map(pack => `
+    topPacksTableBody.innerHTML = items.map(pack => `
       <tr>
         <td>
           <div class="table-pack-cell">
-            <img src="${pack.thumb}" alt="${pack.title}" class="table-pack-thumb">
+            <img src="${escapeHtml(pack.thumb)}" alt="${escapeHtml(pack.title)}" class="table-pack-thumb" onerror="this.src='../../assets/pack_cats.jpg'">
             <div>
-              <div class="table-pack-title">${pack.title}</div>
-              <div class="table-pack-sub">Tác giả: ${pack.author}</div>
+              <div class="table-pack-title">${escapeHtml(pack.title)}</div>
+              <div class="table-pack-sub">Tác giả: ${escapeHtml(pack.author)}</div>
             </div>
           </div>
         </td>
-        <td><span class="cat-pill">${pack.cat}</span></td>
-        <td><strong>${pack.count}</strong> sticker</td>
-        <td><strong style="color: #C45832;">${pack.downloads}</strong></td>
-        <td><strong>${pack.likes}</strong></td>
+        <td><span class="cat-pill">${escapeHtml(pack.cat)}</span></td>
+        <td><strong>${escapeHtml(pack.count)}</strong> sticker</td>
+        <td><strong style="color: #C45832;">${escapeHtml(pack.downloads)}</strong></td>
+        <td><strong>${escapeHtml(pack.likes)}</strong></td>
       </tr>
     `).join("");
   }
@@ -398,7 +204,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // --- 1. BIỂU ĐỒ XU HƯỚNG LƯỢT TẢI ---
   function highlightAnalyticsPoint(index) {
-    // Ẩn thông tin biểu đồ bên kia nếu đang hiện
     hideTrafficHighlight();
 
     if (!currentAnalyticsPoints[index] || !currentAnalyticsDataset || !chartTooltip || !chartWrapper) return;
@@ -456,8 +261,7 @@ document.addEventListener("DOMContentLoaded", function () {
     triggers.forEach(trg => trg.classList.remove("hover-focus"));
   }
 
-  function renderAnalyticsChart(rangeKey) {
-    const dataset = analyticsDataSets[rangeKey];
+  function renderAnalyticsChart(dataset) {
     if (!dataset || !chartWaveSvg) return;
 
     currentAnalyticsDataset = dataset;
@@ -465,11 +269,12 @@ document.addEventListener("DOMContentLoaded", function () {
     const yAxisContainer = document.querySelector("#analyticsYAxis");
     if (yAxisContainer && dataset.yLabels) {
       yAxisContainer.innerHTML = dataset.yLabels
-        .map(lbl => `<span class="y-label">${lbl}</span>`)
+        .map(lbl => `<span class="y-label">${escapeHtml(lbl)}</span>`)
         .join("");
     }
 
-    const n = dataset.cols.length;
+    const cols = dataset.cols || [];
+    const n = cols.length;
     const margin = 45;
     const totalW = 700;
     const baseY = 162;
@@ -477,7 +282,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const availableH = baseY - minY;
     const stepX = n > 1 ? (totalW - 2 * margin) / (n - 1) : 0;
 
-    currentAnalyticsPoints = dataset.cols.map((col, i) => {
+    currentAnalyticsPoints = cols.map((col, i) => {
       const heightPercent = parseFloat(col.height) || 0;
       const x = n > 1 ? margin + i * stepX : totalW / 2;
       const y = baseY - (heightPercent / 100) * availableH;
@@ -506,22 +311,20 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     if (chartTriggersLayer) {
-      chartTriggersLayer.innerHTML = dataset.cols.map((col, i) => `
+      chartTriggersLayer.innerHTML = cols.map((col, i) => `
         <div class="wave-trigger-col ${col.highlight ? 'highlight' : ''}" data-index="${i}"></div>
       `).join("");
     }
 
     if (chartXAxis) {
-      chartXAxis.innerHTML = dataset.cols.map((col, i) => `
+      chartXAxis.innerHTML = cols.map((col, i) => `
         <div class="wave-x-label">
-          <span class="wave-x-tag ${col.highlight ? 'highlight' : ''}" data-index="${i}">${col.label}</span>
+          <span class="wave-x-tag ${col.highlight ? 'highlight' : ''}" data-index="${i}">${escapeHtml(col.label)}</span>
         </div>
       `).join("");
     }
 
     bindAnalyticsWaveInteractions();
-
-    // Mặc định ban đầu ẩn thông tin, chỉ hiện khi người dùng rê chuột
     hideAnalyticsHighlight();
   }
 
@@ -543,7 +346,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // --- 2. BIỂU ĐỒ LƯU LƯỢNG TRUY CẬP (TRAFFIC) ---
   function highlightTrafficPoint(index) {
-    // Ẩn thông tin biểu đồ bên kia nếu đang hiện
     hideAnalyticsHighlight();
 
     if (!currentTrafficPoints[index] || !currentTrafficDataset || !trafficTooltip || !trafficWrapper) return;
@@ -601,19 +403,19 @@ document.addEventListener("DOMContentLoaded", function () {
     triggers.forEach(trg => trg.classList.remove("hover-focus"));
   }
 
-  function renderTrafficChart(rangeKey) {
-    const dataset = trafficDataSets[rangeKey];
+  function renderTrafficChart(dataset) {
     if (!dataset || !trafficWaveSvg) return;
 
     currentTrafficDataset = dataset;
 
     if (trafficYAxis && dataset.yLabels) {
       trafficYAxis.innerHTML = dataset.yLabels
-        .map(lbl => `<span class="y-label">${lbl}</span>`)
+        .map(lbl => `<span class="y-label">${escapeHtml(lbl)}</span>`)
         .join("");
     }
 
-    const n = dataset.cols.length;
+    const cols = dataset.cols || [];
+    const n = cols.length;
     const margin = 45;
     const totalW = 700;
     const baseY = 162;
@@ -621,7 +423,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const availableH = baseY - minY;
     const stepX = n > 1 ? (totalW - 2 * margin) / (n - 1) : 0;
 
-    currentTrafficPoints = dataset.cols.map((col, i) => {
+    currentTrafficPoints = cols.map((col, i) => {
       const heightPercent = parseFloat(col.height) || 0;
       const x = n > 1 ? margin + i * stepX : totalW / 2;
       const y = baseY - (heightPercent / 100) * availableH;
@@ -650,22 +452,20 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     if (trafficTriggersLayer) {
-      trafficTriggersLayer.innerHTML = dataset.cols.map((col, i) => `
+      trafficTriggersLayer.innerHTML = cols.map((col, i) => `
         <div class="wave-trigger-col ${col.highlight ? 'highlight' : ''}" data-index="${i}"></div>
       `).join("");
     }
 
     if (trafficXAxis) {
-      trafficXAxis.innerHTML = dataset.cols.map((col, i) => `
+      trafficXAxis.innerHTML = cols.map((col, i) => `
         <div class="wave-x-label">
-          <span class="wave-x-tag ${col.highlight ? 'highlight' : ''}" data-index="${i}">${col.label}</span>
+          <span class="wave-x-tag ${col.highlight ? 'highlight' : ''}" data-index="${i}">${escapeHtml(col.label)}</span>
         </div>
       `).join("");
     }
 
     bindTrafficWaveInteractions();
-
-    // Mặc định ban đầu ẩn thông tin, chỉ hiện khi người dùng rê chuột
     hideTrafficHighlight();
   }
 
@@ -685,9 +485,82 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Khởi tạo hiển thị ban đầu cho 2 biểu đồ (không bật tooltip trước)
-  renderAnalyticsChart("7d");
-  renderTrafficChart("7d");
+  // ========================================================
+  // TẢI VÀ ĐỒNG BỘ DỮ LIỆU TỪ REST API
+  // ========================================================
+
+  async function loadStats(rangeKey, showFeedback = true) {
+    try {
+      // 1. Kiểm tra cache
+      if (statsCache[rangeKey]) {
+        applyStatsData(statsCache[rangeKey]);
+        if (showFeedback) {
+          const btn = document.querySelector(`.timeframe-btn[data-range="${rangeKey}"]`);
+          notify(`Đã đồng bộ thống kê: ${btn ? btn.textContent.trim() : rangeKey}`);
+        }
+        return;
+      }
+
+      // 2. Fetch dữ liệu từ API thực
+      const res = await fetch(`/admin/api/stats?range=${encodeURIComponent(rangeKey)}`);
+      const result = await res.json();
+
+      if (!result.success) {
+        throw new Error(result.message || "Không thể tải số liệu thống kê");
+      }
+
+      statsCache[rangeKey] = result;
+      applyStatsData(result);
+
+      if (showFeedback) {
+        const btn = document.querySelector(`.timeframe-btn[data-range="${rangeKey}"]`);
+        notify(`Đã đồng bộ thống kê: ${btn ? btn.textContent.trim() : rangeKey}`);
+      }
+    } catch (err) {
+      console.error("Lỗi khi tải số liệu thống kê:", err);
+      notify("❌ Lỗi kết nối khi tải số liệu thống kê!");
+    }
+  }
+
+  function applyStatsData(data) {
+    if (!data) return;
+
+    // 1. Cập nhật 4 thẻ KPI
+    renderKPIs(data.kpis);
+
+    // 2. Cập nhật Biểu đồ Xu hướng Tải
+    renderAnalyticsChart(data.downloads_chart);
+
+    // 3. Cập nhật Biểu đồ Lưu lượng truy cập
+    renderTrafficChart(data.traffic_chart);
+
+    // 4. Cập nhật Bảng Top Bộ Sưu Tập
+    renderTopPacksTable(data.top_packs, data.note);
+
+    if (window.lucide) {
+      window.lucide.createIcons();
+    }
+  }
+
+  // ========================================================
+  // KHỞI TẠO DỮ LIỆU BAN ĐẦU
+  // ========================================================
+  const initialScript = document.getElementById("initialStatsData");
+  if (initialScript && initialScript.textContent.trim()) {
+    try {
+      const initialData = JSON.parse(initialScript.textContent);
+      const range = initialData.range || "7d";
+      statsCache[range] = initialData;
+      // Khởi tạo các đường cong SVG của biểu đồ
+      renderAnalyticsChart(initialData.downloads_chart);
+      renderTrafficChart(initialData.traffic_chart);
+    } catch (e) {
+      console.warn("Không thể parse dữ liệu initialStatsData, tải lại qua API:", e);
+      loadStats("7d", false);
+    }
+  } else {
+    loadStats("7d", false);
+  }
 
   // ========================================================
   // BẮT SỰ KIỆN CLICK BỘ LỌC THỜI GIAN
@@ -697,44 +570,7 @@ document.addEventListener("DOMContentLoaded", function () {
       timeframeButtons.forEach(b => b.classList.remove("active"));
       this.classList.add("active");
       const range = this.getAttribute("data-range") || "7d";
-
-      // 1. Cập nhật 4 Thẻ KPI
-      renderKPIs(range);
-
-      // 2. Cập nhật Biểu đồ Xu hướng Tải
-      renderAnalyticsChart(range);
-
-      // 3. Cập nhật Biểu đồ Lưu lượng truy cập
-      renderTrafficChart(range);
-
-      // 4. Cập nhật Bảng Top Bộ Sưu Tập
-      renderTopPacksTable(range);
-
-      // Thông báo Toast
-      showToast(`Đã đồng bộ thống kê: ${this.textContent.trim()}`);
+      loadStats(range, true);
     });
   });
 });
-
-// Toast Helper
-function showToast(message) {
-  let container = document.getElementById("toastContainer");
-  if (!container) {
-    container = document.createElement("div");
-    container.id = "toastContainer";
-    container.className = "toast-container";
-    document.body.appendChild(container);
-  }
-
-  const toast = document.createElement("div");
-  toast.className = "toast";
-  toast.innerHTML = `<span>${message}</span>`;
-  container.appendChild(toast);
-
-  setTimeout(function () {
-    toast.style.opacity = "0";
-    toast.style.transform = "translateY(10px)";
-    toast.style.transition = "all 0.25s ease";
-    setTimeout(() => toast.remove(), 250);
-  }, 2800);
-}

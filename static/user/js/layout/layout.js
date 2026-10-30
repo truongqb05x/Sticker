@@ -109,27 +109,7 @@ function highlightMatch(text, query) {
   return `${before}<mark>${match}</mark>${after}`;
 }
 
-// Toast notification chung
-function showToast(message, duration = 3000) {
-  const container = document.getElementById('toastContainer');
-  if (!container) return;
 
-  const toast = document.createElement('div');
-  toast.className = 'toast';
-  toast.innerHTML = `
-    <span class="toast-dot"></span>
-    <span class="toast-message">${message}</span>
-  `;
-
-  container.appendChild(toast);
-
-  setTimeout(() => {
-    toast.style.animation = 'toastFadeOut 0.25s forwards';
-    setTimeout(() => {
-      toast.remove();
-    }, 250);
-  }, duration);
-}
 
 // Global UI handler variables
 let selectedSuggestionIndex = -1;

@@ -2,15 +2,19 @@
  * ========================================================
  * ADMIN DASHBOARD JAVASCRIPT - STICKERHUB
  * ========================================================
+ * Xử lý biểu đồ xu hướng SVG lượn sóng, lọc & tìm kiếm danh sách
+ * và các tác vụ phê duyệt / xóa bộ sưu tập thời gian thực qua REST API.
  */
 
 document.addEventListener("DOMContentLoaded", function () {
-  // 1. Khởi tạo Lucide Icons nếu chưa khởi tạo
+  // 1. Khởi tạo Lucide Icons nếu có
   if (window.lucide) {
     window.lucide.createIcons();
   }
 
-  // 2. Xử lý Biểu đồ Xu hướng Tải Sticker (Smooth Spline / Wave Chart SVG)
+  // ========================================================
+  // 2. BIỂU ĐỒ XU HƯỚNG TẢI STICKER (SMOOTH SPLINE / WAVE CHART)
+  // ========================================================
 
   const trendChartWrapper = document.getElementById("trendChartWrapper");
   const chartWaveArea = document.getElementById("chartWaveArea");
@@ -28,44 +32,22 @@ document.addEventListener("DOMContentLoaded", function () {
   const tooltipBadge = document.getElementById("tooltipBadge");
   const chartPills = document.querySelectorAll(".chart-pill-btn");
 
-  // Dữ liệu mẫu tương ứng các mốc thời gian
-  const chartDataSets = {
-    "7d": {
-      yLabels: ["40K", "30K", "20K", "10K", "0"],
-      cols: [
-        { label: "T2", day: "Thứ Hai", date: "20/10/2026", downloads: "14,250", change: "+8.4%", height: "37%" },
-        { label: "T3", day: "Thứ Ba", date: "21/10/2026", downloads: "18,500", change: "+12.1%", height: "48%" },
-        { label: "T4", day: "Thứ Tư", date: "22/10/2026", downloads: "17,100", change: "-2.5%", height: "44%" },
-        { label: "T5", day: "Thứ Năm", date: "23/10/2026", downloads: "25,400", change: "+15.8%", height: "66%" },
-        { label: "T6", day: "Thứ Sáu", date: "24/10/2026", downloads: "29,800", change: "+22.3%", height: "77%" },
-        { label: "T7", day: "Thứ Bảy", date: "25/10/2026", downloads: "27,300", change: "+18.5%", height: "71%" },
-        { label: "CN", day: "Chủ Nhật", date: "26/10/2026", downloads: "38,500", change: "+34.2% 🔥", height: "100%", highlight: true }
-      ]
-    },
-    "30d": {
-      yLabels: ["50K", "37K", "25K", "12K", "0"],
-      cols: [
-        { label: "01/10", day: "Đầu tháng", date: "01/10/2026", downloads: "15,800", change: "+5.1%", height: "32%" },
-        { label: "05/10", day: "Mốc 5 ngày", date: "05/10/2026", downloads: "22,400", change: "+14.3%", height: "45%" },
-        { label: "10/10", day: "Giữa kỳ", date: "10/10/2026", downloads: "29,600", change: "+19.0%", height: "59%" },
-        { label: "15/10", day: "Rằm tháng", date: "15/10/2026", downloads: "33,100", change: "+11.2%", height: "66%" },
-        { label: "20/10", day: "Ngày Phụ nữ VN", date: "20/10/2026", downloads: "46,800", change: "+42.5% 🔥", height: "94%", highlight: true },
-        { label: "24/10", day: "Cuối tuần", date: "24/10/2026", downloads: "37,200", change: "-8.4%", height: "74%" },
-        { label: "26/10", day: "Hôm nay", date: "26/10/2026", downloads: "38,500", change: "+18.2%", height: "77%" }
-      ]
-    },
-    "month": {
-      yLabels: ["60K", "45K", "30K", "15K", "0"],
-      cols: [
-        { label: "Tuần 1", day: "01/10 - 07/10", date: "Tuần 1", downloads: "34,200", change: "+6.8%", height: "57%" },
-        { label: "Tuần 2", day: "08/10 - 14/10", date: "Tuần 2", downloads: "42,800", change: "+15.3%", height: "71%" },
-        { label: "Tuần 3", day: "15/10 - 21/10", date: "Tuần 3", downloads: "58,600", change: "+36.9% 🔥", height: "98%", highlight: true },
-        { label: "Tuần 4", day: "22/10 - 28/10", date: "Tuần 4", downloads: "46,800", change: "+12.4%", height: "78%" }
-      ]
-    }
-  };
+  // Bộ dữ liệu biểu đồ (cache client)
+  const chartDataSets = {};
 
-  // Biến lưu trữ điểm hiện tại
+  // Parse dữ liệu biểu đồ ban đầu từ script tag SSR
+  const initialDataElem = document.getElementById("initialChartData");
+  if (initialDataElem) {
+    try {
+      const parsed = JSON.parse(initialDataElem.textContent);
+      if (parsed && parsed.cols) {
+        chartDataSets["7d"] = parsed;
+      }
+    } catch (e) {
+      console.warn("Không thể nạp initialChartData:", e);
+    }
+  }
+
   let currentPoints = [];
   let currentDataset = null;
 
@@ -93,53 +75,44 @@ document.addEventListener("DOMContentLoaded", function () {
     return d;
   }
 
-  // Hiển thị tooltip và neo điểm sáng tại chỉ số mốc index
+  // Hiển thị tooltip và neo điểm sáng tại mốc index
   function highlightWavePoint(index) {
     if (!currentPoints[index] || !currentDataset || !chartTooltip || !trendChartWrapper) return;
 
     const pt = currentPoints[index];
-    const col = currentDataset.cols[index];
+    const col = pt.col;
 
     // Cập nhật tooltip
     if (tooltipHeader) tooltipHeader.textContent = `${col.day} • ${col.date}`;
     if (tooltipNum) tooltipNum.textContent = col.downloads;
-    if (tooltipBadge) {
-      tooltipBadge.textContent = `${col.change} so với kỳ trước`;
-      if (col.change.includes("-")) {
-        tooltipBadge.style.color = "#F87171";
-      } else {
-        tooltipBadge.style.color = "#4ADE80";
-      }
-    }
+    if (tooltipBadge) tooltipBadge.textContent = `${col.change} so với mốc trước`;
 
-    // Cập nhật thước gióng dọc
+    // Định vị tooltip
+    const wrapperRect = trendChartWrapper.getBoundingClientRect();
+    const areaRect = chartWaveArea.getBoundingClientRect();
+    const scaleX = areaRect.width / 700;
+    const scaleY = areaRect.height / 180;
+
+    const actualPointX = pt.x * scaleX + (areaRect.left - wrapperRect.left);
+    const actualPointY = pt.y * scaleY + (areaRect.top - wrapperRect.top);
+
+    chartTooltip.style.left = `${actualPointX}px`;
+    chartTooltip.style.top = `${actualPointY - 14}px`;
+    chartTooltip.classList.add("active");
+
+    // Di chuyển crosshair và active marker
     if (waveCrosshair) {
       waveCrosshair.setAttribute("x1", pt.x.toFixed(1));
       waveCrosshair.setAttribute("x2", pt.x.toFixed(1));
       waveCrosshair.classList.add("active");
     }
 
-    // Cập nhật điểm sáng neo
     if (waveActiveMarker) {
       waveActiveMarker.setAttribute("transform", `translate(${pt.x.toFixed(1)}, ${pt.y.toFixed(1)})`);
       waveActiveMarker.classList.add("active");
     }
 
-    // Tính toán tọa độ pixel thực tế của tooltip
-    const svgRect = chartWaveSvg ? chartWaveSvg.getBoundingClientRect() : trendChartWrapper.getBoundingClientRect();
-    const wrapperRect = trendChartWrapper.getBoundingClientRect();
-    
-    const realPixelX = (svgRect.left - wrapperRect.left) + (pt.x / 700) * svgRect.width;
-    const realPixelY = (svgRect.top - wrapperRect.top) + (pt.y / 180) * svgRect.height;
-
-    const safeLeft = Math.max(70, Math.min(realPixelX, wrapperRect.width - 70));
-    const safeTop = Math.max(10, realPixelY - 14);
-
-    chartTooltip.style.left = `${safeLeft}px`;
-    chartTooltip.style.top = `${safeTop}px`;
-    chartTooltip.classList.add("active");
-
-    // Highlight nhãn X và cột trigger
+    // Highlight nhãn trục X
     const xTags = chartXAxis?.querySelectorAll(".wave-x-tag") || [];
     xTags.forEach((tag, i) => {
       tag.classList.toggle("hover-focus", i === index);
@@ -171,7 +144,7 @@ document.addEventListener("DOMContentLoaded", function () {
     currentDataset = dataset;
 
     // Cập nhật trục Y
-    const yAxisContainer = document.querySelector(".chart-y-axis");
+    const yAxisContainer = document.getElementById("chartYAxis");
     if (yAxisContainer && dataset.yLabels) {
       yAxisContainer.innerHTML = dataset.yLabels
         .map(lbl => `<span class="y-label">${lbl}</span>`)
@@ -235,8 +208,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Gắn sự kiện tương tác
     bindWaveInteractions();
-
-    // Mặc định ban đầu ẩn thông tin, chỉ hiện khi người dùng rê chuột
     hideWaveHighlight();
   }
 
@@ -266,8 +237,31 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Render khởi tạo biểu đồ sóng
-  renderChart("7d");
+  // Tải dữ liệu biểu đồ qua REST API khi đổi mốc thời gian
+  async function loadAndRenderChart(rangeKey) {
+    if (chartDataSets[rangeKey]) {
+      renderChart(rangeKey);
+      return;
+    }
+
+    try {
+      const res = await fetch(`/admin/api/dashboard/chart?range=${rangeKey}`);
+      const resData = await res.json();
+      if (res.ok && resData.success && resData.data) {
+        chartDataSets[rangeKey] = resData.data;
+        renderChart(rangeKey);
+      }
+    } catch (err) {
+      console.error("Lỗi khi tải dữ liệu biểu đồ:", err);
+    }
+  }
+
+  // Render khởi tạo biểu đồ
+  if (chartDataSets["7d"]) {
+    renderChart("7d");
+  } else {
+    loadAndRenderChart("7d");
+  }
 
   // Đổi mốc thời gian khi nhấn nút filter
   chartPills.forEach(btn => {
@@ -275,14 +269,15 @@ document.addEventListener("DOMContentLoaded", function () {
       chartPills.forEach(b => b.classList.remove("active"));
       this.classList.add("active");
       const range = this.getAttribute("data-range") || "7d";
-      renderChart(range);
-      if (typeof showToast === "function") {
-        showToast(`Đã cập nhật biểu đồ xu hướng: ${this.textContent}`);
-      }
+      loadAndRenderChart(range);
     });
   });
 
-  // 4. Lọc danh mục trong bảng quản lý bộ sưu tập
+
+  // ========================================================
+  // 3. LỌC & TÌM KIẾM BỘ SƯU TẬP TRÊN BẢNG DỮ LIỆU
+  // ========================================================
+
   const tableFilterSelect = document.getElementById("tableCategoryFilter");
   const tableSearchInput = document.getElementById("tableSearchInput");
   const tableRows = document.querySelectorAll("#collectionsTableBody tr");
@@ -311,46 +306,114 @@ document.addEventListener("DOMContentLoaded", function () {
   tableFilterSelect?.addEventListener("change", filterTable);
   tableSearchInput?.addEventListener("input", filterTable);
 
-  // 5. Xử lý Xóa / Khóa Bộ sưu tập
-  const deleteButtons = document.querySelectorAll(".btn-delete-row");
-  deleteButtons.forEach(btn => {
-    btn.addEventListener("click", function (e) {
-      e.preventDefault();
-      const row = this.closest("tr");
-      const name = row?.querySelector(".table-pack-title")?.textContent.trim() || "Bộ sưu tập";
 
-      if (confirm(`Bạn có chắc chắn muốn xóa/ẩn bộ sưu tập "${name}"?`)) {
-        row?.remove();
-        showToast(`🗑️ Đã xóa bộ sưu tập "${name}" khỏi hệ thống.`);
+  // ========================================================
+  // 4. PHÊ DUYỆT & XÓA BỘ SƯU TẬP QUA REST API
+  // ========================================================
+
+  const tableBody = document.getElementById("collectionsTableBody");
+  if (tableBody) {
+    tableBody.addEventListener("click", async function (e) {
+      // Phê duyệt phát hành
+      const approveBtn = e.target.closest(".btn-approve-pack");
+      if (approveBtn) {
+        e.preventDefault();
+        const packId = approveBtn.getAttribute("data-id");
+        const packTitle = approveBtn.getAttribute("data-title") || "Bộ sưu tập";
+
+        approveBtn.disabled = true;
+        try {
+          const res = await fetch(`/admin/api/packs/${packId}/status`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Accept": "application/json"
+            },
+            body: JSON.stringify({ status: "active" })
+          });
+          const data = await res.json();
+          if (res.ok && data.success) {
+            const row = document.getElementById(`pack-row-${packId}`);
+            const statusCell = row?.querySelector(".status-cell");
+            if (statusCell) {
+              statusCell.innerHTML = `
+                <span class="status-badge status-badge-active">
+                  <i data-lucide="check-circle" style="width: 12px; height: 12px;"></i>
+                  Công khai
+                </span>
+              `;
+              if (window.lucide) window.lucide.createIcons();
+            }
+            approveBtn.remove();
+            if (typeof window.showToast === "function") {
+              window.showToast(`✅ Đã phê duyệt phát hành: ${packTitle}`);
+            }
+          } else {
+            approveBtn.disabled = false;
+            if (typeof window.showToast === "function") {
+              window.showToast(`❌ ${data.message || "Phê duyệt thất bại!"}`);
+            }
+          }
+        } catch (err) {
+          approveBtn.disabled = false;
+          console.error("Lỗi khi gửi yêu cầu phê duyệt:", err);
+        }
+        return;
+      }
+
+      // Xóa bộ sưu tập
+      const deleteBtn = e.target.closest(".btn-delete-row");
+      if (deleteBtn) {
+        e.preventDefault();
+        const packId = deleteBtn.getAttribute("data-id");
+        const packTitle = deleteBtn.getAttribute("data-title") || "Bộ sưu tập";
+
+        if (!confirm(`Bạn có chắc chắn muốn xóa bộ sưu tập "${packTitle}" khỏi hệ thống?`)) {
+          return;
+        }
+
+        deleteBtn.disabled = true;
+        try {
+          const res = await fetch(`/admin/api/packs/${packId}`, {
+            method: "DELETE",
+            headers: { "Accept": "application/json" }
+          });
+          const data = await res.json();
+          if (res.ok && data.success) {
+            const row = document.getElementById(`pack-row-${packId}`);
+            if (row) {
+              row.style.transition = "all 0.3s ease";
+              row.style.opacity = "0";
+              row.style.transform = "translateX(20px)";
+              setTimeout(() => row.remove(), 300);
+            }
+
+            // Giảm chỉ số thống kê trên UI
+            const counter = document.getElementById("sidebarPacksCounter");
+            if (counter) {
+              const cur = parseInt(counter.textContent, 10);
+              if (!isNaN(cur) && cur > 0) counter.textContent = cur - 1;
+            }
+            const kpi = document.getElementById("kpiTotalPacks");
+            if (kpi) {
+              const cur = parseInt(kpi.textContent, 10);
+              if (!isNaN(cur) && cur > 0) kpi.textContent = cur - 1;
+            }
+
+            if (typeof window.showToast === "function") {
+              window.showToast(`🗑️ ${data.message || "Đã xóa bộ sưu tập thành công!"}`);
+            }
+          } else {
+            deleteBtn.disabled = false;
+            if (typeof window.showToast === "function") {
+              window.showToast(`❌ ${data.message || "Xóa thất bại!"}`);
+            }
+          }
+        } catch (err) {
+          deleteBtn.disabled = false;
+          console.error("Lỗi khi gửi yêu cầu xóa:", err);
+        }
       }
     });
-  });
+  }
 });
-
-// Toast Notification Helper
-function showToast(message) {
-  if (typeof window.showToast === "function") {
-    window.showToast(message);
-    return;
-  }
-  let container = document.getElementById("toastContainer");
-  if (!container) {
-    container = document.createElement("div");
-    container.id = "toastContainer";
-    container.className = "toast-container";
-    document.body.appendChild(container);
-  }
-
-  const toast = document.createElement("div");
-  toast.className = "toast";
-  toast.innerHTML = `<span>${message}</span>`;
-  container.appendChild(toast);
-
-  setTimeout(function () {
-    toast.style.opacity = "0";
-    toast.style.transform = "translateY(10px)";
-    toast.style.transition = "all 0.25s ease";
-    setTimeout(() => toast.remove(), 250);
-  }, 2800);
-}
-

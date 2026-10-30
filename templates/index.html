@@ -1196,24 +1196,7 @@
     document.getElementById('seeAllBtn')?.addEventListener('click', () => {
       // Logic xem thêm nếu có
     });
-
-    // Toast notification utility
-    function showToast(message) {
-      const container = document.getElementById('toastContainer');
-      const toast = document.createElement('div');
-      toast.className = 'toast';
-      toast.innerHTML = `<i data-lucide="sparkles" style="width: 16px; height: 16px; color: #F59E0B;"></i><span>${message}</span>`;
-      container.appendChild(toast);
-      lucide.createIcons();
-
-      setTimeout(() => {
-        toast.style.opacity = '0';
-        toast.style.transform = 'translateY(10px)';
-        toast.style.transition = 'all 0.3s';
-        setTimeout(() => toast.remove(), 300);
-      }, 3200);
-    }
-  </script>
-  <script src="../static/user/js/app.js"></script>
+</script>
+  <script type="module" src="../static/user/js/app.js"></script>
 </body>
 </html>

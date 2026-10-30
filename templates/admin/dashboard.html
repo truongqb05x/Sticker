@@ -37,13 +37,12 @@
       <button type="button" class="admin-menu-toggle-btn" id="sidebarToggleBtn" aria-label="Mở menu quản trị" title="Menu quản trị">
         <i data-lucide="menu" style="width: 22px; height: 22px;"></i>
       </button>
-      <a href="dashboard.html" class="admin-brand" title="Trang tổng quan StickerHub">
+      <a href="{{ url_for('admin.dashboard') }}" class="admin-brand" title="Trang tổng quan StickerHub">
         <img src="../../assets/logo_cat.svg" alt="StickerHub Cat Logo" width="36" height="36">
         <span class="admin-brand-title">Sticker<span class="hub-part">Hub</span></span>
       </a>
     </div>
   </header>
-
 
   <!-- Lớp phủ mờ (Backdrop) khi mở menu trên điện thoại -->
   <div class="admin-sidebar-backdrop" id="adminSidebarBackdrop" aria-hidden="true"></div>
@@ -71,7 +70,7 @@
         <div class="admin-nav-group-title">Quản lý hệ thống</div>
         <ul class="admin-nav-list">
           <li>
-            <a href="dashboard.html" class="admin-nav-item active">
+            <a href="{{ url_for('admin.dashboard') }}" class="admin-nav-item active">
               <span class="nav-left">
                 <i data-lucide="layout-dashboard" style="width: 18px; height: 18px;"></i>
                 <span>Tổng quan</span>
@@ -79,30 +78,30 @@
             </a>
           </li>
           <li>
-            <a href="bosuutap.html" class="admin-nav-item">
+            <a href="{{ url_for('admin.collections') }}" class="admin-nav-item">
               <span class="nav-left">
                 <i data-lucide="folder-heart" style="width: 18px; height: 18px;"></i>
                 <span>Bộ sưu tập</span>
               </span>
-              <span class="nav-counter">48</span>
+              <span class="nav-counter" id="sidebarPacksCounter">{{ stats.total_packs }}</span>
             </a>
           </li>
           <li>
-            <a href="khosticker.html" class="admin-nav-item">
+            <a href="{{ url_for('admin.stickers') }}" class="admin-nav-item">
               <span class="nav-left">
                 <i data-lucide="smile" style="width: 18px; height: 18px;"></i>
                 <span>Kho Sticker</span>
               </span>
-              <span class="nav-counter">4.8K</span>
+              <span class="nav-counter">{{ stats.total_stickers_fmt }}</span>
             </a>
           </li>
           <li>
-            <a href="danhmuc.html" class="admin-nav-item">
+            <a href="{{ url_for('admin.categories') }}" class="admin-nav-item">
               <span class="nav-left">
                 <i data-lucide="tag" style="width: 18px; height: 18px;"></i>
                 <span>Danh mục chủ đề</span>
               </span>
-              <span class="nav-counter">8</span>
+              <span class="nav-counter">{{ stats.total_categories }}</span>
             </a>
           </li>
         </ul>
@@ -110,7 +109,7 @@
         <div class="admin-nav-group-title" style="margin-top: 14px;">Báo cáo & Thống kê</div>
         <ul class="admin-nav-list">
           <li>
-            <a href="thongke.html" class="admin-nav-item" title="Thống kê">
+            <a href="{{ url_for('admin.stats') }}" class="admin-nav-item" title="Thống kê">
               <span class="nav-left">
                 <i data-lucide="bar-chart-3" style="width: 18px; height: 18px;"></i>
                 <span>Thống kê</span>
@@ -121,7 +120,7 @@
       </div>
 
       <!-- Nút Đăng Xuất -->
-      <a href="login.html" class="btn-sidebar-logout" title="Đăng xuất khỏi trang quản trị">
+      <a href="{{ url_for('admin.logout') }}" class="btn-sidebar-logout" title="Đăng xuất khỏi trang quản trị">
         <i data-lucide="log-out" style="width: 16px; height: 16px;"></i>
         <span>Đăng xuất Admin</span>
       </a>
@@ -133,13 +132,12 @@
       <!-- 1. Scrapbook Welcome Banner -->
       <section class="admin-welcome-banner">
         <div class="welcome-info-col">
-          <h2>Chào mừng trở lại, Quản trị viên! 👋</h2>
+          <h2>Chào mừng trở lại, {{ current_user.username }}! 👋</h2>
           <p>
-            Hệ thống StickerHub hôm nay đã ghi nhận <strong>12.4K lượt tải mới</strong>. Có <strong>3 bộ sưu tập</strong> đang chờ phê duyệt và đưa lên trang chính.
+            Hệ thống StickerHub hôm nay đã ghi nhận <strong>{{ stats.today_downloads_fmt }} lượt tải mới</strong>. Có <strong>{{ stats.pending_packs_count }} bộ sưu tập</strong> đang chờ phê duyệt và đưa lên trang chính.
           </p>
         </div>
       </section>
-
 
       <!-- 2. 4 Thẻ Thống Kê Chỉ Số KPI Trọng Yếu -->
       <section class="admin-metrics-grid">
@@ -152,10 +150,10 @@
             </div>
           </div>
           <div class="metric-value-row">
-            <span class="metric-number">48</span>
-            <span class="metric-trend trend-up">
-              <i data-lucide="trending-up" style="width: 13px; height: 13px;"></i>
-              +4 gói
+            <span class="metric-number" id="kpiTotalPacks">{{ stats.total_packs_fmt }}</span>
+            <span class="metric-trend {{ stats.packs_trend_class|default('trend-up') }}">
+              <i data-lucide="{{ stats.packs_trend_icon|default('trending-up') }}" style="width: 13px; height: 13px;"></i>
+              {{ stats.new_packs_recent }}
             </span>
           </div>
         </div>
@@ -169,10 +167,10 @@
             </div>
           </div>
           <div class="metric-value-row">
-            <span class="metric-number">4,850</span>
-            <span class="metric-trend trend-up">
-              <i data-lucide="trending-up" style="width: 13px; height: 13px;"></i>
-              +180
+            <span class="metric-number">{{ stats.total_stickers_fmt }}</span>
+            <span class="metric-trend {{ stats.stickers_trend_class|default('trend-up') }}">
+              <i data-lucide="{{ stats.stickers_trend_icon|default('trending-up') }}" style="width: 13px; height: 13px;"></i>
+              {{ stats.new_stickers_recent }}
             </span>
           </div>
         </div>
@@ -186,10 +184,10 @@
             </div>
           </div>
           <div class="metric-value-row">
-            <span class="metric-number">182.4K</span>
-            <span class="metric-trend trend-up">
-              <i data-lucide="trending-up" style="width: 13px; height: 13px;"></i>
-              +18.2%
+            <span class="metric-number">{{ stats.month_downloads_fmt }}</span>
+            <span class="metric-trend {{ stats.downloads_trend_class|default('trend-up') }}">
+              <i data-lucide="{{ stats.downloads_trend_icon|default('trending-up') }}" style="width: 13px; height: 13px;"></i>
+              {{ stats.downloads_growth }}
             </span>
           </div>
         </div>
@@ -203,10 +201,10 @@
             </div>
           </div>
           <div class="metric-value-row">
-            <span class="metric-number">36.8K</span>
-            <span class="metric-trend trend-up">
-              <i data-lucide="trending-up" style="width: 13px; height: 13px;"></i>
-              +9.5%
+            <span class="metric-number">{{ stats.favorites_fmt }}</span>
+            <span class="metric-trend {{ stats.favorites_trend_class|default('trend-up') }}">
+              <i data-lucide="{{ stats.favorites_trend_icon|default('trending-up') }}" style="width: 13px; height: 13px;"></i>
+              {{ stats.favorites_growth }}
             </span>
           </div>
         </div>
@@ -223,12 +221,11 @@
                 <i data-lucide="trending-up" style="width: 18px; height: 18px; color: #C45832;"></i>
                 <span>Xu hướng tải sticker</span>
               </h3>
-
             </div>
             <div class="chart-filter-pills">
-              <button class="chart-pill-btn active" data-range="7d">7 ngày qua</button>
-              <button class="chart-pill-btn" data-range="30d">30 ngày qua</button>
-              <button class="chart-pill-btn" data-range="month">Tháng này</button>
+              <button type="button" class="chart-pill-btn active" data-range="7d">7 ngày qua</button>
+              <button type="button" class="chart-pill-btn" data-range="30d">30 ngày qua</button>
+              <button type="button" class="chart-pill-btn" data-range="month">Tháng này</button>
             </div>
           </div>
 
@@ -236,12 +233,10 @@
           <div class="trend-chart-wrapper" id="trendChartWrapper">
             
             <!-- Trục Y hiển thị mốc số lượng -->
-            <div class="chart-y-axis">
-              <span class="y-label">40K</span>
-              <span class="y-label">30K</span>
-              <span class="y-label">20K</span>
-              <span class="y-label">10K</span>
-              <span class="y-label">0</span>
+            <div class="chart-y-axis" id="chartYAxis">
+              {% for y in chart_data.yLabels %}
+              <span class="y-label">{{ y }}</span>
+              {% endfor %}
             </div>
 
             <!-- Khu vực biểu đồ sóng mềm mại (Smooth Wave Chart) -->
@@ -291,13 +286,13 @@
 
             <!-- Floating Tooltip hiển thị số lượng khi di chuột -->
             <div class="chart-hover-tooltip" id="chartHoverTooltip">
-              <div class="tooltip-header" id="tooltipHeader">Chủ Nhật • 26/10</div>
+              <div class="tooltip-header" id="tooltipHeader">Hôm nay</div>
               <div class="tooltip-value-row">
                 <i data-lucide="download" style="width: 14px; height: 14px; color: #FFA278;"></i>
-                <span class="tooltip-num" id="tooltipNum">38,500</span>
+                <span class="tooltip-num" id="tooltipNum">0</span>
                 <span class="tooltip-unit">lượt tải</span>
               </div>
-              <div class="tooltip-badge" id="tooltipBadge">+34.2% so với hôm qua</div>
+              <div class="tooltip-badge" id="tooltipBadge">+0%</div>
             </div>
 
           </div>
@@ -313,60 +308,19 @@
           </div>
 
           <div class="category-bars-list">
-            <!-- Item 1: Anime & Manga -->
+            {% for cat in top_categories %}
             <div class="cat-bar-item">
               <div class="cat-bar-meta">
-                <span>Anime & Manga</span>
-                <span>35% (1,690 stks)</span>
+                <span>{{ cat.name }}</span>
+                <span>{{ cat.percentage }}% ({{ cat.stickers_fmt }} stks)</span>
               </div>
               <div class="cat-bar-track">
-                <div class="cat-bar-progress cat-p-1" style="width: 35%;"></div>
+                <div class="cat-bar-progress {{ cat.progress_class }}" style="width: {{ cat.percentage }}%;"></div>
               </div>
             </div>
-
-            <!-- Item 2: Động vật dễ thương -->
-            <div class="cat-bar-item">
-              <div class="cat-bar-meta">
-                <span>Động vật (Cute Animals)</span>
-                <span>25% (1,210 stks)</span>
-              </div>
-              <div class="cat-bar-track">
-                <div class="cat-bar-progress cat-p-2" style="width: 25%;"></div>
-              </div>
-            </div>
-
-            <!-- Item 3: Chibi ngộ nghĩnh -->
-            <div class="cat-bar-item">
-              <div class="cat-bar-meta">
-                <span>Chibi nhân vật</span>
-                <span>18% (870 stks)</span>
-              </div>
-              <div class="cat-bar-track">
-                <div class="cat-bar-progress cat-p-3" style="width: 18%;"></div>
-              </div>
-            </div>
-
-            <!-- Item 4: Phong cảnh & Thiên nhiên -->
-            <div class="cat-bar-item">
-              <div class="cat-bar-meta">
-                <span>Phong cảnh & Khung cảnh</span>
-                <span>12% (580 stks)</span>
-              </div>
-              <div class="cat-bar-track">
-                <div class="cat-bar-progress cat-p-4" style="width: 12%;"></div>
-              </div>
-            </div>
-
-            <!-- Item 5: Tình yêu & Biểu cảm khác -->
-            <div class="cat-bar-item">
-              <div class="cat-bar-meta">
-                <span>Tình yêu & Khác</span>
-                <span>10% (500 stks)</span>
-              </div>
-              <div class="cat-bar-track">
-                <div class="cat-bar-progress cat-p-5" style="width: 10%;"></div>
-              </div>
-            </div>
+            {% else %}
+            <div style="text-align: center; color: #7E6E64; padding: 20px 0;">Chưa có dữ liệu danh mục.</div>
+            {% endfor %}
           </div>
         </div>
 
@@ -380,6 +334,18 @@
               <i data-lucide="layers" style="width: 18px; height: 18px; color: #C45832;"></i>
               <span>Bộ sưu tập trên hệ thống</span>
             </h3>
+          </div>
+          <div class="table-actions-right">
+            <select class="table-filter-select" id="tableCategoryFilter" aria-label="Lọc theo danh mục">
+              <option value="all">Tất cả danh mục ({{ categories|length }})</option>
+              {% for c in categories %}
+              <option value="{{ c.slug }}">{{ c.name }}</option>
+              {% endfor %}
+            </select>
+            <div style="position: relative; display: flex; align-items: center;">
+              <i data-lucide="search" style="position: absolute; left: 10px; width: 14px; height: 14px; color: #7E6E64; pointer-events: none;"></i>
+              <input type="text" class="table-search-input" id="tableSearchInput" placeholder="Tìm bộ sưu tập...">
+            </div>
           </div>
         </div>
 
@@ -398,229 +364,66 @@
               </tr>
             </thead>
             <tbody id="collectionsTableBody">
-              
-              <!-- Row 1: Cute Cats -->
-              <tr data-category="animals">
-                <td style="color: #9E8E84; font-weight: 700;">1</td>
+              {% for pack in packs %}
+              <tr id="pack-row-{{ pack.id }}" data-id="{{ pack.id }}" data-category="{{ pack.category_slug }}">
+                <td style="color: #9E8E84; font-weight: 700;">{{ loop.index }}</td>
                 <td>
                   <div class="table-pack-cell">
-                    <img src="../../assets/pack_cats.jpg" alt="Cute Cats" class="table-pack-thumb">
+                    <img src="{{ pack.cover_image }}" alt="{{ pack.title }}" class="table-pack-thumb">
                     <div>
-                      <a href="../user/sticker_chitiet.html" class="table-pack-title" target="_blank">Cute Cats</a>
-                      <div class="table-pack-sub">Tác giả: StickerHub Team</div>
+                      <a href="{{ url_for('admin.collection_detail') }}?id={{ pack.id }}" class="table-pack-title">{{ pack.title }}</a>
+                      <div class="table-pack-sub">Tác giả: {{ pack.author_name }}</div>
                     </div>
                   </div>
                 </td>
-                <td><span style="font-weight: 700; color: #4A382D;">Động vật</span></td>
-                <td><strong>120</strong> sticker</td>
-                <td><strong>38.5K</strong></td>
-                <td><strong>2.4K</strong></td>
-                <td>
+                <td><span style="font-weight: 700; color: #4A382D;">{{ pack.category_name }}</span></td>
+                <td><strong>{{ pack.total_stickers }}</strong> sticker</td>
+                <td><strong>{{ pack.total_downloads_fmt }}</strong></td>
+                <td><strong>{{ pack.total_favorites_fmt }}</strong></td>
+                <td class="status-cell">
+                  {% if pack.status == 'active' %}
                   <span class="status-badge status-badge-active">
                     <i data-lucide="check-circle" style="width: 12px; height: 12px;"></i>
                     Công khai
                   </span>
-                </td>
-                <td>
-                  <div class="table-btn-group" style="justify-content: flex-end;">
-                    <a href="../user/sticker_chitiet.html" class="tbl-action-btn" title="Xem chi tiết trên web" target="_blank">
-                      <i data-lucide="eye" style="width: 15px; height: 15px;"></i>
-                    </a>
-                    <button type="button" class="tbl-action-btn" title="Chỉnh sửa thông tin" onclick="showToast('Chỉnh sửa bộ sưu tập: Cute Cats')">
-                      <i data-lucide="edit-3" style="width: 15px; height: 15px;"></i>
-                    </button>
-                    <button type="button" class="tbl-action-btn btn-delete btn-delete-row" title="Xóa/Khóa">
-                      <i data-lucide="trash-2" style="width: 15px; height: 15px;"></i>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-
-              <!-- Row 2: Anime Girls -->
-              <tr data-category="anime">
-                <td style="color: #9E8E84; font-weight: 700;">2</td>
-                <td>
-                  <div class="table-pack-cell">
-                    <img src="../../assets/pack_anime.jpg" alt="Anime Girls" class="table-pack-thumb">
-                    <div>
-                      <a href="javascript:void(0)" class="table-pack-title">Anime Girls</a>
-                      <div class="table-pack-sub">Tác giả: Sakura Art</div>
-                    </div>
-                  </div>
-                </td>
-                <td><span style="font-weight: 700; color: #4A382D;">Anime & Manga</span></td>
-                <td><strong>96</strong> sticker</td>
-                <td><strong>25.3K</strong></td>
-                <td><strong>1.8K</strong></td>
-                <td>
-                  <span class="status-badge status-badge-active">
-                    <i data-lucide="check-circle" style="width: 12px; height: 12px;"></i>
-                    Công khai
-                  </span>
-                </td>
-                <td>
-                  <div class="table-btn-group" style="justify-content: flex-end;">
-                    <button type="button" class="tbl-action-btn" title="Xem trước" onclick="showToast('Xem trước: Anime Girls')">
-                      <i data-lucide="eye" style="width: 15px; height: 15px;"></i>
-                    </button>
-                    <button type="button" class="tbl-action-btn" title="Chỉnh sửa thông tin" onclick="showToast('Chỉnh sửa: Anime Girls')">
-                      <i data-lucide="edit-3" style="width: 15px; height: 15px;"></i>
-                    </button>
-                    <button type="button" class="tbl-action-btn btn-delete btn-delete-row" title="Xóa/Khóa">
-                      <i data-lucide="trash-2" style="width: 15px; height: 15px;"></i>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-
-              <!-- Row 3: Funny Animals -->
-              <tr data-category="animals">
-                <td style="color: #9E8E84; font-weight: 700;">3</td>
-                <td>
-                  <div class="table-pack-cell">
-                    <img src="../../assets/pack_funny_animals.svg" alt="Funny Animals" class="table-pack-thumb">
-                    <div>
-                      <a href="javascript:void(0)" class="table-pack-title">Funny Animals</a>
-                      <div class="table-pack-sub">Tác giả: MemeMaker</div>
-                    </div>
-                  </div>
-                </td>
-                <td><span style="font-weight: 700; color: #4A382D;">Động vật</span></td>
-                <td><strong>74</strong> sticker</td>
-                <td><strong>18.7K</strong></td>
-                <td><strong>1.2K</strong></td>
-                <td>
-                  <span class="status-badge status-badge-active">
-                    <i data-lucide="check-circle" style="width: 12px; height: 12px;"></i>
-                    Công khai
-                  </span>
-                </td>
-                <td>
-                  <div class="table-btn-group" style="justify-content: flex-end;">
-                    <button type="button" class="tbl-action-btn" title="Xem trước" onclick="showToast('Xem trước: Funny Animals')">
-                      <i data-lucide="eye" style="width: 15px; height: 15px;"></i>
-                    </button>
-                    <button type="button" class="tbl-action-btn" title="Chỉnh sửa thông tin" onclick="showToast('Chỉnh sửa: Funny Animals')">
-                      <i data-lucide="edit-3" style="width: 15px; height: 15px;"></i>
-                    </button>
-                    <button type="button" class="tbl-action-btn btn-delete btn-delete-row" title="Xóa/Khóa">
-                      <i data-lucide="trash-2" style="width: 15px; height: 15px;"></i>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-
-              <!-- Row 4: One Piece -->
-              <tr data-category="anime">
-                <td style="color: #9E8E84; font-weight: 700;">4</td>
-                <td>
-                  <div class="table-pack-cell">
-                    <img src="../../assets/pack_onepiece.svg" alt="One Piece" class="table-pack-thumb">
-                    <div>
-                      <a href="javascript:void(0)" class="table-pack-title">One Piece Wano</a>
-                      <div class="table-pack-sub">Tác giả: OtakuZone</div>
-                    </div>
-                  </div>
-                </td>
-                <td><span style="font-weight: 700; color: #4A382D;">Anime & Manga</span></td>
-                <td><strong>83</strong> sticker</td>
-                <td><strong>22.4K</strong></td>
-                <td><strong>1.5K</strong></td>
-                <td>
+                  {% elif pack.status == 'pending' %}
                   <span class="status-badge status-badge-pending">
                     <i data-lucide="clock" style="width: 12px; height: 12px;"></i>
                     Chờ duyệt
                   </span>
-                </td>
-                <td>
-                  <div class="table-btn-group" style="justify-content: flex-end;">
-                    <button type="button" class="tbl-action-btn" title="Duyệt xuất bản" onclick="showToast('✅ Đã phê duyệt phát hành One Piece Wano!')">
-                      <i data-lucide="check" style="width: 15px; height: 15px; color: #2E7D32;"></i>
-                    </button>
-                    <button type="button" class="tbl-action-btn" title="Chỉnh sửa thông tin" onclick="showToast('Chỉnh sửa: One Piece Wano')">
-                      <i data-lucide="edit-3" style="width: 15px; height: 15px;"></i>
-                    </button>
-                    <button type="button" class="tbl-action-btn btn-delete btn-delete-row" title="Từ chối/Xóa">
-                      <i data-lucide="trash-2" style="width: 15px; height: 15px;"></i>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-
-              <!-- Row 5: Nature Vibes -->
-              <tr data-category="nature">
-                <td style="color: #9E8E84; font-weight: 700;">5</td>
-                <td>
-                  <div class="table-pack-cell">
-                    <img src="../../assets/pack_nature.svg" alt="Nature Vibes" class="table-pack-thumb">
-                    <div>
-                      <a href="javascript:void(0)" class="table-pack-title">Nature Vibes</a>
-                      <div class="table-pack-sub">Tác giả: EcoGreen</div>
-                    </div>
-                  </div>
-                </td>
-                <td><span style="font-weight: 700; color: #4A382D;">Phong cảnh</span></td>
-                <td><strong>62</strong> sticker</td>
-                <td><strong>16.4K</strong></td>
-                <td><strong>980</strong></td>
-                <td>
-                  <span class="status-badge status-badge-active">
-                    <i data-lucide="check-circle" style="width: 12px; height: 12px;"></i>
-                    Công khai
-                  </span>
-                </td>
-                <td>
-                  <div class="table-btn-group" style="justify-content: flex-end;">
-                    <button type="button" class="tbl-action-btn" title="Xem trước" onclick="showToast('Xem trước: Nature Vibes')">
-                      <i data-lucide="eye" style="width: 15px; height: 15px;"></i>
-                    </button>
-                    <button type="button" class="tbl-action-btn" title="Chỉnh sửa thông tin" onclick="showToast('Chỉnh sửa: Nature Vibes')">
-                      <i data-lucide="edit-3" style="width: 15px; height: 15px;"></i>
-                    </button>
-                    <button type="button" class="tbl-action-btn btn-delete btn-delete-row" title="Xóa/Khóa">
-                      <i data-lucide="trash-2" style="width: 15px; height: 15px;"></i>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-
-              <!-- Row 6: Halloween Night -->
-              <tr data-category="others">
-                <td style="color: #9E8E84; font-weight: 700;">6</td>
-                <td>
-                  <div class="table-pack-cell">
-                    <img src="../../assets/pack_halloween.svg" alt="Halloween Party" class="table-pack-thumb">
-                    <div>
-                      <a href="javascript:void(0)" class="table-pack-title">Halloween Party</a>
-                      <div class="table-pack-sub">Tác giả: SpookyHub</div>
-                    </div>
-                  </div>
-                </td>
-                <td><span style="font-weight: 700; color: #4A382D;">Lễ hội & Khác</span></td>
-                <td><strong>40</strong> sticker</td>
-                <td><strong>15.1K</strong></td>
-                <td><strong>810</strong></td>
-                <td>
+                  {% else %}
                   <span class="status-badge status-badge-hidden">
                     <i data-lucide="eye-off" style="width: 12px; height: 12px;"></i>
                     Tạm ẩn
                   </span>
+                  {% endif %}
                 </td>
                 <td>
                   <div class="table-btn-group" style="justify-content: flex-end;">
-                    <button type="button" class="tbl-action-btn" title="Hiện lại" onclick="showToast('✅ Đã công khai lại Halloween Party!')">
+                    {% if pack.status == 'pending' %}
+                    <button type="button" class="tbl-action-btn btn-approve-pack" data-id="{{ pack.id }}" data-title="{{ pack.title }}" title="Phê duyệt xuất bản">
+                      <i data-lucide="check" style="width: 15px; height: 15px; color: #2E7D32;"></i>
+                    </button>
+                    {% endif %}
+                    <a href="{{ url_for('admin.collection_detail') }}?id={{ pack.id }}" class="tbl-action-btn" title="Xem chi tiết bộ sưu tập">
                       <i data-lucide="eye" style="width: 15px; height: 15px;"></i>
-                    </button>
-                    <button type="button" class="tbl-action-btn" title="Chỉnh sửa thông tin" onclick="showToast('Chỉnh sửa: Halloween Party')">
+                    </a>
+                    <a href="{{ url_for('admin.collections') }}?edit={{ pack.id }}" class="tbl-action-btn" title="Chỉnh sửa thông tin">
                       <i data-lucide="edit-3" style="width: 15px; height: 15px;"></i>
-                    </button>
-                    <button type="button" class="tbl-action-btn btn-delete btn-delete-row" title="Xóa/Khóa">
+                    </a>
+                    <button type="button" class="tbl-action-btn btn-delete btn-delete-row" data-id="{{ pack.id }}" data-title="{{ pack.title }}" title="Xóa khỏi hệ thống">
                       <i data-lucide="trash-2" style="width: 15px; height: 15px;"></i>
                     </button>
                   </div>
                 </td>
               </tr>
-
+              {% else %}
+              <tr>
+                <td colspan="8" style="text-align: center; padding: 40px; color: #7E6E64; font-weight: 600;">
+                  Chưa có bộ sưu tập nào trên hệ thống.
+                </td>
+              </tr>
+              {% endfor %}
             </tbody>
           </table>
         </div>
@@ -639,45 +442,17 @@
           </div>
 
           <div class="activity-list">
+            {% for act in recent_activities %}
             <div class="activity-item">
-              <div class="activity-icon-badge icon-green">
-                <i data-lucide="check" style="width: 16px; height: 16px;"></i>
+              <div class="activity-icon-badge {{ act.icon_class }}">
+                <i data-lucide="{{ act.icon }}" style="width: 16px; height: 16px;"></i>
               </div>
               <div class="activity-content">
-                <div class="activity-text">Quản trị viên đã duyệt bộ sưu tập mới <strong>Cute Cats Pack 2</strong>.</div>
-                <div class="activity-time">5 phút trước • Bởi Admin Master</div>
+                <div class="activity-text">{{ act.text | safe }}</div>
+                <div class="activity-time">{{ act.time }}</div>
               </div>
             </div>
-
-            <div class="activity-item">
-              <div class="activity-icon-badge icon-orange">
-                <i data-lucide="download" style="width: 16px; height: 16px;"></i>
-              </div>
-              <div class="activity-content">
-                <div class="activity-text">Bộ sưu tập <strong>Cute Cats</strong> vừa cán mốc <strong>38.500 lượt tải xuống</strong>.</div>
-                <div class="activity-time">42 phút trước • Hệ thống tự động</div>
-              </div>
-            </div>
-
-            <div class="activity-item">
-              <div class="activity-icon-badge icon-blue">
-                <i data-lucide="user-plus" style="width: 16px; height: 16px;"></i>
-              </div>
-              <div class="activity-content">
-                <div class="activity-text">Tác giả mới <strong>@ChibiArtist</strong> vừa nộp hồ sơ đóng góp gói sticker mới.</div>
-                <div class="activity-time">2 giờ trước • Chờ xác minh</div>
-              </div>
-            </div>
-
-            <div class="activity-item">
-              <div class="activity-icon-badge icon-purple">
-                <i data-lucide="shield-check" style="width: 16px; height: 16px;"></i>
-              </div>
-              <div class="activity-content">
-                <div class="activity-text">Bản sao lưu cơ sở dữ liệu định kỳ và kho hình ảnh CDN đã hoàn thành thành công.</div>
-                <div class="activity-time">6 giờ trước • Sao lưu tự động</div>
-              </div>
-            </div>
+            {% endfor %}
           </div>
         </div>
 
@@ -691,37 +466,17 @@
           </div>
 
           <div class="activity-list">
+            {% for top in top_packs %}
             <div class="activity-item">
-              <img src="../../assets/pack_cats.jpg" alt="Cute Cats" style="width: 38px; height: 38px; border-radius: 8px; object-fit: cover;">
+              <img src="{{ top.cover_image }}" alt="{{ top.title }}" style="width: 38px; height: 38px; border-radius: 8px; object-fit: cover;">
               <div class="activity-content">
-                <div style="font-weight: 800; color: #2D1C14; font-size: 13.5px;">Cute Cats</div>
-                <div style="font-size: 12px; color: #C45832; font-weight: 700;">+3,420 lượt tải hôm nay</div>
+                <div style="font-weight: 800; color: #2D1C14; font-size: 13.5px;">{{ top.title }}</div>
+                <div style="font-size: 12px; color: #C45832; font-weight: 700;">{{ top.today_downloads_fmt }} lượt tải hôm nay</div>
               </div>
             </div>
-
-            <div class="activity-item">
-              <img src="../../assets/pack_anime.jpg" alt="Anime Girls" style="width: 38px; height: 38px; border-radius: 8px; object-fit: cover;">
-              <div class="activity-content">
-                <div style="font-weight: 800; color: #2D1C14; font-size: 13.5px;">Anime Girls</div>
-                <div style="font-size: 12px; color: #C45832; font-weight: 700;">+2,180 lượt tải hôm nay</div>
-              </div>
-            </div>
-
-            <div class="activity-item">
-              <img src="../../assets/pack_onepiece.svg" alt="One Piece" style="width: 38px; height: 38px; border-radius: 8px; object-fit: cover;">
-              <div class="activity-content">
-                <div style="font-weight: 800; color: #2D1C14; font-size: 13.5px;">One Piece Wano</div>
-                <div style="font-size: 12px; color: #C45832; font-weight: 700;">+1,650 lượt tải hôm nay</div>
-              </div>
-            </div>
-
-            <div class="activity-item">
-              <img src="../../assets/pack_funny_animals.svg" alt="Funny Animals" style="width: 38px; height: 38px; border-radius: 8px; object-fit: cover;">
-              <div class="activity-content">
-                <div style="font-weight: 800; color: #2D1C14; font-size: 13.5px;">Funny Animals</div>
-                <div style="font-size: 12px; color: #C45832; font-weight: 700;">+1,240 lượt tải hôm nay</div>
-              </div>
-            </div>
+            {% else %}
+            <div style="text-align: center; color: #7E6E64; padding: 20px 0;">Chưa có dữ liệu hôm nay.</div>
+            {% endfor %}
           </div>
         </div>
 
@@ -731,16 +486,15 @@
 
   </div>
 
-
-  <!-- Toast Container -->
-  <div class="toast-container" id="toastContainer"></div>
+  <!-- Dữ liệu khởi tạo biểu đồ dạng JSON (SSR Hydration) -->
+  <script id="initialChartData" type="application/json">{{ chart_data | tojson }}</script>
 
   <!-- ========================================================
        SCRIPTS
        ======================================================== -->
+  <script type="module" src="../../static/user/js/app.js"></script>
   <script src="../../static/admin/js/layout/layout.js"></script>
   <script src="../../static/admin/js/pages/dashboard.js"></script>
-
 
 </body>
 </html>

@@ -3,9 +3,14 @@
  * STICKERHUB - USER GLOBAL APPLICATION SCRIPT (app.js)
  * ========================================================
  * File kịch bản khởi tạo chung cho toàn bộ giao diện User.
- * Được nạp ở cuối tất cả các trang người dùng.
+ * Được nạp ở tất cả các trang.
  */
 
-document.addEventListener('DOMContentLoaded', () => {
+import { showToast } from "./utils/showToast.js";
+
+// Đảm bảo gắn toàn cục cho toàn bộ hệ thống
+window.showToast = showToast;
+
+document.addEventListener("DOMContentLoaded", () => {
   // Global User Initialization logic nếu cần
 });

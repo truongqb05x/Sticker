@@ -37,7 +37,7 @@
       <button type="button" class="admin-menu-toggle-btn" id="sidebarToggleBtn" aria-label="Mở menu quản trị" title="Menu quản trị">
         <i data-lucide="menu" style="width: 22px; height: 22px;"></i>
       </button>
-      <a href="dashboard.html" class="admin-brand" title="Trang tổng quan StickerHub">
+      <a href="/admin/dashboard" class="admin-brand" title="Trang tổng quan StickerHub">
         <img src="../../assets/logo_cat.svg" alt="StickerHub Cat Logo" width="36" height="36">
         <span class="admin-brand-title">Sticker<span class="hub-part">Hub</span></span>
       </a>
@@ -71,7 +71,7 @@
         <div class="admin-nav-group-title">Quản lý hệ thống</div>
         <ul class="admin-nav-list">
           <li>
-            <a href="dashboard.html" class="admin-nav-item">
+            <a href="/admin/dashboard" class="admin-nav-item">
               <span class="nav-left">
                 <i data-lucide="layout-dashboard" style="width: 18px; height: 18px;"></i>
                 <span>Tổng quan</span>
@@ -79,30 +79,30 @@
             </a>
           </li>
           <li>
-            <a href="bosuutap.html" class="admin-nav-item">
+            <a href="/admin/bosuutap" class="admin-nav-item">
               <span class="nav-left">
                 <i data-lucide="folder-heart" style="width: 18px; height: 18px;"></i>
                 <span>Bộ sưu tập</span>
               </span>
-              <span class="nav-counter">48</span>
+              <span class="nav-counter">{{ total_packs }}</span>
             </a>
           </li>
           <li>
-            <a href="khosticker.html" class="admin-nav-item">
+            <a href="/admin/khosticker" class="admin-nav-item">
               <span class="nav-left">
                 <i data-lucide="smile" style="width: 18px; height: 18px;"></i>
                 <span>Kho Sticker</span>
               </span>
-              <span class="nav-counter">4.8K</span>
+              <span class="nav-counter">{{ total_stickers }}</span>
             </a>
           </li>
           <li>
-            <a href="danhmuc.html" class="admin-nav-item">
+            <a href="/admin/danhmuc" class="admin-nav-item">
               <span class="nav-left">
                 <i data-lucide="tag" style="width: 18px; height: 18px;"></i>
                 <span>Danh mục chủ đề</span>
               </span>
-              <span class="nav-counter">8</span>
+              <span class="nav-counter">{{ total_categories }}</span>
             </a>
           </li>
         </ul>
@@ -110,7 +110,7 @@
         <div class="admin-nav-group-title" style="margin-top: 14px;">Báo cáo & Thống kê</div>
         <ul class="admin-nav-list">
           <li>
-            <a href="thongke.html" class="admin-nav-item active" title="Thống kê">
+            <a href="/admin/thongke" class="admin-nav-item active" title="Thống kê">
               <span class="nav-left">
                 <i data-lucide="bar-chart-3" style="width: 18px; height: 18px;"></i>
                 <span>Thống kê</span>
@@ -121,7 +121,7 @@
       </div>
 
       <!-- Nút Đăng Xuất -->
-      <a href="login.html" class="btn-sidebar-logout" title="Đăng xuất khỏi trang quản trị">
+      <a href="/admin/logout" class="btn-sidebar-logout" title="Đăng xuất khỏi trang quản trị">
         <i data-lucide="log-out" style="width: 16px; height: 16px;"></i>
         <span>Đăng xuất Admin</span>
       </a>
@@ -154,61 +154,61 @@
       <section class="analytics-metrics-grid">
         <div class="analytic-card">
           <div class="analytic-header">
-            <span class="analytic-label" id="kpiDownloadsLabel">Lượt tải 7 ngày qua</span>
+            <span class="analytic-label" id="kpiDownloadsLabel">{{ kpis.downloadsLabel }}</span>
             <div class="analytic-icon-box icon-green">
               <i data-lucide="download-cloud" style="width: 20px; height: 20px;"></i>
             </div>
           </div>
           <div class="analytic-value-row">
-            <span class="analytic-num" id="kpiDownloadsVal">169.8K</span>
+            <span class="analytic-num" id="kpiDownloadsVal">{{ kpis.downloadsVal }}</span>
             <span class="analytic-badge badge-growth-up" id="kpiDownloadsBadge">
               <i data-lucide="trending-up" style="width: 12px; height: 12px;"></i>
-              <span id="kpiDownloadsChange">+18.2%</span>
+              <span id="kpiDownloadsChange">{{ kpis.downloadsChange }}</span>
             </span>
           </div>
         </div>
 
         <div class="analytic-card">
           <div class="analytic-header">
-            <span class="analytic-label" id="kpiDailyLabel">Lượt tải TB / ngày</span>
+            <span class="analytic-label" id="kpiDailyLabel">{{ kpis.dailyLabel }}</span>
             <div class="analytic-icon-box icon-blue">
               <i data-lucide="activity" style="width: 20px; height: 20px;"></i>
             </div>
           </div>
           <div class="analytic-value-row">
-            <span class="analytic-num" id="kpiDailyVal">24,250</span>
+            <span class="analytic-num" id="kpiDailyVal">{{ kpis.dailyVal }}</span>
             <span class="analytic-badge badge-growth-up" id="kpiDailyBadge">
               <i data-lucide="trending-up" style="width: 12px; height: 12px;"></i>
-              <span id="kpiDailyChange">+12.4%</span>
+              <span id="kpiDailyChange">{{ kpis.dailyChange }}</span>
             </span>
           </div>
         </div>
 
         <div class="analytic-card">
           <div class="analytic-header">
-            <span class="analytic-label" id="kpiTopPackLabel">Bộ sưu tập #1 Top</span>
+            <span class="analytic-label" id="kpiTopPackLabel">{{ kpis.topPackLabel }}</span>
             <div class="analytic-icon-box icon-orange">
               <i data-lucide="award" style="width: 20px; height: 20px;"></i>
             </div>
           </div>
           <div class="analytic-value-row">
-            <span class="analytic-num" id="kpiTopPackName" style="font-size: 20px;">Cute Cats</span>
-            <span class="analytic-badge badge-sub" id="kpiTopPackDownloads">38.5K tải</span>
+            <span class="analytic-num" id="kpiTopPackName" style="font-size: 20px;">{{ kpis.topPackName }}</span>
+            <span class="analytic-badge badge-sub" id="kpiTopPackDownloads">{{ kpis.topPackDownloads }}</span>
           </div>
         </div>
 
         <div class="analytic-card">
           <div class="analytic-header">
-            <span class="analytic-label" id="kpiTrafficLabel">Lưu lượng truy cập 7 ngày</span>
+            <span class="analytic-label" id="kpiTrafficLabel">{{ kpis.trafficLabel }}</span>
             <div class="analytic-icon-box icon-purple">
               <i data-lucide="globe" style="width: 20px; height: 20px;"></i>
             </div>
           </div>
           <div class="analytic-value-row">
-            <span class="analytic-num" id="kpiTrafficVal">264.4K</span>
+            <span class="analytic-num" id="kpiTrafficVal">{{ kpis.trafficVal }}</span>
             <span class="analytic-badge badge-growth-up" id="kpiTrafficBadge">
               <i data-lucide="trending-up" style="width: 12px; height: 12px;"></i>
-              <span id="kpiTrafficChange">+22.6%</span>
+              <span id="kpiTrafficChange">{{ kpis.trafficChange }}</span>
             </span>
           </div>
         </div>
@@ -229,11 +229,9 @@
           <div class="trend-chart-wrapper" id="analyticsTrendWrapper">
             <!-- Trục Y -->
             <div class="chart-y-axis" id="analyticsYAxis">
-              <span class="y-label">40K</span>
-              <span class="y-label">30K</span>
-              <span class="y-label">20K</span>
-              <span class="y-label">10K</span>
-              <span class="y-label">0</span>
+              {% for y in downloads_chart.yLabels %}
+              <span class="y-label">{{ y }}</span>
+              {% endfor %}
             </div>
 
             <!-- Khu vực biểu đồ sóng mềm mại (Lượt tải) -->
@@ -296,11 +294,9 @@
           <div class="trend-chart-wrapper" id="trafficChartWrapper">
             <!-- Trục Y -->
             <div class="chart-y-axis" id="trafficYAxis">
-              <span class="y-label">60K</span>
-              <span class="y-label">45K</span>
-              <span class="y-label">30K</span>
-              <span class="y-label">15K</span>
-              <span class="y-label">0</span>
+              {% for y in traffic_chart.yLabels %}
+              <span class="y-label">{{ y }}</span>
+              {% endfor %}
             </div>
 
             <!-- Khu vực biểu đồ sóng mềm mại (Lưu lượng truy cập - Blue Theme) -->
@@ -360,7 +356,7 @@
             <i data-lucide="trophy" style="width: 18px; height: 18px; color: #C45832;"></i>
             <span>Top Bộ sưu tập được tải nhiều nhất</span>
           </h3>
-          <span id="tableTimeframeNote" style="font-size: 12.5px; font-weight: 700; color: #7E6E64; margin-left: auto;">(7 ngày qua)</span>
+          <span id="tableTimeframeNote" style="font-size: 12.5px; font-weight: 700; color: #7E6E64; margin-left: auto;">{{ note }}</span>
         </div>
 
         <div class="table-responsive">
@@ -375,92 +371,23 @@
               </tr>
             </thead>
             <tbody id="topPacksTableBody">
-              
-              <!-- Top 1 -->
+              {% for pack in top_packs %}
               <tr>
                 <td>
                   <div class="table-pack-cell">
-                    <img src="../../assets/pack_cats.jpg" alt="Cute Cats" class="table-pack-thumb">
+                    <img src="{{ pack.thumb }}" alt="{{ pack.title }}" class="table-pack-thumb">
                     <div>
-                      <div class="table-pack-title">Cute Cats</div>
-                      <div class="table-pack-sub">Tác giả: MiuMiu Studio</div>
+                      <div class="table-pack-title">{{ pack.title }}</div>
+                      <div class="table-pack-sub">Tác giả: {{ pack.author }}</div>
                     </div>
                   </div>
                 </td>
-                <td><span class="cat-pill">Động vật</span></td>
-                <td><strong>120</strong> sticker</td>
-                <td><strong style="color: #C45832;">38.5K</strong></td>
-                <td><strong>2.4K</strong></td>
+                <td><span class="cat-pill">{{ pack.cat }}</span></td>
+                <td><strong>{{ pack.count }}</strong> sticker</td>
+                <td><strong style="color: #C45832;">{{ pack.downloads }}</strong></td>
+                <td><strong>{{ pack.likes }}</strong></td>
               </tr>
-
-              <!-- Top 2 -->
-              <tr>
-                <td>
-                  <div class="table-pack-cell">
-                    <img src="../../assets/pack_anime.jpg" alt="Anime Girls" class="table-pack-thumb">
-                    <div>
-                      <div class="table-pack-title">Anime Girls</div>
-                      <div class="table-pack-sub">Tác giả: Sakura Art</div>
-                    </div>
-                  </div>
-                </td>
-                <td><span class="cat-pill">Anime & Manga</span></td>
-                <td><strong>96</strong> sticker</td>
-                <td><strong style="color: #C45832;">25.3K</strong></td>
-                <td><strong>1.8K</strong></td>
-              </tr>
-
-              <!-- Top 3 -->
-              <tr>
-                <td>
-                  <div class="table-pack-cell">
-                    <img src="../../assets/pack_onepiece.svg" alt="One Piece Wano" class="table-pack-thumb">
-                    <div>
-                      <div class="table-pack-title">One Piece Wano</div>
-                      <div class="table-pack-sub">Tác giả: OtakuZone</div>
-                    </div>
-                  </div>
-                </td>
-                <td><span class="cat-pill">Anime & Manga</span></td>
-                <td><strong>83</strong> sticker</td>
-                <td><strong style="color: #C45832;">22.4K</strong></td>
-                <td><strong>1.5K</strong></td>
-              </tr>
-
-              <!-- Top 4 -->
-              <tr>
-                <td>
-                  <div class="table-pack-cell">
-                    <img src="../../assets/stickers/cat_02.svg" alt="Sweet Couple" class="table-pack-thumb">
-                    <div>
-                      <div class="table-pack-title">Sweet Couple</div>
-                      <div class="table-pack-sub">Tác giả: LoveStory</div>
-                    </div>
-                  </div>
-                </td>
-                <td><span class="cat-pill">Tình yêu</span></td>
-                <td><strong>50</strong> sticker</td>
-                <td><strong style="color: #C45832;">21.2K</strong></td>
-                <td><strong>1.4K</strong></td>
-              </tr>
-
-              <!-- Top 5 -->
-              <tr>
-                <td>
-                  <div class="table-pack-cell">
-                    <img src="../../assets/thumb_anime.svg" alt="Chibi Heroes" class="table-pack-thumb">
-                    <div>
-                      <div class="table-pack-title">Chibi Heroes</div>
-                      <div class="table-pack-sub">Tác giả: ComicChibi</div>
-                    </div>
-                  </div>
-                </td>
-                <td><span class="cat-pill">Chibi</span></td>
-                <td><strong>64</strong> sticker</td>
-                <td><strong style="color: #C45832;">19.8K</strong></td>
-                <td><strong>1.1K</strong></td>
-              </tr>
-
+              {% endfor %}
             </tbody>
           </table>
         </div>
@@ -472,9 +399,15 @@
   <!-- Toast Notification Container -->
   <div class="toast-container" id="toastContainer"></div>
 
+  <!-- Initial Stats JSON Payload for Instant Client Hydration -->
+  <script id="initialStatsData" type="application/json">
+    {{ initial_data | tojson }}
+  </script>
+
   <!-- ========================================================
        SCRIPTS
        ======================================================== -->
+  <script type="module" src="../../static/user/js/app.js"></script>
   <script src="../../static/admin/js/layout/layout.js"></script>
   <script src="../../static/admin/js/pages/thongke.js"></script>
 
