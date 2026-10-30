@@ -10,7 +10,7 @@
   <meta name="description" content="Khám phá hàng ngàn bộ sưu tập sticker đa dạng chủ đề, phù hợp với mọi sở thích của bạn trên StickerHub.">
 
   <!-- Favicon -->
-  <link rel="icon" type="image/svg+xml" href="../../assets/logo_cat.svg">
+  <link rel="icon" type="image/svg+xml" href="/assets/logo_cat.svg">
 
   <!-- Google Fonts: Comfortaa & Nunito -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,10 +21,10 @@
   <script src="https://unpkg.com/lucide@latest"></script>
 
   <!-- MASTER LAYOUT CSS (Bao gồm variables, base, header, sidebar, drawer, footer) -->
-  <link rel="stylesheet" href="../../static/user/css/layout/layout.css">
+  <link rel="stylesheet" href="/static/user/css/layout/layout.css">
 
   <!-- CSS riêng của trang Danh sách Bộ sưu tập -->
-  <link rel="stylesheet" href="../../static/user/css/pages/bosuutap.css">
+  <link rel="stylesheet" href="/static/user/css/pages/bosuutap.css">
 </head>
 <body>
 
@@ -36,8 +36,8 @@
       <!-- Left: Logo + Desktop Navigation -->
       <div class="header-left">
         <!-- Logo -->
-        <a href="../../index.html" class="brand-logo" id="logoLink" title="StickerHub">
-          <img src="../../assets/logo_cat.svg" alt="StickerHub Cat Logo" width="38" height="38">
+        <a href="/" class="brand-logo" id="logoLink" title="StickerHub">
+          <img src="/assets/logo_cat.svg" alt="StickerHub Cat Logo" width="38" height="38">
           <span class="brand-title">Sticker<span class="hub-part">Hub</span></span>
         </a>
 
@@ -45,34 +45,26 @@
         <nav aria-label="Main Navigation">
           <ul class="nav-menu">
             <li>
-              <a href="../../index.html" class="nav-link" data-tab="home" id="navHome">
-                <svg width="15" height="15" viewBox="0 0 20 20" fill="currentColor">
-                  <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
-                </svg>
+              <a href="/" class="nav-link" data-tab="home" id="navHome">
+                <i data-lucide="home" style="width: 15px; height: 15px;"></i>
                 <span>Trang chủ</span>
               </a>
             </li>
             <li>
-              <a href="bosuutap.html" class="nav-link active" data-tab="collections" id="navCollections">
-                <svg width="15" height="15" viewBox="0 0 20 20" fill="currentColor">
-                  <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/>
-                </svg>
+              <a href="/bosuutap" class="nav-link active" data-tab="collections" id="navCollections">
+                <i data-lucide="folder-heart" style="width: 15px; height: 15px;"></i>
                 <span>Bộ sưu tập</span>
               </a>
             </li>
             <li>
-              <a href="toptainhieu.html" class="nav-link" data-tab="top-downloaded" id="navTop">
-                <svg width="15" height="15" viewBox="0 0 20 20" fill="currentColor">
-                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                </svg>
+              <a href="/top-tai-nhieu" class="nav-link" data-tab="top-downloaded" id="navTop">
+                <i data-lucide="flame" style="width: 15px; height: 15px;"></i>
                 <span>Top tải nhiều</span>
               </a>
             </li>
             <li>
-              <a href="#" class="nav-link" data-tab="favorites" id="navFavorites">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                </svg>
+              <a href="javascript:void(0)" class="nav-link" data-tab="favorites" id="navFavorites" onclick="document.querySelector('[data-filter=\'favorite\']')?.click()">
+                <i data-lucide="heart" style="width: 15px; height: 15px;"></i>
                 <span>Yêu thích</span>
               </a>
             </li>
@@ -87,17 +79,11 @@
           <input type="text" class="search-input" id="stickerSearch" placeholder="Tìm kiếm sticker..." aria-label="Tìm kiếm sticker" autocomplete="off">
           
           <button class="clear-search-btn" id="clearSearchBtn" aria-label="Xóa nội dung tìm kiếm" type="button" title="Xóa">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="18" y1="6" x2="6" y2="18"></line>
-              <line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
+            <i data-lucide="x" style="width: 12px; height: 12px;"></i>
           </button>
           
           <button class="search-btn" id="searchBtn" aria-label="Nút tìm kiếm" type="button">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="11" cy="11" r="8"></circle>
-              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            </svg>
+            <i data-lucide="search" style="width: 15px; height: 15px;"></i>
           </button>
 
           <!-- Dropdown gợi ý tìm kiếm realtime -->
@@ -106,11 +92,7 @@
 
         <!-- Nút 3 gạch mở mobile drawer ở bên phải -->
         <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Mở menu điều hướng" type="button" title="Menu">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="3" y1="12" x2="21" y2="12"></line>
-            <line x1="3" y1="6" x2="21" y2="6"></line>
-            <line x1="3" y1="18" x2="21" y2="18"></line>
-          </svg>
+          <i data-lucide="menu" style="width: 22px; height: 22px;"></i>
         </button>
       </div>
     </div>
@@ -123,14 +105,11 @@
   <aside class="mobile-drawer" id="mobileDrawer" aria-label="Menu điều hướng di động">
     <div class="drawer-header">
       <div class="brand-logo">
-        <img src="../../assets/logo_cat.svg" alt="StickerHub" width="30" height="30">
+        <img src="/assets/logo_cat.svg" alt="StickerHub" width="30" height="30">
         <span class="brand-title" style="font-size: 20px;">Sticker<span class="hub-part">Hub</span></span>
       </div>
       <button class="drawer-close-btn" id="drawerCloseBtn" aria-label="Đóng menu" type="button">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="18" y1="6" x2="6" y2="18"></line>
-          <line x1="6" y1="6" x2="18" y2="18"></line>
-        </svg>
+        <i data-lucide="x" style="width: 20px; height: 20px;"></i>
       </button>
     </div>
     
@@ -140,34 +119,26 @@
         <div class="drawer-section-title">Menu điều hướng</div>
         <ul class="drawer-nav">
           <li>
-            <a href="../../index.html" class="drawer-nav-item" data-tab="home">
-              <svg width="18" height="18" viewBox="0 0 20 20" fill="currentColor">
-                <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
-              </svg>
+            <a href="/" class="drawer-nav-item" data-tab="home">
+              <i data-lucide="home" style="width: 18px; height: 18px;"></i>
               <span>Trang chủ</span>
             </a>
           </li>
           <li>
-            <a href="bosuutap.html" class="drawer-nav-item active" data-tab="collections">
-              <svg width="18" height="18" viewBox="0 0 20 20" fill="currentColor">
-                <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/>
-              </svg>
+            <a href="/bosuutap" class="drawer-nav-item active" data-tab="collections">
+              <i data-lucide="folder-heart" style="width: 18px; height: 18px;"></i>
               <span>Bộ sưu tập</span>
             </a>
           </li>
           <li>
-            <a href="toptainhieu.html" class="drawer-nav-item" data-tab="top-downloaded">
-              <svg width="18" height="18" viewBox="0 0 20 20" fill="currentColor">
-                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-              </svg>
+            <a href="/top-tai-nhieu" class="drawer-nav-item" data-tab="top-downloaded">
+              <i data-lucide="flame" style="width: 18px; height: 18px;"></i>
               <span>Top tải nhiều</span>
             </a>
           </li>
           <li>
-            <a href="#" class="drawer-nav-item" data-tab="favorites">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-              </svg>
+            <a href="javascript:void(0)" class="drawer-nav-item" data-tab="favorites" onclick="document.querySelector('[data-filter=\'favorite\']')?.click(); closeDrawer();">
+              <i data-lucide="heart" style="width: 18px; height: 18px;"></i>
               <span>Yêu thích</span>
             </a>
           </li>
@@ -182,25 +153,26 @@
         <div class="drawer-accordion" id="accordionDrawerCategories">
           <button class="drawer-accordion-btn" type="button" aria-expanded="false" onclick="toggleDrawerAccordion('accordionDrawerCategories')">
             <span class="drawer-accordion-title">
-              <svg width="17" height="17" viewBox="0 0 20 20" fill="currentColor">
-                <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/>
-              </svg>
+              <i data-lucide="folder" style="width: 17px; height: 17px;"></i>
               <span>Danh mục</span>
             </span>
-            <svg class="drawer-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="6 9 12 15 18 9"></polyline>
-            </svg>
+            <i data-lucide="chevron-down" class="drawer-chevron" style="width: 16px; height: 16px;"></i>
           </button>
           <div class="drawer-accordion-content">
             <ul class="drawer-sub-list">
-              <li><a href="javascript:void(0)" class="drawer-sub-item"><span class="cat-info"><span>Anime & Manga</span></span><span class="cat-count">(128)</span></a></li>
-              <li><a href="javascript:void(0)" class="drawer-sub-item"><span class="cat-info"><span>Động vật</span></span><span class="cat-count">(96)</span></a></li>
-              <li><a href="javascript:void(0)" class="drawer-sub-item"><span class="cat-info"><span>Chibi</span></span><span class="cat-count">(84)</span></a></li>
-              <li><a href="javascript:void(0)" class="drawer-sub-item"><span class="cat-info"><span>Phong cảnh</span></span><span class="cat-count">(72)</span></a></li>
-              <li><a href="javascript:void(0)" class="drawer-sub-item"><span class="cat-info"><span>Tình yêu</span></span><span class="cat-count">(58)</span></a></li>
-              <li><a href="javascript:void(0)" class="drawer-sub-item"><span class="cat-info"><span>Hoạt hình</span></span><span class="cat-count">(63)</span></a></li>
-              <li><a href="javascript:void(0)" class="drawer-sub-item"><span class="cat-info"><span>Biểu cảm</span></span><span class="cat-count">(47)</span></a></li>
-              <li><a href="javascript:void(0)" class="drawer-sub-item"><span class="cat-info"><span>Chủ đề khác</span></span><span class="cat-count">(39)</span></a></li>
+              <li>
+                <a href="javascript:void(0)" class="drawer-sub-item {% if active_category == 'all' %}active{% endif %}" data-category="all">
+                  <span class="cat-info"><span>Tất cả</span></span>
+                </a>
+              </li>
+              {% for cat in categories %}
+              <li>
+                <a href="javascript:void(0)" class="drawer-sub-item {% if cat.is_active %}active{% endif %}" data-category="{{ cat.slug }}">
+                  <span class="cat-info"><span>{{ cat.name }}</span></span>
+                  <span class="cat-count">({{ cat.sticker_count }})</span>
+                </a>
+              </li>
+              {% endfor %}
             </ul>
           </div>
         </div>
@@ -209,22 +181,19 @@
         <div class="drawer-accordion" id="accordionDrawerFeatured">
           <button class="drawer-accordion-btn" type="button" aria-expanded="false" onclick="toggleDrawerAccordion('accordionDrawerFeatured')">
             <span class="drawer-accordion-title">
-              <svg width="17" height="17" viewBox="0 0 20 20" fill="currentColor">
-                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-              </svg>
+              <i data-lucide="flame" style="width: 17px; height: 17px;"></i>
               <span>Bộ sưu tập nổi bật</span>
             </span>
-            <svg class="drawer-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="6 9 12 15 18 9"></polyline>
-            </svg>
+            <i data-lucide="chevron-down" class="drawer-chevron" style="width: 16px; height: 16px;"></i>
           </button>
           <div class="drawer-accordion-content">
             <div class="drawer-sub-list">
-              <div class="drawer-featured-item"><span class="drawer-featured-title">Cute Animals</span><span class="drawer-featured-count">128 sticker</span></div>
-              <div class="drawer-featured-item"><span class="drawer-featured-title">Anime Girls</span><span class="drawer-featured-count">96 sticker</span></div>
-              <div class="drawer-featured-item"><span class="drawer-featured-title">Funny Faces</span><span class="drawer-featured-count">74 sticker</span></div>
-              <div class="drawer-featured-item"><span class="drawer-featured-title">Nature Vibes</span><span class="drawer-featured-count">62 sticker</span></div>
-              <div class="drawer-featured-item"><span class="drawer-featured-title">Cat & Food</span><span class="drawer-featured-count">38 sticker</span></div>
+              {% for feat in featured_packs %}
+              <a href="/pack/{{ feat.slug }}" class="drawer-featured-item" style="text-decoration: none; color: inherit;">
+                <span class="drawer-featured-title">{{ feat.title }}</span>
+                <span class="drawer-featured-count">{{ feat.total_stickers }} sticker</span>
+              </a>
+              {% endfor %}
             </div>
           </div>
         </div>
@@ -242,170 +211,48 @@
       <!-- Card 1: Danh mục -->
       <div class="sidebar-card">
         <div class="card-header">
-          <svg width="18" height="18" viewBox="0 0 20 20" fill="currentColor">
-            <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/>
-          </svg>
+          <i data-lucide="folder" style="width: 18px; height: 18px;"></i>
           <span>Danh mục</span>
         </div>
         <ul class="category-list" id="categoryList">
           <li>
-            <a href="javascript:void(0)" class="category-item" data-category="anime">
+            <a href="javascript:void(0)" class="category-item {% if active_category == 'all' %}active{% endif %}" data-category="all">
               <span class="cat-info">
-                <svg class="cat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M12 5c.67 0 1.35.09 2 .26 1.78-2 5.03-2.84 6.42-2.26 1.4.58-.42 7-.42 7A10 10 0 0 1 12 22a10 10 0 0 1-8-12s-1.82-6.42-.42-7c1.39-.58 4.64.26 6.42 2.26.65-.17 1.33-.26 2-.26z"/>
-                  <circle cx="9" cy="13" r="1.5" fill="currentColor"/>
-                  <circle cx="15" cy="13" r="1.5" fill="currentColor"/>
-                </svg>
-                <span>Anime & Manga</span>
+                <i data-lucide="layout-grid" class="cat-icon" style="width: 17px; height: 17px;"></i>
+                <span>Tất cả</span>
               </span>
-              <span class="cat-count">(128)</span>
             </a>
           </li>
+          {% for cat in categories %}
           <li>
-            <a href="javascript:void(0)" class="category-item" data-category="animals">
+            <a href="javascript:void(0)" class="category-item {% if cat.is_active %}active{% endif %}" data-category="{{ cat.slug }}">
               <span class="cat-info">
-                <svg class="cat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="12" cy="13" r="8"/>
-                  <path d="M5 6a3 3 0 0 1 4 3 M15 9a3 3 0 0 1 4-3"/>
-                  <circle cx="9" cy="13" r="1" fill="currentColor"/>
-                  <circle cx="15" cy="13" r="1" fill="currentColor"/>
-                  <path d="M11 16h2"/>
-                </svg>
-                <span>Động vật</span>
+                <i data-lucide="{{ cat.icon_name or 'tag' }}" class="cat-icon" style="width: 17px; height: 17px;"></i>
+                <span>{{ cat.name }}</span>
               </span>
-              <span class="cat-count">(96)</span>
+              <span class="cat-count">({{ cat.sticker_count }})</span>
             </a>
           </li>
-          <li>
-            <a href="javascript:void(0)" class="category-item" data-category="chibi">
-              <span class="cat-info">
-                <svg class="cat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="12" cy="12" r="10"/>
-                  <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
-                  <line x1="9" y1="9" x2="9.01" y2="9"/>
-                  <line x1="15" y1="9" x2="15.01" y2="9"/>
-                </svg>
-                <span>Chibi</span>
-              </span>
-              <span class="cat-count">(84)</span>
-            </a>
-          </li>
-          <li>
-            <a href="javascript:void(0)" class="category-item" data-category="nature">
-              <span class="cat-info">
-                <svg class="cat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="m8 3 4 8 5-5 5 15H2L8 3z"/>
-                </svg>
-                <span>Phong cảnh</span>
-              </span>
-              <span class="cat-count">(72)</span>
-            </a>
-          </li>
-          <li>
-            <a href="javascript:void(0)" class="category-item" data-category="love">
-              <span class="cat-info">
-                <svg class="cat-icon" viewBox="0 0 24 24" fill="#C35631" stroke="#C35631" stroke-width="1.5">
-                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-                </svg>
-                <span>Tình yêu</span>
-              </span>
-              <span class="cat-count">(58)</span>
-            </a>
-          </li>
-          <li>
-            <a href="javascript:void(0)" class="category-item" data-category="animation">
-              <span class="cat-info">
-                <svg class="cat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <line x1="6" y1="12" x2="10" y2="12"/>
-                  <line x1="8" y1="10" x2="8" y2="14"/>
-                  <line x1="15" y1="13" x2="15.01" y2="13"/>
-                  <line x1="18" y1="11" x2="18.01" y2="11"/>
-                  <rect x="2" y="6" width="20" height="12" rx="6"/>
-                </svg>
-                <span>Hoạt hình</span>
-              </span>
-              <span class="cat-count">(63)</span>
-            </a>
-          </li>
-          <li>
-            <a href="javascript:void(0)" class="category-item" data-category="expressions">
-              <span class="cat-info">
-                <svg class="cat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="12" cy="12" r="10"/>
-                  <path d="M8 13a4 4 0 0 0 8 0"/>
-                  <line x1="9" y1="9" x2="9.01" y2="9"/>
-                  <line x1="15" y1="9" x2="15.01" y2="9"/>
-                </svg>
-                <span>Biểu cảm</span>
-              </span>
-              <span class="cat-count">(47)</span>
-            </a>
-          </li>
-          <li>
-            <a href="javascript:void(0)" class="category-item" data-category="others">
-              <span class="cat-info">
-                <svg class="cat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="12" cy="12" r="10"/>
-                  <line x1="8" y1="15" x2="16" y2="15"/>
-                  <line x1="9" y1="9" x2="9.01" y2="9"/>
-                  <line x1="15" y1="9" x2="15.01" y2="9"/>
-                </svg>
-                <span>Chủ đề khác</span>
-              </span>
-              <span class="cat-count">(39)</span>
-            </a>
-          </li>
+          {% endfor %}
         </ul>
       </div>
 
       <!-- Card 2: Bộ sưu tập nổi bật -->
       <div class="featured-card">
         <div class="card-header">
-          <svg width="18" height="18" viewBox="0 0 20 20" fill="currentColor">
-            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-          </svg>
+          <i data-lucide="flame" style="width: 18px; height: 18px;"></i>
           <span>Bộ sưu tập nổi bật</span>
         </div>
         <div class="featured-list" id="featuredList">
-          <div class="featured-item" style="cursor: pointer;" onclick="showToast('Cute Animals (128 sticker)')">
-            <img src="../../assets/thumb_animals.svg" alt="Cute Animals" class="featured-thumb">
+          {% for feat in featured_packs %}
+          <a href="/pack/{{ feat.slug }}" class="featured-item" style="text-decoration: none; color: inherit;">
+            <img src="{{ feat.cover_image }}" alt="{{ feat.title }}" class="featured-thumb" loading="lazy">
             <div class="featured-meta">
-              <span class="featured-name">Cute Animals</span>
-              <span class="featured-stickers">128 sticker</span>
+              <span class="featured-name">{{ feat.title }}</span>
+              <span class="featured-stickers">{{ feat.total_stickers }} sticker</span>
             </div>
-          </div>
-
-          <div class="featured-item" style="cursor: pointer;" onclick="showToast('Anime Girls (96 sticker)')">
-            <img src="../../assets/thumb_anime.svg" alt="Anime Girls" class="featured-thumb">
-            <div class="featured-meta">
-              <span class="featured-name">Anime Girls</span>
-              <span class="featured-stickers">96 sticker</span>
-            </div>
-          </div>
-
-          <div class="featured-item" style="cursor: pointer;" onclick="showToast('Funny Faces (74 sticker)')">
-            <img src="../../assets/thumb_funny.svg" alt="Funny Faces" class="featured-thumb">
-            <div class="featured-meta">
-              <span class="featured-name">Funny Faces</span>
-              <span class="featured-stickers">74 sticker</span>
-            </div>
-          </div>
-
-          <div class="featured-item" style="cursor: pointer;" onclick="showToast('Nature Vibes (62 sticker)')">
-            <img src="../../assets/thumb_nature.svg" alt="Nature Vibes" class="featured-thumb">
-            <div class="featured-meta">
-              <span class="featured-name">Nature Vibes</span>
-              <span class="featured-stickers">62 sticker</span>
-            </div>
-          </div>
-
-          <div class="featured-item" style="cursor: pointer;" onclick="showToast('Cat & Food (38 sticker)')">
-            <img src="../../assets/stickers/cat_02.svg" alt="Cat & Food" class="featured-thumb">
-            <div class="featured-meta">
-              <span class="featured-name">Cat & Food</span>
-              <span class="featured-stickers">38 sticker</span>
-            </div>
-          </div>
+          </a>
+          {% endfor %}
         </div>
       </div>
     </aside>
@@ -417,7 +264,7 @@
       <div class="scrapbook-hero">
         <!-- Note mèo kèm kẹp giấy bên trái -->
         <div class="hero-note-decor">
-          <img src="../../assets/hero_note_cat.svg" alt="Cat Sticker Note with Paperclip">
+          <img src="/assets/hero_note_cat.svg" alt="Cat Sticker Note with Paperclip">
         </div>
 
         <!-- Tiêu đề & giới thiệu trung tâm -->
@@ -428,347 +275,85 @@
 
         <!-- Ảnh polaroid gấu & cây kèm băng keo bên phải -->
         <div class="hero-polaroid-decor">
-          <img src="../../assets/hero_polaroid_bear.svg" alt="Polaroid Bear & Plant">
+          <img src="/assets/hero_polaroid_bear.svg" alt="Polaroid Bear & Plant">
         </div>
       </div>
 
       <!-- 2. Thanh lọc tab & Phân trang -->
       <div class="filter-bar">
         <!-- Các nút lọc -->
-        <div class="filter-pills">
-          <button class="filter-btn active" data-filter="all" type="button">Tất cả</button>
-          <button class="filter-btn" data-filter="new" type="button">Mới nhất</button>
-          <button class="filter-btn" data-filter="popular" type="button">Tải nhiều nhất</button>
-          <button class="filter-btn" data-filter="favorite" type="button">Yêu thích</button>
+        <div class="filter-pills" id="filterPills">
+          <button class="filter-btn {% if active_filter == 'all' %}active{% endif %}" data-filter="all" type="button">Tất cả</button>
+          <button class="filter-btn {% if active_filter == 'new' %}active{% endif %}" data-filter="new" type="button">Mới nhất</button>
+          <button class="filter-btn {% if active_filter == 'popular' %}active{% endif %}" data-filter="popular" type="button">Tải nhiều nhất</button>
+          <button class="filter-btn {% if active_filter == 'favorite' %}active{% endif %}" data-filter="favorite" type="button">Yêu thích</button>
         </div>
 
         <!-- Hiển thị số lượng & Mũi tên chuyển trang -->
         <div class="filter-pagination-right">
-          <span class="pagination-counter" id="pageCounter">Hiển thị 1 - 12 / 48 bộ sưu tập</span>
+          <span class="pagination-counter" id="pageCounter">
+            {% if pagination.total > 0 %}
+            Hiển thị {{ pagination.start_idx }} - {{ pagination.end_idx }} / {{ pagination.total }} bộ sưu tập
+            {% else %}
+            0 bộ sưu tập
+            {% endif %}
+          </span>
           <div class="pagination-arrows">
-            <button class="btn-arrow-page" id="prevPageBtn" aria-label="Trang trước" type="button">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="15 18 9 12 15 6"></polyline>
-              </svg>
+            <button class="btn-arrow-page" id="prevPageBtn" aria-label="Trang trước" type="button" {% if not pagination.has_prev %}disabled{% endif %}>
+              <i data-lucide="chevron-left" style="width: 15px; height: 15px;"></i>
             </button>
-            <button class="btn-arrow-page" id="nextPageBtn" aria-label="Trang sau" type="button">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="9 18 15 12 9 6"></polyline>
-              </svg>
+            <button class="btn-arrow-page" id="nextPageBtn" aria-label="Trang sau" type="button" {% if not pagination.has_next %}disabled{% endif %}>
+              <i data-lucide="chevron-right" style="width: 15px; height: 15px;"></i>
             </button>
           </div>
         </div>
       </div>
 
-      <!-- 3. Lưới 12 Bộ sưu tập (4 cột x 3 hàng) -->
+      <!-- 3. Lưới Bộ sưu tập (4 cột x 3 hàng) -->
       <div class="collections-grid" id="collectionsGrid">
-        
-        <!-- Card 1: Cute Cats -->
-        <a href="sticker_chitiet.html" class="collection-card" data-category="animals" data-filter="all popular favorite">
-          <div class="card-thumb-container">
-            <img src="../../assets/pack_cats.jpg" alt="Cute Cats" class="card-thumb-img" loading="lazy">
-          </div>
-          <div class="card-body-content">
-            <h3 class="card-title-text">Cute Cats</h3>
-            <p class="card-desc-text">Những chú mèo đáng yêu, biểu cảm đáng yêu cho ngày thêm vui!</p>
-            <div class="card-stats-row">
-              <span class="stat-entry">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-                120 sticker
-              </span>
-              <span class="stat-entry">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                38.5K
-              </span>
-              <span class="stat-entry">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-                2.4K
-              </span>
+        {% if packs %}
+          {% for pack in packs %}
+          <a href="/pack/{{ pack.slug }}" class="collection-card" data-id="{{ pack.id }}" data-category="{{ pack.category_slug }}">
+            <div class="card-thumb-container">
+              <img src="{{ pack.cover_image }}" alt="{{ pack.title }}" class="card-thumb-img" loading="lazy">
+              {% if pack.is_featured %}
+              <span class="pack-badge badge-hot">HOT</span>
+              {% elif pack.is_new %}
+              <span class="pack-badge badge-new">MỚI</span>
+              {% endif %}
             </div>
-          </div>
-        </a>
-
-        <!-- Card 2: Anime Girls -->
-        <a href="javascript:void(0)" class="collection-card" data-category="anime" data-filter="all new popular" onclick="showToast('Bộ sưu tập Anime Girls (96 sticker)')">
-          <div class="card-thumb-container">
-            <img src="../../assets/pack_anime.jpg" alt="Anime Girls" class="card-thumb-img" loading="lazy">
-          </div>
-          <div class="card-body-content">
-            <h3 class="card-title-text">Anime Girls</h3>
-            <p class="card-desc-text">Bộ sticker các cô gái anime xinh xắn, đa dạng biểu cảm.</p>
-            <div class="card-stats-row">
-              <span class="stat-entry">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-                96 sticker
-              </span>
-              <span class="stat-entry">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                25.3K
-              </span>
-              <span class="stat-entry">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-                1.8K
-              </span>
+            <div class="card-body-content">
+              <h3 class="card-title-text">{{ pack.title }}</h3>
+              <p class="card-desc-text">{{ pack.description }}</p>
+              <div class="card-stats-row">
+                <span class="stat-entry">
+                  <i data-lucide="layers" style="width: 13px; height: 13px;"></i>
+                  {{ pack.total_stickers }} sticker
+                </span>
+                <span class="stat-entry">
+                  <i data-lucide="download" style="width: 13px; height: 13px;"></i>
+                  {{ pack.total_downloads_compact }}
+                </span>
+                <span class="stat-entry">
+                  <i data-lucide="heart" style="width: 13px; height: 13px;"></i>
+                  {{ pack.total_favorites_compact }}
+                </span>
+              </div>
             </div>
+          </a>
+          {% endfor %}
+        {% else %}
+          <div class="empty-state" style="grid-column: 1 / -1; text-align: center; padding: 48px 20px; background: #FAF5EE; border-radius: 14px; border: 1.5px dashed #E0D3C3;">
+            <i data-lucide="folder-search" style="width: 48px; height: 48px; color: #9C8A7B; margin-bottom: 12px;"></i>
+            <h4 style="font-size: 17px; font-weight: 700; color: #35231B; margin-bottom: 6px;">Không tìm thấy bộ sưu tập nào</h4>
+            <p style="font-size: 14px; color: #766557;">Thử chọn danh mục hoặc bộ lọc khác nhé!</p>
           </div>
-        </a>
-
-        <!-- Card 3: Funny Animals -->
-        <a href="javascript:void(0)" class="collection-card" data-category="animals" data-filter="all new" onclick="showToast('Bộ sưu tập Funny Animals (74 sticker)')">
-          <div class="card-thumb-container">
-            <img src="../../assets/pack_funny_animals.svg" alt="Funny Animals" class="card-thumb-img" loading="lazy">
-          </div>
-          <div class="card-body-content">
-            <h3 class="card-title-text">Funny Animals</h3>
-            <p class="card-desc-text">Những loài động vật ngộ nghĩnh, siêu dễ thương.</p>
-            <div class="card-stats-row">
-              <span class="stat-entry">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-                74 sticker
-              </span>
-              <span class="stat-entry">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                18.7K
-              </span>
-              <span class="stat-entry">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-                1.2K
-              </span>
-            </div>
-          </div>
-        </a>
-
-        <!-- Card 4: Nature Vibes -->
-        <a href="javascript:void(0)" class="collection-card" data-category="nature" data-filter="all popular favorite" onclick="showToast('Bộ sưu tập Nature Vibes (62 sticker)')">
-          <div class="card-thumb-container">
-            <img src="../../assets/pack_nature.svg" alt="Nature Vibes" class="card-thumb-img" loading="lazy">
-          </div>
-          <div class="card-body-content">
-            <h3 class="card-title-text">Nature Vibes</h3>
-            <p class="card-desc-text">Phong cảnh thiên nhiên tươi đẹp, mang lại cảm giác thư giãn.</p>
-            <div class="card-stats-row">
-              <span class="stat-entry">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-                62 sticker
-              </span>
-              <span class="stat-entry">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                16.4K
-              </span>
-              <span class="stat-entry">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-                980
-              </span>
-            </div>
-          </div>
-        </a>
-
-        <!-- Card 5: Biểu cảm đáng yêu -->
-        <a href="javascript:void(0)" class="collection-card" data-category="expressions" data-filter="all new" onclick="showToast('Bộ sưu tập Biểu cảm đáng yêu (18 sticker)')">
-          <div class="card-thumb-container">
-            <img src="../../assets/pack_expressions.svg" alt="Biểu cảm đáng yêu" class="card-thumb-img" loading="lazy">
-          </div>
-          <div class="card-body-content">
-            <h3 class="card-title-text">Biểu cảm đáng yêu</h3>
-            <p class="card-desc-text">Những biểu cảm siêu dễ thương, phù hợp để nhắn tin.</p>
-            <div class="card-stats-row">
-              <span class="stat-entry">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-                18 sticker
-              </span>
-              <span class="stat-entry">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                14.2K
-              </span>
-              <span class="stat-entry">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-                860
-              </span>
-            </div>
-          </div>
-        </a>
-
-        <!-- Card 6: Tình yêu ngọt ngào -->
-        <a href="javascript:void(0)" class="collection-card" data-category="love" data-filter="all popular favorite" onclick="showToast('Bộ sưu tập Tình yêu ngọt ngào (47 sticker)')">
-          <div class="card-thumb-container">
-            <img src="../../assets/pack_love.svg" alt="Tình yêu ngọt ngào" class="card-thumb-img" loading="lazy">
-          </div>
-          <div class="card-body-content">
-            <h3 class="card-title-text">Tình yêu ngọt ngào</h3>
-            <p class="card-desc-text">Bộ sticker về tình yêu, lãng mạn, ngọt ngào.</p>
-            <div class="card-stats-row">
-              <span class="stat-entry">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-                47 sticker
-              </span>
-              <span class="stat-entry">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                12.6K
-              </span>
-              <span class="stat-entry">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-                720
-              </span>
-            </div>
-          </div>
-        </a>
-
-        <!-- Card 7: One Piece -->
-        <a href="javascript:void(0)" class="collection-card" data-category="anime" data-filter="all new popular" onclick="showToast('Bộ sưu tập One Piece (83 sticker)')">
-          <div class="card-thumb-container">
-            <img src="../../assets/pack_onepiece.svg" alt="One Piece" class="card-thumb-img" loading="lazy">
-          </div>
-          <div class="card-body-content">
-            <h3 class="card-title-text">One Piece</h3>
-            <p class="card-desc-text">Bộ sticker chủ đề One Piece, cho fan anime không thể bỏ qua.</p>
-            <div class="card-stats-row">
-              <span class="stat-entry">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-                83 sticker
-              </span>
-              <span class="stat-entry">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                22.4K
-              </span>
-              <span class="stat-entry">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-                1.5K
-              </span>
-            </div>
-          </div>
-        </a>
-
-        <!-- Card 8: Đồ ăn & Thức uống -->
-        <a href="javascript:void(0)" class="collection-card" data-category="others" data-filter="all popular" onclick="showToast('Bộ sưu tập Đồ ăn & Thức uống (51 sticker)')">
-          <div class="card-thumb-container">
-            <img src="../../assets/pack_food.svg" alt="Đồ ăn & Thức uống" class="card-thumb-img" loading="lazy">
-          </div>
-          <div class="card-body-content">
-            <h3 class="card-title-text">Đồ ăn & Thức uống</h3>
-            <p class="card-desc-text">Những món ăn, đồ uống dễ thương, siêu đáng yêu.</p>
-            <div class="card-stats-row">
-              <span class="stat-entry">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-                51 sticker
-              </span>
-              <span class="stat-entry">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                11.8K
-              </span>
-              <span class="stat-entry">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-                650
-              </span>
-            </div>
-          </div>
-        </a>
-
-        <!-- Card 9: Chibi Nhân vật -->
-        <a href="javascript:void(0)" class="collection-card" data-category="chibi" data-filter="all popular favorite" onclick="showToast('Bộ sưu tập Chibi Nhân vật (45 sticker)')">
-          <div class="card-thumb-container">
-            <img src="../../assets/pack_chibi.svg" alt="Chibi Nhân vật" class="card-thumb-img" loading="lazy">
-          </div>
-          <div class="card-body-content">
-            <h3 class="card-title-text">Chibi Nhân vật</h3>
-            <p class="card-desc-text">Các nhân vật chibi dễ thương, phù hợp cho mọi lứa tuổi.</p>
-            <div class="card-stats-row">
-              <span class="stat-entry">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-                45 sticker
-              </span>
-              <span class="stat-entry">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                9.8K
-              </span>
-              <span class="stat-entry">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-                520
-              </span>
-            </div>
-          </div>
-        </a>
-
-        <!-- Card 10: Phong cảnh Anime -->
-        <a href="javascript:void(0)" class="collection-card" data-category="nature" data-filter="all new" onclick="showToast('Bộ sưu tập Phong cảnh Anime (36 sticker)')">
-          <div class="card-thumb-container">
-            <img src="../../assets/pack_anime_landscape.svg" alt="Phong cảnh Anime" class="card-thumb-img" loading="lazy">
-          </div>
-          <div class="card-body-content">
-            <h3 class="card-title-text">Phong cảnh Anime</h3>
-            <p class="card-desc-text">Những khung cảnh anime tuyệt đẹp, mang lại cảm giác bình yên.</p>
-            <div class="card-stats-row">
-              <span class="stat-entry">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-                36 sticker
-              </span>
-              <span class="stat-entry">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                8.5K
-              </span>
-              <span class="stat-entry">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-                430
-              </span>
-            </div>
-          </div>
-        </a>
-
-        <!-- Card 11: Hình nền & Quote -->
-        <a href="javascript:void(0)" class="collection-card" data-category="others" data-filter="all popular" onclick="showToast('Bộ sưu tập Hình nền & Quote (42 sticker)')">
-          <div class="card-thumb-container">
-            <img src="../../assets/pack_quotes.svg" alt="Hình nền & Quote" class="card-thumb-img" loading="lazy">
-          </div>
-          <div class="card-body-content">
-            <h3 class="card-title-text">Hình nền & Quote</h3>
-            <p class="card-desc-text">Những câu quote ý nghĩa, truyền cảm hứng mỗi ngày.</p>
-            <div class="card-stats-row">
-              <span class="stat-entry">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-                42 sticker
-              </span>
-              <span class="stat-entry">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                7.2K
-              </span>
-              <span class="stat-entry">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-                390
-              </span>
-            </div>
-          </div>
-        </a>
-
-        <!-- Card 12: Halloween -->
-        <a href="javascript:void(0)" class="collection-card" data-category="others" data-filter="all popular favorite" onclick="showToast('Bộ sưu tập Halloween (40 sticker)')">
-          <div class="card-thumb-container">
-            <img src="../../assets/pack_halloween.svg" alt="Halloween" class="card-thumb-img" loading="lazy">
-          </div>
-          <div class="card-body-content">
-            <h3 class="card-title-text">Halloween</h3>
-            <p class="card-desc-text">Bộ sticker chủ đề Halloween, đầy màu sắc và vui nhộn.</p>
-            <div class="card-stats-row">
-              <span class="stat-entry">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-                40 sticker
-              </span>
-              <span class="stat-entry">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                15.1K
-              </span>
-              <span class="stat-entry">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-                810
-              </span>
-            </div>
-          </div>
-        </a>
-
+        {% endif %}
       </div>
 
     </section>
 
   </main>
-  
 
   <!-- ========================================================
        FOOTER (DÙNG CHUNG)
@@ -781,9 +366,9 @@
 
       <div class="footer-right">
         <ul class="footer-links">
-          <li><a href="gioithieu.html" class="footer-link">Giới thiệu</a></li>
-          <li><a href="dieukhoansudung.html" class="footer-link">Điều khoản sử dụng</a></li>
-          <li><a href="javascript:void(0)" class="footer-link">Liên hệ</a></li>
+          <li><a href="/gioi-thieu" class="footer-link">Giới thiệu</a></li>
+          <li><a href="/dieu-khoan-su-dung" class="footer-link">Điều khoản sử dụng</a></li>
+          <li><a href="javascript:void(0)" class="footer-link" onclick="if(window.showToast) window.showToast('Email hỗ trợ: support@stickerhub.vn')">Liên hệ</a></li>
         </ul>
 
         <div class="footer-socials">
@@ -809,15 +394,15 @@
     </div>
   </footer>
 
-  <!-- Toast Container -->
+  <!-- Toast Notification Container (dùng chung qua showToast.js) -->
   <div class="toast-container" id="toastContainer"></div>
 
-  <!-- ========================================================
-       MASTER LAYOUT JAVASCRIPT & PAGE SCRIPT
-       ======================================================== -->
-  <script src="../../static/user/js/layout/layout.js"></script>
-  <script src="../../static/user/js/pages/bosuutap.js"></script>
+  <!-- Hydration Data -->
+  <script id="initialCollectionsData" type="application/json">{{ initial_data | tojson }}</script>
 
-  <script type="module" src="../../static/user/js/app.js"></script>
+  <!-- MASTER LAYOUT JAVASCRIPT & PAGE SCRIPT -->
+  <script src="/static/user/js/layout/layout.js"></script>
+  <script src="/static/user/js/pages/bosuutap.js"></script>
+  <script type="module" src="/static/user/js/app.js"></script>
 </body>
 </html>

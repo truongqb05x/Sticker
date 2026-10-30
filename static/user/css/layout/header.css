@@ -395,6 +395,36 @@
   color: #938276;
 }
 
+.suggestions-view-all {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 10px 14px;
+  background-color: #FAF5EE;
+  border-top: 1px solid #EFE6DA;
+  font-size: 13px;
+  font-weight: 700;
+  color: #C35631;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-decoration: none;
+}
+
+.suggestions-view-all:hover {
+  background-color: #F4E8D8;
+  color: #A5411E;
+}
+
+.suggestions-view-all svg {
+  transition: transform 0.15s ease;
+  flex-shrink: 0;
+}
+
+.suggestions-view-all:hover svg {
+  transform: translateX(3px);
+}
+
 
 
 /* Mobile Menu Toggle Button (3 gạch bên phải) */

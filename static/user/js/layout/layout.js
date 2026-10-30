@@ -11,73 +11,19 @@
  * 6. Khởi tạo biểu tượng Lucide Icons
  */
 
-// Dữ liệu sticker dùng chung cho chức năng tìm kiếm & gợi ý
-window.packsData = window.packsData || [
-  {
-    id: "cats",
-    name: "Cute Cats",
-    subtitle: "120 sticker",
-    category: "Động vật",
-    img: "assets/pack_cats.jpg",
-    tags: ["cats", "animals", "cute", "meow", "mèo", "meo", "động vật", "dong vat", "dễ thương"]
-  },
-  {
-    id: "anime",
-    name: "Anime Girls",
-    subtitle: "96 sticker",
-    category: "Anime & Manga",
-    img: "assets/pack_anime.jpg",
-    tags: ["anime", "chibi", "girls", "manga", "cute", "hoạt hình", "gái xinh", "nữ sinh", "wibu"]
-  },
-  {
-    id: "funny",
-    name: "Funny Animals",
-    subtitle: "74 sticker",
-    category: "Động vật",
-    img: "assets/pack_funny_animals.svg",
-    tags: ["funny", "animals", "bear", "frog", "cute", "hài hước", "hai huoc", "gấu", "gau", "ếch", "ech"]
-  },
-  {
-    id: "nature",
-    name: "Nature Vibes",
-    subtitle: "62 sticker",
-    category: "Phong cảnh",
-    img: "assets/pack_nature.svg",
-    tags: ["nature", "vibes", "mountain", "fuji", "phong cảnh", "phong canh", "thiên nhiên", "núi phú sĩ", "cay coi", "rừng"]
-  },
-  {
-    id: "expressions",
-    name: "Biểu cảm đáng yêu",
-    subtitle: "58 sticker",
-    category: "Biểu cảm",
-    img: "assets/pack_expressions.svg",
-    tags: ["biểu cảm", "bieu cam", "đáng yêu", "dang yeu", "mochi", "emoji", "chibi", "faces", "vui vẻ", "cảm xúc"]
-  },
-  {
-    id: "love",
-    name: "Tình yêu ngọt ngào",
-    subtitle: "47 sticker",
-    category: "Tình yêu",
-    img: "assets/pack_love.svg",
-    tags: ["tình yêu", "tinh yeu", "ngọt ngào", "ngot ngao", "love", "heart", "valentine", "lãng mạn", "đôi lứa", "trái tim"]
-  },
-  {
-    id: "onepiece",
-    name: "One Piece",
-    subtitle: "83 sticker",
-    category: "Anime & Manga",
-    img: "assets/pack_onepiece.svg",
-    tags: ["one piece", "luffy", "zoro", "sanji", "anime", "manga", "chibi", "vua hải tặc", "hải tặc", "hai tac"]
-  },
-  {
-    id: "food",
-    name: "Trà sữa & Ăn vặt",
-    subtitle: "55 sticker",
-    category: "Ăn uống",
-    img: "assets/pack_food.svg",
-    tags: ["trà sữa", "tra sua", "ăn vặt", "an vat", "food", "drinks", "boba", "đồ ăn", "do an", "bánh ngọt"]
-  }
-];
+// Dữ liệu sticker dùng chung cho chức năng tìm kiếm & gợi ý (đồng bộ hoặc dự phòng)
+window.packsData = window.packsData || [];
+
+// Helper: Escape HTML ký tự đặc biệt để phòng ngừa XSS
+function escapeHtml(str) {
+  if (str === null || str === undefined) return "";
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
 
 // Helper: Bỏ dấu tiếng Việt để tìm kiếm không dấu
 function removeVietnameseTones(str) {
@@ -97,25 +43,25 @@ function removeVietnameseTones(str) {
 
 // Helper: Tô màu nổi bật phần văn bản khớp với từ khóa
 function highlightMatch(text, query) {
-  if (!query) return text;
+  if (!text) return "";
+  if (!query) return escapeHtml(text);
   const cleanText = removeVietnameseTones(text);
   const cleanQuery = removeVietnameseTones(query);
   const startIdx = cleanText.indexOf(cleanQuery);
-  if (startIdx === -1) return text;
+  if (startIdx === -1) return escapeHtml(text);
 
-  const before = text.slice(0, startIdx);
-  const match = text.slice(startIdx, startIdx + query.length);
-  const after = text.slice(startIdx + query.length);
+  const before = escapeHtml(text.slice(0, startIdx));
+  const match = escapeHtml(text.slice(startIdx, startIdx + query.length));
+  const after = escapeHtml(text.slice(startIdx + query.length));
   return `${before}<mark>${match}</mark>${after}`;
 }
 
-
-
 // Global UI handler variables
 let selectedSuggestionIndex = -1;
+let currentSearchAbortController = null;
 
-// Render realtime search suggestions
-function renderSuggestions(query) {
+// Render realtime search suggestions kết nối trực tiếp CSDL qua REST API
+async function renderSuggestions(query) {
   const searchInput = document.getElementById('stickerSearch');
   const searchSuggestions = document.getElementById('searchSuggestions');
   const clearSearchBtn = document.getElementById('clearSearchBtn');
@@ -123,84 +69,146 @@ function renderSuggestions(query) {
 
   if (!searchSuggestions || !searchInput) return;
 
-  const cleanQuery = removeVietnameseTones(query);
-  if (!cleanQuery) {
+  const rawQuery = (query || '').trim();
+  if (!rawQuery) {
     searchSuggestions.classList.remove('active');
     clearSearchBtn?.classList.remove('active');
     searchBtn?.classList.remove('hidden');
     selectedSuggestionIndex = -1;
+    if (currentSearchAbortController) {
+      currentSearchAbortController.abort();
+      currentSearchAbortController = null;
+    }
     return;
   }
 
   clearSearchBtn?.classList.add('active');
   searchBtn?.classList.add('hidden');
 
-  const matches = (window.packsData || []).filter(pack => {
-    const cleanName = removeVietnameseTones(pack.name);
-    const cleanCategory = removeVietnameseTones(pack.category);
-    if (cleanName.includes(cleanQuery) || cleanCategory.includes(cleanQuery)) {
-      return true;
-    }
-    return (pack.tags || []).some(tag => removeVietnameseTones(tag).includes(cleanQuery));
-  });
-
-  selectedSuggestionIndex = -1;
-
-  if (matches.length > 0) {
-    const itemsHtml = matches.map((pack, idx) => {
-      const highlightedTitle = highlightMatch(pack.name, query);
-      return `
-        <li class="suggestion-item" data-index="${idx}" data-name="${pack.name}" onclick="selectSuggestion('${pack.name}')">
-          <img src="${pack.img}" alt="${pack.name}" class="suggestion-thumb" loading="lazy">
-          <div class="suggestion-details">
-            <span class="suggestion-title">${highlightedTitle}</span>
-            <span class="suggestion-meta">
-              <span class="suggestion-badge">${pack.category}</span>
-              <span class="suggestion-extra">• ${pack.subtitle}</span>
-            </span>
-          </div>
-          <svg class="suggestion-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="9 18 15 12 9 6"></polyline>
-          </svg>
-        </li>
-      `;
-    }).join('');
-
-    searchSuggestions.innerHTML = `
-      <div class="suggestions-header">
-        <span>Gợi ý (${matches.length})</span>
-        <button class="suggestions-close-btn" type="button" onclick="document.getElementById('searchSuggestions').classList.remove('active')" aria-label="Đóng gợi ý" title="Đóng">✕</button>
-      </div>
-      <ul class="suggestions-list" id="suggestionsList" role="list">
-        ${itemsHtml}
-      </ul>
-    `;
-  } else {
-    searchSuggestions.innerHTML = `
-      <div class="suggestions-empty">
-        <div class="suggestions-empty-title">Không tìm thấy sticker nào</div>
-        <div class="suggestions-empty-sub">Không có kết quả khớp với "${query}"</div>
-      </div>
-    `;
+  if (currentSearchAbortController) {
+    currentSearchAbortController.abort();
   }
+  currentSearchAbortController = new AbortController();
 
-  searchSuggestions.classList.add('active');
+  try {
+    const resp = await fetch(`/api/search/suggestions?q=${encodeURIComponent(rawQuery)}&limit=8`, {
+      signal: currentSearchAbortController.signal
+    });
+    if (!resp.ok) return;
+    const data = await resp.json();
+    if (!data.success) return;
+
+    const matches = data.results || [];
+    selectedSuggestionIndex = -1;
+
+    if (matches.length > 0) {
+      const itemsHtml = matches.map((pack, idx) => {
+        const highlightedTitle = highlightMatch(pack.name, rawQuery);
+        const safeImg = escapeHtml(pack.img || '/assets/pack_cats.jpg');
+        const safeName = escapeHtml(pack.name || '');
+        const safeSlug = escapeHtml(pack.slug || '');
+        const safeCategory = escapeHtml(pack.category || '');
+        const safeSubtitle = escapeHtml(pack.subtitle || '');
+
+        return `
+          <li class="suggestion-item" data-index="${idx}" data-slug="${safeSlug}" data-name="${safeName}" onclick="goToPack('${safeSlug}')">
+            <img src="${safeImg}" alt="${safeName}" class="suggestion-thumb" loading="lazy" onerror="this.src='/assets/pack_cats.jpg'">
+            <div class="suggestion-details">
+              <span class="suggestion-title">${highlightedTitle}</span>
+              <span class="suggestion-meta">
+                <span class="suggestion-badge">${safeCategory}</span>
+                <span class="suggestion-extra">• ${safeSubtitle}</span>
+              </span>
+            </div>
+            <svg class="suggestion-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </li>
+        `;
+      }).join('');
+
+      const safeQuery = escapeHtml(rawQuery);
+      searchSuggestions.innerHTML = `
+        <div class="suggestions-header">
+          <span>Gợi ý (${matches.length})</span>
+          <button class="suggestions-close-btn" type="button" onclick="document.getElementById('searchSuggestions').classList.remove('active')" aria-label="Đóng gợi ý" title="Đóng">✕</button>
+        </div>
+        <ul class="suggestions-list" id="suggestionsList" role="list">
+          ${itemsHtml}
+        </ul>
+        <a href="javascript:void(0)" class="suggestions-view-all" onclick="submitSearch('${safeQuery}')">
+          <span>Xem tất cả kết quả cho "${safeQuery}"</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </a>
+      `;
+    } else {
+      const safeQuery = escapeHtml(rawQuery);
+      searchSuggestions.innerHTML = `
+        <div class="suggestions-empty">
+          <div class="suggestions-empty-title">Không tìm thấy sticker nào</div>
+          <div class="suggestions-empty-sub">Không có kết quả khớp với "${safeQuery}"</div>
+        </div>
+        <a href="javascript:void(0)" class="suggestions-view-all" onclick="submitSearch('${safeQuery}')">
+          <span>Xem tất cả bộ sưu tập</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </a>
+      `;
+    }
+
+    searchSuggestions.classList.add('active');
+  } catch (err) {
+    if (err.name === 'AbortError') return;
+    console.error('[Search Suggestion Error]:', err);
+  }
 }
 
-// Select a suggestion item
-function selectSuggestion(name) {
-  const searchInput = document.getElementById('stickerSearch');
-  const clearSearchBtn = document.getElementById('clearSearchBtn');
-  const searchBtn = document.getElementById('searchBtn');
+// Chuyển hướng trực tiếp tới trang chi tiết bộ sưu tập khi click vào gợi ý
+function goToPack(slug) {
+  if (!slug) return;
   const searchSuggestions = document.getElementById('searchSuggestions');
-
-  if (searchInput) searchInput.value = name;
-  clearSearchBtn?.classList.add('active');
-  searchBtn?.classList.add('hidden');
   searchSuggestions?.classList.remove('active');
+  window.location.href = `/pack/${encodeURIComponent(slug)}`;
 }
 
-// Reset search input
+// Thực hiện tìm kiếm: nếu đang ở /bosuutap thì lọc tức thì, nếu ở trang khác thì chuyển hướng sang /bosuutap?search=...
+function submitSearch(query) {
+  const searchInput = document.getElementById('stickerSearch');
+  const rawQuery = (query !== undefined && query !== null ? query : (searchInput ? searchInput.value : '')).trim();
+  if (!rawQuery) return;
+
+  const searchSuggestions = document.getElementById('searchSuggestions');
+  searchSuggestions?.classList.remove('active');
+
+  if (window.location.pathname === '/bosuutap') {
+    if (searchInput && searchInput.value !== rawQuery) {
+      searchInput.value = rawQuery;
+    }
+    // Phát sự kiện input để bosuutap.js kích hoạt tìm kiếm in-page
+    searchInput?.dispatchEvent(new Event('input', { bubbles: true }));
+
+    // Cập nhật tham số URL không reload trang
+    const url = new URL(window.location.href);
+    url.searchParams.set('search', rawQuery);
+    url.searchParams.set('page', '1');
+    window.history.pushState({}, '', url.toString());
+  } else {
+    // Điều hướng sang trang bộ sưu tập kèm từ khóa
+    window.location.href = `/bosuutap?search=${encodeURIComponent(rawQuery)}`;
+  }
+}
+
+// Hàm tương thích ngược khi chọn item
+function selectSuggestion(name) {
+  submitSearch(name);
+}
+
+// Xóa và reset ô tìm kiếm
 function resetSearch() {
   const searchInput = document.getElementById('stickerSearch');
   const clearSearchBtn = document.getElementById('clearSearchBtn');
@@ -214,6 +222,18 @@ function resetSearch() {
   clearSearchBtn?.classList.remove('active');
   searchBtn?.classList.remove('hidden');
   searchSuggestions?.classList.remove('active');
+  selectedSuggestionIndex = -1;
+
+  if (window.location.pathname === '/bosuutap') {
+    if (searchInput) {
+      searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+    const url = new URL(window.location.href);
+    if (url.searchParams.has('search')) {
+      url.searchParams.delete('search');
+      window.history.pushState({}, '', url.toString());
+    }
+  }
 }
 
 // Drawer functions
@@ -264,10 +284,23 @@ document.addEventListener('DOMContentLoaded', () => {
   const searchBtn = document.getElementById('searchBtn');
   const searchBoxContainer = document.getElementById('searchBoxContainer');
 
-  // Input event: Search suggestions
+  // Khôi phục từ khóa tìm kiếm từ query params nếu có (ví dụ khi từ trang khác chuyển qua /bosuutap?search=...)
+  const currentUrlParams = new URLSearchParams(window.location.search);
+  const existingSearchParam = currentUrlParams.get('search');
+  if (existingSearchParam && searchInput) {
+    searchInput.value = existingSearchParam;
+    clearSearchBtn?.classList.add('active');
+    searchBtn?.classList.add('hidden');
+  }
+
+  // Input event: Debounce gọi API gợi ý tìm kiếm realtime (250ms)
+  let inputDebounceTimer = null;
   if (searchInput) {
     searchInput.addEventListener('input', (e) => {
-      renderSuggestions(e.target.value);
+      clearTimeout(inputDebounceTimer);
+      inputDebounceTimer = setTimeout(() => {
+        renderSuggestions(e.target.value);
+      }, 250);
     });
 
     searchInput.addEventListener('focus', () => {
@@ -276,39 +309,46 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // Keyboard navigation (ArrowDown, ArrowUp, Enter, Escape)
+    // Điều hướng bàn phím trên dropdown gợi ý (ArrowDown, ArrowUp, Enter, Escape)
     searchInput.addEventListener('keydown', (e) => {
-      if (!searchSuggestions || !searchSuggestions.classList.contains('active')) {
-        return;
-      }
-
-      const items = searchSuggestions.querySelectorAll('.suggestion-item');
-      if (items.length === 0) return;
+      const isSuggestionsActive = searchSuggestions && searchSuggestions.classList.contains('active');
+      const items = isSuggestionsActive ? searchSuggestions.querySelectorAll('.suggestion-item') : [];
 
       if (e.key === 'ArrowDown') {
-        e.preventDefault();
-        selectedSuggestionIndex = (selectedSuggestionIndex + 1) % items.length;
-        items.forEach((item, idx) => {
-          item.classList.toggle('selected', idx === selectedSuggestionIndex);
-          if (idx === selectedSuggestionIndex) item.scrollIntoView({ block: 'nearest' });
-        });
+        if (isSuggestionsActive && items.length > 0) {
+          e.preventDefault();
+          selectedSuggestionIndex = (selectedSuggestionIndex + 1) % items.length;
+          items.forEach((item, idx) => {
+            item.classList.toggle('selected', idx === selectedSuggestionIndex);
+            if (idx === selectedSuggestionIndex) item.scrollIntoView({ block: 'nearest' });
+          });
+        }
       } else if (e.key === 'ArrowUp') {
-        e.preventDefault();
-        selectedSuggestionIndex = (selectedSuggestionIndex - 1 + items.length) % items.length;
-        items.forEach((item, idx) => {
-          item.classList.toggle('selected', idx === selectedSuggestionIndex);
-          if (idx === selectedSuggestionIndex) item.scrollIntoView({ block: 'nearest' });
-        });
+        if (isSuggestionsActive && items.length > 0) {
+          e.preventDefault();
+          selectedSuggestionIndex = (selectedSuggestionIndex - 1 + items.length) % items.length;
+          items.forEach((item, idx) => {
+            item.classList.toggle('selected', idx === selectedSuggestionIndex);
+            if (idx === selectedSuggestionIndex) item.scrollIntoView({ block: 'nearest' });
+          });
+        }
       } else if (e.key === 'Enter') {
         e.preventDefault();
-        if (selectedSuggestionIndex >= 0 && selectedSuggestionIndex < items.length) {
-          const selectedName = items[selectedSuggestionIndex].getAttribute('data-name');
-          selectSuggestion(selectedName);
+        if (isSuggestionsActive && selectedSuggestionIndex >= 0 && selectedSuggestionIndex < items.length) {
+          const selectedItem = items[selectedSuggestionIndex];
+          const slug = selectedItem.getAttribute('data-slug');
+          if (slug) {
+            goToPack(slug);
+          } else {
+            const name = selectedItem.getAttribute('data-name');
+            submitSearch(name);
+          }
         } else {
-          searchSuggestions.classList.remove('active');
+          submitSearch(searchInput.value);
         }
       } else if (e.key === 'Escape') {
-        searchSuggestions.classList.remove('active');
+        searchSuggestions?.classList.remove('active');
+        selectedSuggestionIndex = -1;
       }
     });
   }
@@ -318,9 +358,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Search button click
   searchBtn?.addEventListener('click', () => {
-    if (searchInput && searchInput.value.trim()) {
-      searchSuggestions?.classList.remove('active');
-    }
+    submitSearch(searchInput ? searchInput.value : '');
   });
 
   // Click outside to close search suggestions
@@ -354,6 +392,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   navLinks.forEach(link => {
     link.addEventListener('click', (e) => {
+      const href = link.getAttribute('href');
+      if (href && href !== '#' && !href.startsWith('javascript:')) {
+        return; // Allow native page navigation
+      }
       e.preventDefault();
       const tab = link.getAttribute('data-tab');
       handleTabClick(tab);
@@ -362,6 +404,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   drawerNavItems.forEach(item => {
     item.addEventListener('click', (e) => {
+      const href = item.getAttribute('href');
+      if (href && href !== '#' && !href.startsWith('javascript:')) {
+        closeDrawer();
+        return; // Allow native page navigation
+      }
       e.preventDefault();
       const tab = item.getAttribute('data-tab');
       closeDrawer();
