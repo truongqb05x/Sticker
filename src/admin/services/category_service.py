@@ -148,7 +148,7 @@ class CategoryService:
 
         # Tổng số packs và stickers trên toàn hệ thống
         total_packs = int(db.query(func.count(StickerPack.id)).scalar() or 0)
-        total_stickers = int(db.query(func.sum(StickerPack.total_stickers)).scalar() or 0)
+        total_stickers = int(db.query(func.count(Sticker.id)).scalar() or db.query(func.sum(StickerPack.total_stickers)).scalar() or 0)
 
         # Danh mục dẫn đầu lượt tải
         top_cat_row = (

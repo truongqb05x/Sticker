@@ -820,3 +820,28 @@
   }
 }
 
+
+
+input[type="file"].form-input-text {
+  padding: 6px 10px;
+  cursor: pointer;
+  line-height: 1.5;
+}
+
+input[type="file"].form-input-text::file-selector-button {
+  border: none;
+  background: var(--brand-orange, #C45832);
+  color: #FFFFFF;
+  padding: 5px 12px;
+  border-radius: 6px;
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 12px;
+  cursor: pointer;
+  margin-right: 10px;
+  transition: background 0.18s ease;
+}
+
+input[type="file"].form-input-text::file-selector-button:hover {
+  background: #A93E1B;
+}

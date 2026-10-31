@@ -4,13 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Chi tiết Bộ sưu tập: Cute Cats - StickerHub Admin</title>
+  <title>Chi tiết Bộ sưu tập: {{ pack.title }} - StickerHub Admin</title>
 
   <!-- Meta Description -->
-  <meta name="description" content="Quản lý chi tiết bộ sưu tập Cute Cats: xem toàn bộ sticker trong gói, chỉnh sửa thông tin, phân loại và tải lên sticker mới.">
+  <meta name="description" content="Quản lý chi tiết bộ sưu tập {{ pack.title }}: xem toàn bộ sticker trong gói, chỉnh sửa thông tin, phân loại và tải lên sticker mới.">
 
   <!-- Favicon -->
-  <link rel="icon" type="image/svg+xml" href="../../assets/logo_cat.svg">
+  <link rel="icon" type="image/svg+xml" href="/assets/logo_cat.svg">
 
   <!-- Google Fonts: Comfortaa & Nunito đồng nhất hệ thống -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,24 +21,21 @@
   <script src="https://unpkg.com/lucide@latest"></script>
 
   <!-- MASTER ADMIN LAYOUT CSS (Bao gồm variables, base, header, sidebar) -->
-  <link rel="stylesheet" href="../../static/admin/css/layout/layout.css">
+  <link rel="stylesheet" href="/static/admin/css/layout/layout.css">
 
   <!-- CSS riêng của trang Chi tiết bộ sưu tập -->
-  <link rel="stylesheet" href="../../static/admin/css/pages/chitietsticker.css">
+  <link rel="stylesheet" href="/static/admin/css/pages/chitietsticker.css">
 </head>
-<body class="admin-layout-root">
+<body class="admin-layout-root" data-pack-id="{{ pack.id }}">
 
-  <!-- ========================================================
-       TOPBAR / NAVIGATION QUẢN TRỊ
-       ======================================================== -->
   <header class="admin-topbar">
     <div class="admin-topbar-inner">
       <!-- Nút bật menu trên điện thoại -->
       <button type="button" class="admin-menu-toggle-btn" id="sidebarToggleBtn" aria-label="Mở menu quản trị" title="Menu quản trị">
         <i data-lucide="menu" style="width: 22px; height: 22px;"></i>
       </button>
-      <a href="dashboard.html" class="admin-brand" title="Trang tổng quan StickerHub">
-        <img src="../../assets/logo_cat.svg" alt="StickerHub Cat Logo" width="36" height="36">
+      <a href="/admin/dashboard" class="admin-brand" title="Trang tổng quan StickerHub">
+        <img src="/assets/logo_cat.svg" alt="StickerHub Cat Logo" width="36" height="36">
         <span class="admin-brand-title">Sticker<span class="hub-part">Hub</span></span>
       </a>
     </div>
@@ -47,9 +44,6 @@
   <!-- Lớp phủ mờ (Backdrop) khi mở menu trên điện thoại -->
   <div class="admin-sidebar-backdrop" id="adminSidebarBackdrop" aria-hidden="true"></div>
 
-  <!-- ========================================================
-       BODY WRAPPER: SIDEBAR + MAIN CONTENT
-       ======================================================== -->
   <div class="admin-body-container">
     
     <!-- LEFT SIDEBAR -->
@@ -57,7 +51,7 @@
       <!-- Header hiển thị riêng trên Drawer di động -->
       <div class="sidebar-mobile-header">
         <div class="admin-brand">
-          <img src="../../assets/logo_cat.svg" alt="StickerHub Cat Logo" width="28" height="28">
+          <img src="/assets/logo_cat.svg" alt="StickerHub Cat Logo" width="28" height="28">
           <span class="admin-brand-title" style="font-size: 19px;">Sticker<span class="hub-part">Hub</span></span>
         </div>
         <button type="button" class="btn-sidebar-close" id="sidebarCloseBtn" aria-label="Đóng menu">
@@ -71,7 +65,7 @@
         <div class="admin-nav-group-title">Quản lý hệ thống</div>
         <ul class="admin-nav-list">
           <li>
-            <a href="dashboard.html" class="admin-nav-item">
+            <a href="/admin/dashboard" class="admin-nav-item">
               <span class="nav-left">
                 <i data-lucide="layout-dashboard" style="width: 18px; height: 18px;"></i>
                 <span>Tổng quan</span>
@@ -79,30 +73,27 @@
             </a>
           </li>
           <li>
-            <a href="bosuutap.html" class="admin-nav-item active">
+            <a href="/admin/bosuutap" class="admin-nav-item active">
               <span class="nav-left">
                 <i data-lucide="folder-heart" style="width: 18px; height: 18px;"></i>
                 <span>Bộ sưu tập</span>
               </span>
-              <span class="nav-counter">48</span>
             </a>
           </li>
           <li>
-            <a href="khosticker.html" class="admin-nav-item">
+            <a href="/admin/khosticker" class="admin-nav-item">
               <span class="nav-left">
                 <i data-lucide="smile" style="width: 18px; height: 18px;"></i>
                 <span>Kho Sticker</span>
               </span>
-              <span class="nav-counter">4.8K</span>
             </a>
           </li>
           <li>
-            <a href="danhmuc.html" class="admin-nav-item">
+            <a href="/admin/danhmuc" class="admin-nav-item">
               <span class="nav-left">
                 <i data-lucide="tag" style="width: 18px; height: 18px;"></i>
                 <span>Danh mục chủ đề</span>
               </span>
-              <span class="nav-counter">8</span>
             </a>
           </li>
         </ul>
@@ -110,7 +101,7 @@
         <div class="admin-nav-group-title" style="margin-top: 14px;">Báo cáo & Thống kê</div>
         <ul class="admin-nav-list">
           <li>
-            <a href="thongke.html" class="admin-nav-item" title="Thống kê">
+            <a href="/admin/thongke" class="admin-nav-item" title="Thống kê">
               <span class="nav-left">
                 <i data-lucide="bar-chart-3" style="width: 18px; height: 18px;"></i>
                 <span>Thống kê</span>
@@ -121,7 +112,7 @@
       </div>
 
       <!-- Nút Đăng Xuất -->
-      <a href="login.html" class="btn-sidebar-logout" title="Đăng xuất khỏi trang quản trị">
+      <a href="/admin/logout" class="btn-sidebar-logout" title="Đăng xuất khỏi trang quản trị">
         <i data-lucide="log-out" style="width: 16px; height: 16px;"></i>
         <span>Đăng xuất Admin</span>
       </a>
@@ -132,69 +123,69 @@
       
       <!-- 1. Breadcrumb Bar & Nút Quay Lại -->
       <div class="admin-breadcrumb-bar">
-        <a href="bosuutap.html" class="btn-back-link" title="Quay lại bảng danh sách bộ sưu tập">
+        <a href="/admin/bosuutap" class="btn-back-link" title="Quay lại bảng danh sách bộ sưu tập">
           <i data-lucide="arrow-left" style="width: 16px; height: 16px;"></i>
           <span>Quay lại Bộ sưu tập</span>
         </a>
 
         <div class="breadcrumb-trail">
-          <a href="dashboard.html">Tổng quan</a>
+          <a href="/admin/dashboard">Tổng quan</a>
           <span class="breadcrumb-sep">/</span>
-          <a href="bosuutap.html">Bộ sưu tập</a>
+          <a href="/admin/bosuutap">Bộ sưu tập</a>
           <span class="breadcrumb-sep">/</span>
-          <span class="breadcrumb-current">Cute Cats</span>
+          <span class="breadcrumb-current" id="breadcrumbPackTitle">{{ pack.title }}</span>
         </div>
       </div>
 
       <!-- 2. Hero Pack Overview Card (Thông tin tổng quan bộ sưu tập) -->
-      <section class="pack-overview-card">
-        <img src="../../assets/pack_cats.jpg" alt="Cute Cats Cover" class="pack-cover-stage">
+      <section class="pack-overview-card" id="packOverviewCard" data-pack-id="{{ pack.id }}">
+        <img src="{{ pack.cover_image or '/assets/logo_cat.svg' }}" alt="{{ pack.title }}" class="pack-cover-stage" id="packCoverImg" onerror="this.src='/assets/logo_cat.svg'">
 
         <div class="pack-details-col">
           <div class="pack-title-row">
             <h1 class="pack-main-title">
-              <span>Cute Cats</span>
-              <span class="pack-id-code">#PACK-001</span>
+              <span id="packTitleText">{{ pack.title }}</span>
+              <span class="pack-id-code" id="packCodeText">#{{ pack.code or ('SPK-' ~ pack.id) }}</span>
             </h1>
-            <span class="status-badge status-badge-active" id="packStatusBadge">
-              <i data-lucide="check-circle" style="width: 12px; height: 12px;"></i>
-              Công khai
+            <span class="status-badge {{ 'status-badge-active' if pack.status == 'active' else ('status-badge-pending' if pack.status == 'pending' else 'status-badge-hidden') }}" id="packStatusBadge">
+              <i data-lucide="{{ 'check-circle' if pack.status == 'active' else ('clock' if pack.status == 'pending' else 'eye-off') }}" style="width: 12px; height: 12px;"></i>
+              <span id="packStatusLabel">{{ 'Công khai' if pack.status == 'active' else ('Chờ duyệt' if pack.status == 'pending' else 'Tạm ẩn') }}</span>
             </span>
           </div>
 
           <div class="pack-meta-chips">
             <span class="pack-meta-chip">
               <i data-lucide="user" style="width: 14px; height: 14px; color: #8C7B71;"></i>
-              Tác giả: <strong>MiuMiu Studio</strong>
+              Tác giả: <strong id="packAuthorText">{{ pack.author_name or 'StickerHub Team' }}</strong>
             </span>
-            <span class="cat-pill-badge">Động vật</span>
+            <span class="cat-pill-badge" id="packCategoryBadge">{{ pack.category_name or 'Chưa phân loại' }}</span>
             <span class="pack-meta-chip">
               <i data-lucide="calendar" style="width: 14px; height: 14px; color: #8C7B71;"></i>
-              Xuất bản: 26/10/2026
+              Cập nhật: <span id="packDateText">{{ pack.updated_at or pack.created_at }}</span>
             </span>
           </div>
 
-          <p class="pack-desc-paragraph">
-            Bộ sticker mèo đáng yêu, với nhiều biểu cảm siêu dễ thương cho hội mê mèo! Đầy đủ các tâm trạng vui vẻ, ngái ngủ, dỗi hờn, ăn uống và chào hỏi hằng ngày.
+          <p class="pack-desc-paragraph" id="packDescText">
+            {{ pack.description or 'Chưa có mô tả cho bộ sưu tập này.' }}
           </p>
 
           <!-- Thống kê nhanh gói -->
           <div class="pack-stats-banner">
             <div class="pack-stat-entry">
               <i data-lucide="layers" style="width: 15px; height: 15px; color: #C45832;"></i>
-              <span>Quy mô: <strong>120 sticker</strong></span>
+              <span>Quy mô: <strong id="heroStickersCount">{{ stickers|length if stickers else (pack.total_stickers or 0) }} sticker</strong></span>
             </div>
             <div class="pack-stat-entry">
               <i data-lucide="download-cloud" style="width: 15px; height: 15px; color: #2E7D32;"></i>
-              <span>Lượt tải: <strong>38.5K</strong></span>
+              <span>Lượt tải: <strong id="heroDownloadsCount">{{ pack.total_downloads_fmt or pack.total_downloads or 0 }}</strong></span>
             </div>
             <div class="pack-stat-entry">
               <i data-lucide="heart" style="width: 15px; height: 15px; color: #C45832;"></i>
-              <span>Yêu thích: <strong>2.4K</strong></span>
+              <span>Yêu thích: <strong id="heroFavoritesCount">{{ pack.total_favorites or 0 }}</strong></span>
             </div>
             <div class="pack-stat-entry">
               <i data-lucide="hard-drive" style="width: 15px; height: 15px; color: #0288D1;"></i>
-              <span>Dung lượng: <strong>14.2 MB</strong></span>
+              <span>Dung lượng: <strong id="heroFileSize">{{ pack.file_size_mb|default('0.0') }} MB</strong></span>
             </div>
           </div>
 
@@ -204,9 +195,9 @@
               <i data-lucide="edit-3" style="width: 14px; height: 14px;"></i>
               <span>Sửa thông tin gói</span>
             </button>
-            <button type="button" class="btn-pack-action" id="btnTogglePackStatus">
-              <i data-lucide="eye-off" style="width: 14px; height: 14px;"></i>
-              <span>Tạm ẩn gói</span>
+            <button type="button" class="btn-pack-action" id="btnTogglePackStatus" data-status="{{ pack.status }}">
+              <i data-lucide="{{ 'eye-off' if pack.status == 'active' else 'eye' }}" style="width: 14px; height: 14px;"></i>
+              <span id="btnTogglePackStatusLabel">{{ 'Tạm ẩn gói' if pack.status == 'active' else 'Công khai gói' }}</span>
             </button>
             <button type="button" class="btn-pack-action" id="btnDownloadPackZip">
               <i data-lucide="download" style="width: 14px; height: 14px;"></i>
@@ -222,7 +213,7 @@
         <div class="section-title-bar">
           <div class="section-heading-group">
             <h2 class="section-main-heading">Danh sách Sticker trong bộ</h2>
-            <span class="section-count-badge" id="packVisibleCount">12 / 120 sticker</span>
+            <span class="section-count-badge" id="packVisibleCount">{{ stickers|length if stickers else 0 }} sticker</span>
           </div>
 
           <button type="button" class="btn-pack-action primary-edit" id="openAddStickerModalBtn">
@@ -232,311 +223,54 @@
         </div>
 
         <!-- Bộ lọc cảm xúc nhanh -->
-        <div class="sticker-filter-row">
-          <button type="button" class="tag-filter-btn active" data-tag="all">Tất cả (12)</button>
-          <button type="button" class="tag-filter-btn" data-tag="vẫy tay">#vẫy tay</button>
-          <button type="button" class="tag-filter-btn" data-tag="yêu thương">#yêu thương</button>
-          <button type="button" class="tag-filter-btn" data-tag="ngái ngủ">#ngái ngủ</button>
-          <button type="button" class="tag-filter-btn" data-tag="ăn uống">#ăn uống</button>
-          <button type="button" class="tag-filter-btn" data-tag="vui vẻ">#vui vẻ</button>
-          <button type="button" class="tag-filter-btn" data-tag="giận dỗi">#giận dỗi</button>
+        <div class="sticker-filter-row" id="stickerFilterRow">
+          <button type="button" class="tag-filter-btn active" data-tag="all">Tất cả ({{ stickers|length if stickers else 0 }})</button>
         </div>
 
         <!-- Lưới Sticker chi tiết -->
-        <div class="pack-stickers-grid">
-          
-          <!-- Sticker 1 -->
-          <div class="sticker-sub-item" data-tags="vẫy tay vui vẻ">
+        <div class="pack-stickers-grid" id="packStickersGrid">
+          {% for s in stickers %}
+          <div class="sticker-sub-item" data-id="{{ s.id }}" data-tags="{{ s.tags }}" data-title="{{ s.title }}" data-file="{{ s.file_path }}" data-dim="{{ s.dimensions }}" data-format="{{ s.format }}" data-downloads="{{ s.total_downloads }}">
             <div class="sub-thumb-stage" title="Nhấn để phóng to">
-              <img src="../../assets/stickers/cat_01.svg" alt="Mèo vẫy tay chào" class="sub-sticker-img" loading="lazy">
+              <img src="{{ s.file_path }}" alt="{{ s.title }}" class="sub-sticker-img" loading="lazy" onerror="this.src='/assets/logo_cat.svg'">
               <div class="sub-stage-overlay">
-                <button type="button" class="sub-stage-btn btn-zoom-sub" title="Phóng to">
+                <button type="button" class="sub-stage-btn btn-zoom-sub" data-id="{{ s.id }}" title="Phóng to">
                   <i data-lucide="zoom-in" style="width: 14px; height: 14px;"></i>
                 </button>
-                <button type="button" class="sub-stage-btn btn-delete-sub" title="Xóa khỏi bộ">
+                <button type="button" class="sub-stage-btn btn-delete-sub" data-id="{{ s.id }}" data-name="{{ s.title }}" title="Xóa khỏi bộ">
                   <i data-lucide="trash-2" style="width: 14px; height: 14px; color: #C4381C;"></i>
                 </button>
               </div>
             </div>
             <div class="sub-info-block">
-              <div class="sub-title">cat_01.svg • Chào bạn</div>
-              <div class="sub-tags-list">#vẫy tay #vui vẻ</div>
+              <div class="sub-title">{{ s.file_name or s.title }} • {{ s.title }}</div>
+              <div class="sub-tags-list">{{ s.tags }}</div>
               <div class="sub-footer-meta">
-                <span>SVG • 512px</span>
-                <span style="font-weight: 700; color: #2E7D32;">3.4K tải</span>
+                <span>{{ s.format }} • {{ s.dimensions }}</span>
+                <span style="font-weight: 700; color: #2E7D32;">{{ s.total_downloads_fmt or s.total_downloads or 0 }} tải</span>
               </div>
             </div>
           </div>
-
-          <!-- Sticker 2 -->
-          <div class="sticker-sub-item" data-tags="yêu thương trái tim">
-            <div class="sub-thumb-stage" title="Nhấn để phóng to">
-              <img src="../../assets/stickers/cat_02.svg" alt="Mèo ôm tim yêu thương" class="sub-sticker-img" loading="lazy">
-              <div class="sub-stage-overlay">
-                <button type="button" class="sub-stage-btn btn-zoom-sub" title="Phóng to">
-                  <i data-lucide="zoom-in" style="width: 14px; height: 14px;"></i>
-                </button>
-                <button type="button" class="sub-stage-btn btn-delete-sub" title="Xóa khỏi bộ">
-                  <i data-lucide="trash-2" style="width: 14px; height: 14px; color: #C4381C;"></i>
-                </button>
-              </div>
-            </div>
-            <div class="sub-info-block">
-              <div class="sub-title">cat_02.svg • Ôm tim</div>
-              <div class="sub-tags-list">#yêu thương #trái tim</div>
-              <div class="sub-footer-meta">
-                <span>SVG • 512px</span>
-                <span style="font-weight: 700; color: #2E7D32;">4.1K tải</span>
-              </div>
-            </div>
+          {% else %}
+          <div class="empty-stickers-box" id="emptyStickersBox" style="grid-column: 1 / -1; text-align: center; padding: 48px 16px; color: #8C7B71;">
+            <i data-lucide="inbox" style="width: 44px; height: 44px; display: block; margin: 0 auto 12px; opacity: 0.5;"></i>
+            <p style="font-size: 15px; font-weight: 700; margin-bottom: 6px;">Bộ sưu tập này chưa có sticker nào</p>
+            <p style="font-size: 13px;">Nhấn nút "Thêm sticker vào bộ" ở trên để tải lên sticker đầu tiên!</p>
           </div>
-
-          <!-- Sticker 3 -->
-          <div class="sticker-sub-item" data-tags="ngái ngủ lười biếng">
-            <div class="sub-thumb-stage" title="Nhấn để phóng to">
-              <img src="../../assets/stickers/cat_03.svg" alt="Mèo ngái ngủ" class="sub-sticker-img" loading="lazy">
-              <div class="sub-stage-overlay">
-                <button type="button" class="sub-stage-btn btn-zoom-sub" title="Phóng to">
-                  <i data-lucide="zoom-in" style="width: 14px; height: 14px;"></i>
-                </button>
-                <button type="button" class="sub-stage-btn btn-delete-sub" title="Xóa khỏi bộ">
-                  <i data-lucide="trash-2" style="width: 14px; height: 14px; color: #C4381C;"></i>
-                </button>
-              </div>
-            </div>
-            <div class="sub-info-block">
-              <div class="sub-title">cat_03.svg • Ngái ngủ</div>
-              <div class="sub-tags-list">#ngái ngủ #lười biếng</div>
-              <div class="sub-footer-meta">
-                <span>SVG • 512px</span>
-                <span style="font-weight: 700; color: #2E7D32;">2.8K tải</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Sticker 4 -->
-          <div class="sticker-sub-item" data-tags="ăn uống cá ngon">
-            <div class="sub-thumb-stage" title="Nhấn để phóng to">
-              <img src="../../assets/stickers/cat_04.svg" alt="Mèo ăn cá" class="sub-sticker-img" loading="lazy">
-              <div class="sub-stage-overlay">
-                <button type="button" class="sub-stage-btn btn-zoom-sub" title="Phóng to">
-                  <i data-lucide="zoom-in" style="width: 14px; height: 14px;"></i>
-                </button>
-                <button type="button" class="sub-stage-btn btn-delete-sub" title="Xóa khỏi bộ">
-                  <i data-lucide="trash-2" style="width: 14px; height: 14px; color: #C4381C;"></i>
-                </button>
-              </div>
-            </div>
-            <div class="sub-info-block">
-              <div class="sub-title">cat_04.svg • Ăn cá</div>
-              <div class="sub-tags-list">#ăn uống #cá ngon</div>
-              <div class="sub-footer-meta">
-                <span>SVG • 512px</span>
-                <span style="font-weight: 700; color: #2E7D32;">3.1K tải</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Sticker 5 -->
-          <div class="sticker-sub-item" data-tags="yêu thương long lanh">
-            <div class="sub-thumb-stage" title="Nhấn để phóng to">
-              <img src="../../assets/stickers/cat_05.svg" alt="Mèo mắt long lanh" class="sub-sticker-img" loading="lazy">
-              <div class="sub-stage-overlay">
-                <button type="button" class="sub-stage-btn btn-zoom-sub" title="Phóng to">
-                  <i data-lucide="zoom-in" style="width: 14px; height: 14px;"></i>
-                </button>
-                <button type="button" class="sub-stage-btn btn-delete-sub" title="Xóa khỏi bộ">
-                  <i data-lucide="trash-2" style="width: 14px; height: 14px; color: #C4381C;"></i>
-                </button>
-              </div>
-            </div>
-            <div class="sub-info-block">
-              <div class="sub-title">cat_05.svg • Mắt long lanh</div>
-              <div class="sub-tags-list">#yêu thương #long lanh</div>
-              <div class="sub-footer-meta">
-                <span>SVG • 512px</span>
-                <span style="font-weight: 700; color: #2E7D32;">3.9K tải</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Sticker 6 -->
-          <div class="sticker-sub-item" data-tags="vui vẻ cười tươi">
-            <div class="sub-thumb-stage" title="Nhấn để phóng to">
-              <img src="../../assets/stickers/cat_06.svg" alt="Mèo cười toe toét" class="sub-sticker-img" loading="lazy">
-              <div class="sub-stage-overlay">
-                <button type="button" class="sub-stage-btn btn-zoom-sub" title="Phóng to">
-                  <i data-lucide="zoom-in" style="width: 14px; height: 14px;"></i>
-                </button>
-                <button type="button" class="sub-stage-btn btn-delete-sub" title="Xóa khỏi bộ">
-                  <i data-lucide="trash-2" style="width: 14px; height: 14px; color: #C4381C;"></i>
-                </button>
-              </div>
-            </div>
-            <div class="sub-info-block">
-              <div class="sub-title">cat_06.svg • Cười toe toét</div>
-              <div class="sub-tags-list">#vui vẻ #cười tươi</div>
-              <div class="sub-footer-meta">
-                <span>SVG • 512px</span>
-                <span style="font-weight: 700; color: #2E7D32;">2.5K tải</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Sticker 7 -->
-          <div class="sticker-sub-item" data-tags="tinh nghịch vẫy tay">
-            <div class="sub-thumb-stage" title="Nhấn để phóng to">
-              <img src="../../assets/stickers/cat_07.svg" alt="Mèo tinh nghịch" class="sub-sticker-img" loading="lazy">
-              <div class="sub-stage-overlay">
-                <button type="button" class="sub-stage-btn btn-zoom-sub" title="Phóng to">
-                  <i data-lucide="zoom-in" style="width: 14px; height: 14px;"></i>
-                </button>
-                <button type="button" class="sub-stage-btn btn-delete-sub" title="Xóa khỏi bộ">
-                  <i data-lucide="trash-2" style="width: 14px; height: 14px; color: #C4381C;"></i>
-                </button>
-              </div>
-            </div>
-            <div class="sub-info-block">
-              <div class="sub-title">cat_07.svg • Tinh nghịch</div>
-              <div class="sub-tags-list">#tinh nghịch #vẫy tay</div>
-              <div class="sub-footer-meta">
-                <span>SVG • 512px</span>
-                <span style="font-weight: 700; color: #2E7D32;">1.9K tải</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Sticker 8 -->
-          <div class="sticker-sub-item" data-tags="giận dỗi dỗi hờn">
-            <div class="sub-thumb-stage" title="Nhấn để phóng to">
-              <img src="../../assets/stickers/cat_08.svg" alt="Mèo giận dỗi" class="sub-sticker-img" loading="lazy">
-              <div class="sub-stage-overlay">
-                <button type="button" class="sub-stage-btn btn-zoom-sub" title="Phóng to">
-                  <i data-lucide="zoom-in" style="width: 14px; height: 14px;"></i>
-                </button>
-                <button type="button" class="sub-stage-btn btn-delete-sub" title="Xóa khỏi bộ">
-                  <i data-lucide="trash-2" style="width: 14px; height: 14px; color: #C4381C;"></i>
-                </button>
-              </div>
-            </div>
-            <div class="sub-info-block">
-              <div class="sub-title">cat_08.svg • Giận dỗi</div>
-              <div class="sub-tags-list">#giận dỗi #dỗi hờn</div>
-              <div class="sub-footer-meta">
-                <span>SVG • 512px</span>
-                <span style="font-weight: 700; color: #2E7D32;">2.2K tải</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Sticker 9 -->
-          <div class="sticker-sub-item" data-tags="tinh nghịch hộp giấy">
-            <div class="sub-thumb-stage" title="Nhấn để phóng to">
-              <img src="../../assets/stickers/cat_09.svg" alt="Mèo đội hộp" class="sub-sticker-img" loading="lazy">
-              <div class="sub-stage-overlay">
-                <button type="button" class="sub-stage-btn btn-zoom-sub" title="Phóng to">
-                  <i data-lucide="zoom-in" style="width: 14px; height: 14px;"></i>
-                </button>
-                <button type="button" class="sub-stage-btn btn-delete-sub" title="Xóa khỏi bộ">
-                  <i data-lucide="trash-2" style="width: 14px; height: 14px; color: #C4381C;"></i>
-                </button>
-              </div>
-            </div>
-            <div class="sub-info-block">
-              <div class="sub-title">cat_09.svg • Đội hộp</div>
-              <div class="sub-tags-list">#tinh nghịch #hộp giấy</div>
-              <div class="sub-footer-meta">
-                <span>SVG • 512px</span>
-                <span style="font-weight: 700; color: #2E7D32;">3.7K tải</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Sticker 10 -->
-          <div class="sticker-sub-item" data-tags="vui vẻ ngạc nhiên">
-            <div class="sub-thumb-stage" title="Nhấn để phóng to">
-              <img src="../../assets/stickers/cat_10.svg" alt="Mèo ngạc nhiên" class="sub-sticker-img" loading="lazy">
-              <div class="sub-stage-overlay">
-                <button type="button" class="sub-stage-btn btn-zoom-sub" title="Phóng to">
-                  <i data-lucide="zoom-in" style="width: 14px; height: 14px;"></i>
-                </button>
-                <button type="button" class="sub-stage-btn btn-delete-sub" title="Xóa khỏi bộ">
-                  <i data-lucide="trash-2" style="width: 14px; height: 14px; color: #C4381C;"></i>
-                </button>
-              </div>
-            </div>
-            <div class="sub-info-block">
-              <div class="sub-title">cat_10.svg • Ngạc nhiên</div>
-              <div class="sub-tags-list">#vui vẻ #ngạc nhiên</div>
-              <div class="sub-footer-meta">
-                <span>SVG • 512px</span>
-                <span style="font-weight: 700; color: #2E7D32;">2.9K tải</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Sticker 11 -->
-          <div class="sticker-sub-item" data-tags="ngái ngủ lười biếng">
-            <div class="sub-thumb-stage" title="Nhấn để phóng to">
-              <img src="../../assets/stickers/cat_11.svg" alt="Mèo lười biếng" class="sub-sticker-img" loading="lazy">
-              <div class="sub-stage-overlay">
-                <button type="button" class="sub-stage-btn btn-zoom-sub" title="Phóng to">
-                  <i data-lucide="zoom-in" style="width: 14px; height: 14px;"></i>
-                </button>
-                <button type="button" class="sub-stage-btn btn-delete-sub" title="Xóa khỏi bộ">
-                  <i data-lucide="trash-2" style="width: 14px; height: 14px; color: #C4381C;"></i>
-                </button>
-              </div>
-            </div>
-            <div class="sub-info-block">
-              <div class="sub-title">cat_11.svg • Nằm ườn</div>
-              <div class="sub-tags-list">#ngái ngủ #lười biếng</div>
-              <div class="sub-footer-meta">
-                <span>SVG • 512px</span>
-                <span style="font-weight: 700; color: #2E7D32;">3.0K tải</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Sticker 12 -->
-          <div class="sticker-sub-item" data-tags="yêu thương quý tộc">
-            <div class="sub-thumb-stage" title="Nhấn để phóng to">
-              <img src="../../assets/stickers/cat_12.svg" alt="Mèo đeo nơ" class="sub-sticker-img" loading="lazy">
-              <div class="sub-stage-overlay">
-                <button type="button" class="sub-stage-btn btn-zoom-sub" title="Phóng to">
-                  <i data-lucide="zoom-in" style="width: 14px; height: 14px;"></i>
-                </button>
-                <button type="button" class="sub-stage-btn btn-delete-sub" title="Xóa khỏi bộ">
-                  <i data-lucide="trash-2" style="width: 14px; height: 14px; color: #C4381C;"></i>
-                </button>
-              </div>
-            </div>
-            <div class="sub-info-block">
-              <div class="sub-title">cat_12.svg • Đeo nơ</div>
-              <div class="sub-tags-list">#yêu thương #quý tộc</div>
-              <div class="sub-footer-meta">
-                <span>SVG • 512px</span>
-                <span style="font-weight: 700; color: #2E7D32;">4.5K tải</span>
-              </div>
-            </div>
-          </div>
-
+          {% endfor %}
         </div>
-
       </section>
 
     </main>
   </div>
 
-  <!-- ========================================================
-       MODAL 1: CHỈNH SỬA BỘ SƯU TẬP
-       ======================================================== -->
+
   <div class="admin-modal-backdrop" id="editPackModal">
     <div class="modal-dialog-box">
       <div class="modal-header-bar">
         <h3 class="modal-heading">
           <i data-lucide="edit-3" style="width: 18px; height: 18px; color: #C45832;"></i>
-          <span>Chỉnh sửa thông tin Bộ sưu tập</span>
+          <span>Chỉnh sửa: <span id="modalPackTitle">{{ pack.title }}</span></span>
         </h3>
         <button type="button" class="modal-close-btn" id="closeEditPackBtn" title="Đóng">
           <i data-lucide="x" style="width: 18px; height: 18px;"></i>
@@ -547,12 +281,12 @@
         <div class="modal-body-content">
           <div class="form-row-2col">
             <div class="form-group-item">
-              <label class="form-label" for="editPackTitleInput">Tên bộ sưu tập</label>
-              <input type="text" id="editPackTitleInput" class="form-input-text" value="Cute Cats" required>
+              <label class="form-label" for="editPackTitleInput">Tên bộ sưu tập <span style="color: #C45832;">*</span></label>
+              <input type="text" id="editPackTitleInput" class="form-input-text" value="{{ pack.title }}" required>
             </div>
             <div class="form-group-item">
               <label class="form-label" for="editPackAuthorInput">Tác giả</label>
-              <input type="text" id="editPackAuthorInput" class="form-input-text" value="MiuMiu Studio">
+              <input type="text" id="editPackAuthorInput" class="form-input-text" value="{{ pack.author_name }}">
             </div>
           </div>
 
@@ -560,44 +294,57 @@
             <div class="form-group-item">
               <label class="form-label" for="editPackCategory">Danh mục</label>
               <select id="editPackCategory" class="form-select-ctrl">
-                <option value="animals" selected>Động vật</option>
-                <option value="anime">Anime & Manga</option>
-                <option value="chibi">Chibi</option>
-                <option value="nature">Phong cảnh</option>
+                {% for cat in categories %}
+                <option value="{{ cat.id }}" {% if cat.id == pack.category_id %}selected{% endif %}>{{ cat.name }}</option>
+                {% endfor %}
               </select>
             </div>
             <div class="form-group-item">
               <label class="form-label" for="editPackStatus">Trạng thái phát hành</label>
               <select id="editPackStatus" class="form-select-ctrl">
-                <option value="active" selected>Công khai</option>
-                <option value="hidden">Tạm ẩn</option>
+                <option value="active" {% if pack.status == 'active' %}selected{% endif %}>Công khai ngay</option>
+                <option value="pending" {% if pack.status == 'pending' %}selected{% endif %}>Chờ duyệt</option>
+                <option value="hidden" {% if pack.status == 'hidden' %}selected{% endif %}>Tạm ẩn</option>
               </select>
+            </div>
+          </div>
+
+          <div class="form-row-2col">
+            <div class="form-group-item">
+              <label class="form-label" for="editPackCoverFile">Ảnh đại diện bộ sưu tập</label>
+              <input type="file" id="editPackCoverFile" accept=".png,.jpg,.jpeg,.webp,.svg" class="form-input-text">
+              <input type="hidden" id="editPackCoverInput" value="{{ pack.cover_image }}">
+              <div id="editPackCoverPreviewContainer" style="display: flex; align-items: center; gap: 10px; margin-top: 8px;">
+                <img id="editPackCoverPreview" src="{{ pack.cover_image }}" alt="Cover preview" style="width: 38px; height: 38px; object-fit: cover; border-radius: 6px; border: 1px solid #DFD3C4;" onerror="this.src='/assets/logo_cat.svg'">
+                <span id="editPackCoverName" style="font-size: 11px; color: #8C7B71; word-break: break-all;">{{ pack.cover_image or 'Chưa có ảnh' }}</span>
+              </div>
+            </div>
+            <div class="form-group-item">
+              <label class="form-label" for="editPackTagsInput">Từ khóa tìm kiếm (Tags)</label>
+              <input type="text" id="editPackTagsInput" class="form-input-text" value="{{ pack.tags_str }}">
             </div>
           </div>
 
           <div class="form-group-item">
             <label class="form-label" for="editPackDesc">Mô tả tóm tắt</label>
-            <textarea id="editPackDesc" class="form-textarea-ctrl" rows="3">Bộ sticker mèo đáng yêu, với nhiều biểu cảm siêu dễ thương cho hội mê mèo!</textarea>
+            <textarea id="editPackDesc" class="form-textarea-ctrl" rows="3">{{ pack.description }}</textarea>
           </div>
         </div>
 
         <div class="modal-footer-bar">
           <button type="button" class="btn-admin-action btn-secondary-action" id="cancelEditPackBtn">Hủy bỏ</button>
-          <button type="submit" class="btn-admin-action btn-primary-action">Lưu thay đổi</button>
+          <button type="submit" class="btn-admin-action btn-primary-action" id="btnSubmitEditPack">Lưu thay đổi</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- ========================================================
-       MODAL 2: THÊM STICKER MỚI VÀO BỘ
-       ======================================================== -->
   <div class="admin-modal-backdrop" id="addStickerToPackModal">
     <div class="modal-dialog-box">
       <div class="modal-header-bar">
         <h3 class="modal-heading">
           <i data-lucide="plus-circle" style="width: 18px; height: 18px; color: #C45832;"></i>
-          <span>Thêm sticker mới vào Cute Cats</span>
+          <span>Thêm sticker mới vào {{ pack.title }}</span>
         </h3>
         <button type="button" class="modal-close-btn" id="closeAddStickerModalBtn" title="Đóng">
           <i data-lucide="x" style="width: 18px; height: 18px;"></i>
@@ -607,30 +354,27 @@
       <form id="addStickerForm">
         <div class="modal-body-content">
           <div class="form-group-item">
-            <label class="form-label">Chọn tệp sticker (SVG / PNG)</label>
-            <input type="file" accept=".svg,.png,.webp" class="form-input-text" required>
+            <label class="form-label" for="newStickerFile">Chọn tệp hình ảnh (SVG / PNG / WebP)</label>
+            <input type="file" id="newStickerFile" accept=".svg,.png,.webp,.jpg,.jpeg" class="form-input-text">
           </div>
           <div class="form-group-item">
-            <label class="form-label" for="newStickerTitle">Tiêu đề / Tên sticker</label>
-            <input type="text" id="newStickerTitle" class="form-input-text" placeholder="Ví dụ: Mèo cưng bắt bướm" required>
+            <label class="form-label" for="newStickerTitle">Tiêu đề / Tên sticker <span style="color: #C45832;">*</span></label>
+            <input type="text" id="newStickerTitle" class="form-input-text" placeholder="Ví dụ: Mèo cưng vẫy tay" required>
           </div>
           <div class="form-group-item">
             <label class="form-label" for="newStickerTags">Gắn thẻ cảm xúc (phân cách bằng dấu phẩy)</label>
-            <input type="text" id="newStickerTags" class="form-input-text" placeholder="vui ve, bat buom, de thuong...">
+            <input type="text" id="newStickerTags" class="form-input-text" placeholder="vui ve, vay tay, de thuong...">
           </div>
         </div>
 
         <div class="modal-footer-bar">
           <button type="button" class="btn-admin-action btn-secondary-action" id="cancelAddStickerModalBtn">Hủy</button>
-          <button type="submit" class="btn-admin-action btn-primary-action">Thêm vào bộ</button>
+          <button type="submit" class="btn-admin-action btn-primary-action" id="btnSubmitAddSticker">Thêm vào bộ</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- ========================================================
-       MODAL 3: LIGHTBOX XEM PHÓNG TO
-       ======================================================== -->
   <div class="admin-modal-backdrop" id="lightboxModal">
     <div class="modal-dialog-box">
       <div class="modal-header-bar">
@@ -655,11 +399,11 @@
           </div>
           <div class="lightbox-detail-item">
             <span class="lightbox-label">Bộ sưu tập</span>
-            <span class="lightbox-val" style="color: #C45832;">Cute Cats</span>
+            <span class="lightbox-val" style="color: #C45832;" id="lightboxPackName">{{ pack.title }}</span>
           </div>
           <div class="lightbox-detail-item">
             <span class="lightbox-label">Độ phân giải & Chuẩn</span>
-            <span class="lightbox-val" id="lightboxDim">512 x 512 px (SVG Vector)</span>
+            <span class="lightbox-val" id="lightboxDim">-</span>
           </div>
           <div class="lightbox-detail-item">
             <span class="lightbox-label">Lượt tải về</span>
@@ -672,14 +416,9 @@
 
   <!-- Toast Notification Container -->
   <div class="toast-container" id="toastContainer"></div>
-
-  <!-- ========================================================
-       SCRIPTS
-       ======================================================== -->
-  <script type="module" src="../../static/user/js/app.js"></script>
-  <script src="../../static/admin/js/layout/layout.js"></script>
-  <script src="../../static/admin/js/pages/chitietsticker.js"></script>
-
+  <script type="module" src="/static/user/js/app.js"></script>
+  <script src="/static/admin/js/layout/layout.js"></script>
+  <script src="/static/admin/js/pages/chitietsticker.js"></script>
 
 </body>
 </html>

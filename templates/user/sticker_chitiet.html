@@ -29,6 +29,73 @@
 <body>
 
   <!-- ========================================================
+       MÀN HÌNH LOADING TRANG (PAGE SCREEN LOADER)
+       ======================================================== -->
+  <div class="screen-loading-wrapper" id="screenLoader" aria-label="Đang tải trang">
+    <!-- 4 Dấu chân mèo trang trí nghệ thuật ở 4 góc màn hình -->
+    <svg class="screen-paw-decor paw-tl" width="46" height="46" viewBox="0 0 24 24" fill="currentColor">
+      <ellipse cx="12" cy="15" rx="7" ry="5.5"/><circle cx="5" cy="6" r="2.5"/><circle cx="12" cy="3.5" r="2.8"/><circle cx="19" cy="6" r="2.5"/>
+    </svg>
+    <svg class="screen-paw-decor paw-tr" width="46" height="46" viewBox="0 0 24 24" fill="currentColor">
+      <ellipse cx="12" cy="15" rx="7" ry="5.5"/><circle cx="5" cy="6" r="2.5"/><circle cx="12" cy="3.5" r="2.8"/><circle cx="19" cy="6" r="2.5"/>
+    </svg>
+    <svg class="screen-paw-decor paw-bl" width="46" height="46" viewBox="0 0 24 24" fill="currentColor">
+      <ellipse cx="12" cy="15" rx="7" ry="5.5"/><circle cx="5" cy="6" r="2.5"/><circle cx="12" cy="3.5" r="2.8"/><circle cx="19" cy="6" r="2.5"/>
+    </svg>
+    <svg class="screen-paw-decor paw-br" width="46" height="46" viewBox="0 0 24 24" fill="currentColor">
+      <ellipse cx="12" cy="15" rx="7" ry="5.5"/><circle cx="5" cy="6" r="2.5"/><circle cx="12" cy="3.5" r="2.8"/><circle cx="19" cy="6" r="2.5"/>
+    </svg>
+
+    <!-- Khối trung tâm màn hình loading -->
+    <div class="screen-loading-center">
+      <!-- 1. Brand Logo -->
+      <div class="loading-header-brand">
+        <img src="/assets/logo_cat.svg" alt="StickerHub" class="loading-brand-logo" width="32" height="32">
+        <span class="loading-brand-title">Sticker<span class="hub-part">Hub</span></span>
+      </div>
+
+      <!-- 2. Tranh minh họa Bé mèo nhảy từ thùng carton -->
+      <div class="loading-illustration-box">
+        <img src="/assets/illustration_loading_cat.svg" 
+             alt="Bé mèo StickerHub" 
+             class="loading-cat-img"
+             width="280" height="200">
+      </div>
+
+      <!-- 3. Tiêu đề & Thông điệp -->
+      <div class="loading-content-meta">
+        <div class="loading-title" id="loadingTitleText">
+          <span>Đang tải trang</span>
+          <span class="loading-dots">
+            <span>.</span><span>.</span><span>.</span>
+          </span>
+        </div>
+        <p class="loading-subtitle" id="loadingSubtitleText">
+          Chuẩn bị những sticker thật xinh cho bạn!
+        </p>
+      </div>
+
+      <!-- 4. Circular Dot Spinner (12 chấm tròn ấm cúng) -->
+      <div class="loading-spinner-wrap">
+        <div class="dot-spinner" aria-label="Đang tải">
+          <div class="dot-spinner-leaf"></div>
+          <div class="dot-spinner-leaf"></div>
+          <div class="dot-spinner-leaf"></div>
+          <div class="dot-spinner-leaf"></div>
+          <div class="dot-spinner-leaf"></div>
+          <div class="dot-spinner-leaf"></div>
+          <div class="dot-spinner-leaf"></div>
+          <div class="dot-spinner-leaf"></div>
+          <div class="dot-spinner-leaf"></div>
+          <div class="dot-spinner-leaf"></div>
+          <div class="dot-spinner-leaf"></div>
+          <div class="dot-spinner-leaf"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================
        TOP HEADER / NAVIGATION (DÙNG CHUNG)
        ======================================================== -->
   <header class="site-header">
@@ -63,9 +130,9 @@
               </a>
             </li>
             <li>
-              <a href="/bo-suu-tap?filter=favorite" class="nav-link" data-tab="favorites" id="navFavorites">
-                <i data-lucide="heart" style="width: 15px; height: 15px;"></i>
-                <span>Yêu thích</span>
+              <a href="javascript:void(0)" class="nav-link" data-tab="guide" id="navGuide" onclick="(document.getElementById('stickersGrid') || document.getElementById('stickerGrid'))?.scrollIntoView({behavior: 'smooth'})">
+                <i data-lucide="help-circle" style="width: 15px; height: 15px;"></i>
+                <span>Hướng dẫn</span>
               </a>
             </li>
           </ul>
@@ -137,9 +204,9 @@
             </a>
           </li>
           <li>
-            <a href="/bo-suu-tap?filter=favorite" class="drawer-nav-item" data-tab="favorites">
-              <i data-lucide="heart" style="width: 18px; height: 18px;"></i>
-              <span>Yêu thích</span>
+            <a href="javascript:void(0)" class="drawer-nav-item" data-tab="guide" id="drawerNavGuide" onclick="(document.getElementById('stickersGrid') || document.getElementById('stickerGrid'))?.scrollIntoView({behavior: 'smooth'}); closeDrawer();">
+              <i data-lucide="help-circle" style="width: 18px; height: 18px;"></i>
+              <span>Hướng dẫn</span>
             </a>
           </li>
         </ul>
@@ -340,15 +407,23 @@
 
           <!-- Lưới 5 cột x 4 hàng = 20 Sticker -->
           <div class="sticker-preview-grid" id="stickerPreviewGrid">
-            {% for s in stickers %}
-            <div class="sticker-item-box" title="Bấm để xem và tải ảnh" data-src="{{ s.file_path }}" data-title="{{ s.title }}" data-id="{{ s.id }}">
-              <img src="{{ s.file_path }}" alt="{{ s.title }}" loading="lazy">
-            </div>
-            {% endfor %}
+            {% if stickers and stickers|length > 0 %}
+              {% for s in stickers %}
+              <div class="sticker-item-box" title="Bấm để xem và tải ảnh" data-src="{{ s.file_path }}" data-title="{{ s.title }}" data-id="{{ s.id }}">
+                <img src="{{ s.file_path }}" alt="{{ s.title }}" loading="lazy">
+              </div>
+              {% endfor %}
+            {% else %}
+              <div class="empty-stickers-box" style="grid-column: 1 / -1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 48px 20px; text-align: center; background: #FAF5EE; border-radius: 12px; border: 1.5px dashed #DFD3C4;">
+                <i data-lucide="package-open" style="width: 44px; height: 44px; color: #C45832; margin-bottom: 12px;"></i>
+                <h4 style="font-size: 15px; font-weight: 700; color: #2D1C14; margin-bottom: 4px;">Chưa có sticker nào</h4>
+                <p style="font-size: 13px; color: #8C7B71; margin: 0;">Bộ sưu tập này chưa có sticker nào được thêm vào.</p>
+              </div>
+            {% endif %}
           </div>
 
           <!-- Thanh phân trang (Pagination) -->
-          <div class="preview-pagination" id="previewPagination">
+          <div class="preview-pagination" id="previewPagination" {% if pagination.total_pages <= 1 %}style="display: none;"{% endif %}>
             <button class="page-btn page-arrow" id="prevStickersBtn" aria-label="Trang trước" {% if not pagination.has_prev %}disabled{% endif %}>&lt;</button>
             <div class="page-numbers-container" id="pageNumbersContainer" style="display: inline-flex; gap: 4px;">
               {% for p in range(1, pagination.total_pages + 1) %}
@@ -428,17 +503,6 @@
               <span class="info-value" id="infoFavCount">{{ pack.total_favorites_compact }}</span>
             </div>
 
-            <!-- Row 4: Đánh giá -->
-            <div class="info-row">
-              <span class="info-label">
-                <i data-lucide="star" style="width: 15px; height: 15px;"></i>
-                <span>Đánh giá</span>
-              </span>
-              <div class="rating-stars">
-                <span style="color: #F5A623;">★★★★★</span>
-                <span class="rating-score">{{ pack.rating_avg }} ({{ pack.rating_count }})</span>
-              </div>
-            </div>
 
             <!-- Row 5: Thẻ -->
             <div class="info-row">
@@ -537,9 +601,6 @@
     </div>
   </div>
 
-  <!-- ========================================================
-       FOOTER (DÙNG CHUNG)
-       ======================================================== -->
   <footer class="site-footer">
     <div class="footer-inner">
       <div class="footer-copy">
@@ -583,7 +644,6 @@
   <script id="initialPackData" type="application/json">{{ initial_data | tojson }}</script>
 
   <!-- MASTER LAYOUT JAVASCRIPT & PAGE SCRIPT -->
-  <script src="/static/user/js/layout/layout.js"></script>
   <script src="/static/user/js/pages/sticker_chitiet.js"></script>
   <script type="module" src="/static/user/js/app.js"></script>
 </body>

@@ -94,7 +94,7 @@ class DashboardService:
 
         # 1. Tổng số lượng thực tế
         total_packs = int(db.query(func.count(StickerPack.id)).scalar() or 0)
-        total_stickers = int(db.query(func.sum(StickerPack.total_stickers)).scalar() or 0)
+        total_stickers = int(db.query(func.count(Sticker.id)).scalar() or db.query(func.sum(StickerPack.total_stickers)).scalar() or 0)
         total_downloads = int(db.query(func.sum(StickerPack.total_downloads)).scalar() or 0)
         total_favorites = int(db.query(func.sum(StickerPack.total_favorites)).scalar() or 0)
         total_categories = int(db.query(func.count(Category.id)).scalar() or 0)
@@ -254,16 +254,6 @@ class DashboardService:
         cat_list = []
         for cat in categories:
             stk_count = sum(p.total_stickers for p in cat.sticker_packs) if cat.sticker_packs else 0
-            if stk_count == 0 and cat.slug in ("anime", "animals", "chibi", "nature", "love"):
-                fallbacks = {
-                    "anime": 1690,
-                    "animals": 1210,
-                    "chibi": 870,
-                    "nature": 580,
-                    "love": 500,
-                }
-                stk_count = fallbacks.get(cat.slug, 300)
-
             total_stickers_all += stk_count
             cat_list.append({
                 "id": cat.id,

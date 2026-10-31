@@ -13,9 +13,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // ========================================================
-  // 2. HERO BANNER CAROUSEL
-  // ========================================================
   const bannerDots = document.querySelectorAll(".hero-dot");
   const heroTitle = document.getElementById("heroHeadline");
   const heroSubtitle = document.getElementById("heroSubheadline");
@@ -32,30 +29,8 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Fallback banner nếu rỗng
-  if (!bannerSlides || bannerSlides.length === 0) {
-    bannerSlides = [
-      {
-        title: "Khám phá thế giới Sticker",
-        subtitle: "Hàng ngàn bộ sticker đẹp, độc đáo, miễn phí!",
-        image_url: "/assets/hero_banner.jpg",
-      },
-      {
-        title: "Sticker Mèo Cưng Siêu Kawaii",
-        subtitle: "Bộ sưu tập mèo con cute với biểu cảm độc lạ!",
-        image_url: "/assets/pack_cats.jpg",
-      },
-      {
-        title: "Manga Chibi Hải Tặc One Piece",
-        subtitle: "Luffy, Zoro, Sanji tái xuất cực vui nhộn!",
-        image_url: "/assets/pack_onepiece.svg",
-      },
-      {
-        title: "Sticker Trà Sữa & Đồ Ăn Vặt",
-        subtitle: "Ngập tràn vị ngọt ngào cho khung chat của bạn!",
-        image_url: "/assets/pack_food.svg",
-      },
-    ];
+  if (!Array.isArray(bannerSlides)) {
+    bannerSlides = [];
   }
 
   let currentSlide = 0;
@@ -124,7 +99,7 @@ document.addEventListener("DOMContentLoaded", function () {
     return `
       <div class="sticker-card" data-id="${pack.id}" data-slug="${slug}" data-category="${catSlug}" data-tags="${tagsStr}" data-name="${title}">
         <a href="/bo-suu-tap/${catSlug}/${slug}" class="card-preview" title="Xem chi tiết ${title}">
-          <img src="${coverImage}" alt="${title}" loading="lazy" onerror="this.src='/assets/pack_cats.jpg'">
+          <img src="${coverImage}" alt="${title}" loading="lazy" onerror="this.src='/assets/logo_cat.svg'">
         </a>
         <div class="card-info">
           <div class="card-text">
@@ -133,10 +108,10 @@ document.addEventListener("DOMContentLoaded", function () {
             </a>
             <span class="card-subtitle">${stickers} sticker • ${downloadsFmt} tải</span>
           </div>
-          <button type="button" class="btn-download" data-id="${pack.id}" data-name="${title}" title="Tải trọn bộ ${title}">
-            <i data-lucide="download" style="width: 14px; height: 14px;"></i>
-            <span>Tải về</span>
-          </button>
+          <a href="/bo-suu-tap/${catSlug}/${slug}" class="btn-download" title="Xem bộ sưu tập ${title}">
+            <span>Xem</span>
+            <i data-lucide="arrow-right" style="width: 14px; height: 14px;"></i>
+          </a>
         </div>
       </div>
     `;
@@ -329,68 +304,27 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // ========================================================
-  // 4. XỬ LÝ NÚT TẢI VỀ NHANH (QUICK DOWNLOAD)
-  // ========================================================
-  document.addEventListener("click", async function (e) {
-    const btn = e.target.closest(".btn-download");
-    if (!btn) return;
-
-    e.preventDefault();
-    e.stopPropagation();
-
-    const packId = btn.getAttribute("data-id");
-    const packName = btn.getAttribute("data-name") || "Bộ sưu tập";
-
-    // Tránh bấm liên tục nhiều lần
-    if (btn.disabled) return;
-    btn.disabled = true;
-
-    const originalHtml = btn.innerHTML;
-    btn.innerHTML = `<i data-lucide="loader" class="spin" style="width: 14px; height: 14px;"></i><span>Đang tải...</span>`;
-    if (window.lucide) window.lucide.createIcons();
-
-    try {
-      if (packId) {
-        // Ghi nhận lượt tải thực tế vào CSDL
-        fetch(`/api/packs/${packId}/download`, {
-          method: "POST",
-          headers: { "Content-Type": "application/x-www-form-urlencoded" },
-          body: `platform=web`
-        }).catch(err => console.warn("Lỗi ghi nhận download:", err));
-      }
-
-      // Đổi trạng thái nút thành công
-      btn.innerHTML = `<i data-lucide="check" style="width: 15px; height: 15px;"></i><span>Đã tải!</span>`;
-      btn.style.backgroundColor = "#10B981";
-      btn.style.borderColor = "#10B981";
-      if (window.lucide) window.lucide.createIcons();
-
-      notify(`Đã bắt đầu tải bộ sưu tập: ${packName}`);
-
-      setTimeout(() => {
-        btn.innerHTML = originalHtml;
-        btn.style.backgroundColor = "";
-        btn.style.borderColor = "";
-        btn.disabled = false;
-        if (window.lucide) window.lucide.createIcons();
-      }, 2200);
-
-    } catch (err) {
-      console.error("Lỗi khi tải sticker:", err);
-      btn.innerHTML = originalHtml;
-      btn.disabled = false;
-      notify("❌ Lỗi kết nối khi tải bộ sưu tập!");
-    }
-  });
-
-  // ========================================================
   // 5. CÁC NÚT ĐIỀU HƯỚNG BỔ SỢ
   // ========================================================
   const heroExploreBtn = document.getElementById("heroExploreBtn");
   if (heroExploreBtn) {
     heroExploreBtn.addEventListener("click", () => {
-      if (stickerGrid) {
+      const activeBanner = bannerSlides && bannerSlides[currentSlide];
+      if (activeBanner && activeBanner.target_url) {
+        window.location.href = activeBanner.target_url;
+      } else if (stickerGrid) {
         stickerGrid.scrollIntoView({ behavior: "smooth" });
+      }
+    });
+  }
+
+  if (heroImg) {
+    heroImg.style.cursor = "pointer";
+    heroImg.title = "Nhấn để xem chi tiết bộ sưu tập này";
+    heroImg.addEventListener("click", () => {
+      const activeBanner = bannerSlides && bannerSlides[currentSlide];
+      if (activeBanner && activeBanner.target_url) {
+        window.location.href = activeBanner.target_url;
       }
     });
   }

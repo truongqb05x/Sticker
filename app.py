@@ -1,8 +1,3 @@
-"""
-StickerHub - Ứng Dụng Web Quản Lý & Chia Sẻ Sticker
-File chạy chính (Application Entry Point)
-"""
-
 import os
 from flask import Flask, send_from_directory, render_template
 from src.database import init_db
@@ -15,9 +10,6 @@ BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
 
 def create_app() -> Flask:
-    """
-    Application Factory: Khởi tạo và cấu hình ứng dụng Flask chuẩn module hóa
-    """
     app = Flask(
         __name__,
         template_folder=os.path.join(BASE_DIR, "templates"),
@@ -41,11 +33,13 @@ def create_app() -> Flask:
     app.register_blueprint(admin_bp)     # Giao diện quản trị viên (/admin)
     app.register_blueprint(api_bp)       # Điểm cuối JSON API (/api)
 
+    @app.errorhandler(404)
+    def page_not_found(e):
+        return render_template("404.html"), 404
+
     return app
 
-
 app = create_app()
-
 
 if __name__ == "__main__":
     port = int(os.getenv("PORT", 5000))

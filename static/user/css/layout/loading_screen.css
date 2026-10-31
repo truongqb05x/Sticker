@@ -1,0 +1,232 @@
+/**
+ * ========================================================
+ * PAGE LOADING SCREEN COMPONENT STYLES
+ * ========================================================
+ * Giao diện màn hình loading toàn trang phong cách ấm cúng
+ * của StickerHub (Bé mèo nhảy từ hộp carton & 12 chấm tròn).
+ */
+
+.screen-loading-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at 50% 40%, #FFFDF9 0%, #FAF5EE 55%, #F4EBE0 100%);
+  user-select: none;
+  overflow: hidden;
+  z-index: 999999;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), 
+              visibility 0.35s ease;
+}
+
+.screen-loading-wrapper.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Các dấu chân mèo trang trí ở 4 góc màn hình */
+.screen-paw-decor {
+  position: absolute;
+  color: #EBDDCE;
+  opacity: 0.45;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.screen-paw-decor.paw-tl { top: 32px; left: 36px; transform: rotate(-25deg); }
+.screen-paw-decor.paw-tr { top: 32px; right: 36px; transform: rotate(30deg); }
+.screen-paw-decor.paw-bl { bottom: 32px; left: 36px; transform: rotate(-15deg); }
+.screen-paw-decor.paw-br { bottom: 32px; right: 36px; transform: rotate(20deg); }
+
+/* Khối trung tâm màn hình loading */
+.screen-loading-center {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 440px;
+  padding: 24px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Logo đầu thẻ */
+.screen-loading-center .loading-header-brand {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.screen-loading-center .loading-brand-logo {
+  width: 32px;
+  height: 32px;
+}
+
+.screen-loading-center .loading-brand-title {
+  font-family: 'Nunito', -apple-system, sans-serif;
+  font-size: 22px;
+  font-weight: 900;
+  color: #2D1C14;
+  letter-spacing: -0.3px;
+  line-height: 1;
+}
+
+.screen-loading-center .loading-brand-title .hub-part {
+  color: #C35631;
+}
+
+/* Tranh minh họa chú mèo */
+.screen-loading-center .loading-illustration-box {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 360px;
+  margin: 0 auto;
+}
+
+.screen-loading-center .loading-cat-img {
+  max-width: 100%;
+  width: auto;
+  height: auto;
+  max-height: 250px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Typography & Thông điệp */
+.screen-loading-center .loading-content-meta {
+  position: relative;
+  z-index: 2;
+  margin-top: 14px;
+}
+
+.screen-loading-center .loading-title {
+  font-family: 'Nunito', -apple-system, sans-serif;
+  font-size: 19px;
+  font-weight: 800;
+  color: #35231B;
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+
+.screen-loading-center .loading-dots span {
+  animation: dotPulse 1.4s infinite;
+  opacity: 0;
+}
+
+.screen-loading-center .loading-dots span:nth-child(1) { animation-delay: 0s; }
+.screen-loading-center .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+.screen-loading-center .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes dotPulse {
+  0% { opacity: 0; }
+  50% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.screen-loading-center .loading-subtitle {
+  font-family: 'Nunito', -apple-system, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #725D50;
+  line-height: 1.5;
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+/* Circular Dot Spinner (12 chấm tròn phong cách ấm cúng) */
+.screen-loading-center .loading-spinner-wrap {
+  position: relative;
+  z-index: 2;
+  margin-top: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.screen-loading-center .dot-spinner {
+  position: relative;
+  width: 32px;
+  height: 32px;
+}
+
+.screen-loading-center .dot-spinner-leaf {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.screen-loading-center .dot-spinner-leaf::before {
+  content: '';
+  display: block;
+  margin: 0 auto;
+  width: 4px;
+  height: 4px;
+  background-color: #8C6546;
+  border-radius: 50%;
+  animation: dotFade 1.2s infinite ease-in-out both;
+}
+
+.screen-loading-center .dot-spinner-leaf:nth-child(1) { transform: rotate(0deg); }
+.screen-loading-center .dot-spinner-leaf:nth-child(1)::before { animation-delay: 0s; }
+.screen-loading-center .dot-spinner-leaf:nth-child(2) { transform: rotate(30deg); }
+.screen-loading-center .dot-spinner-leaf:nth-child(2)::before { animation-delay: -1.1s; }
+.screen-loading-center .dot-spinner-leaf:nth-child(3) { transform: rotate(60deg); }
+.screen-loading-center .dot-spinner-leaf:nth-child(3)::before { animation-delay: -1.0s; }
+.screen-loading-center .dot-spinner-leaf:nth-child(4) { transform: rotate(90deg); }
+.screen-loading-center .dot-spinner-leaf:nth-child(4)::before { animation-delay: -0.9s; }
+.screen-loading-center .dot-spinner-leaf:nth-child(5) { transform: rotate(120deg); }
+.screen-loading-center .dot-spinner-leaf:nth-child(5)::before { animation-delay: -0.8s; }
+.screen-loading-center .dot-spinner-leaf:nth-child(6) { transform: rotate(150deg); }
+.screen-loading-center .dot-spinner-leaf:nth-child(6)::before { animation-delay: -0.7s; }
+.screen-loading-center .dot-spinner-leaf:nth-child(7) { transform: rotate(180deg); }
+.screen-loading-center .dot-spinner-leaf:nth-child(7)::before { animation-delay: -0.6s; }
+.screen-loading-center .dot-spinner-leaf:nth-child(8) { transform: rotate(210deg); }
+.screen-loading-center .dot-spinner-leaf:nth-child(8)::before { animation-delay: -0.5s; }
+.screen-loading-center .dot-spinner-leaf:nth-child(9) { transform: rotate(240deg); }
+.screen-loading-center .dot-spinner-leaf:nth-child(9)::before { animation-delay: -0.4s; }
+.screen-loading-center .dot-spinner-leaf:nth-child(10) { transform: rotate(270deg); }
+.screen-loading-center .dot-spinner-leaf:nth-child(10)::before { animation-delay: -0.3s; }
+.screen-loading-center .dot-spinner-leaf:nth-child(11) { transform: rotate(300deg); }
+.screen-loading-center .dot-spinner-leaf:nth-child(11)::before { animation-delay: -0.2s; }
+.screen-loading-center .dot-spinner-leaf:nth-child(12) { transform: rotate(330deg); }
+.screen-loading-center .dot-spinner-leaf:nth-child(12)::before { animation-delay: -0.1s; }
+
+@keyframes dotFade {
+  0%, 39%, 100% {
+    opacity: 0.2;
+    transform: scale(0.7);
+  }
+  40% {
+    opacity: 1;
+    transform: scale(1.2);
+    background-color: #5C381E;
+  }
+}
+
+@media (max-width: 600px) {
+  .screen-paw-decor.paw-tl { top: 16px; left: 16px; width: 36px; height: 36px; }
+  .screen-paw-decor.paw-tr { top: 16px; right: 16px; width: 36px; height: 36px; }
+  .screen-paw-decor.paw-bl { bottom: 16px; left: 16px; width: 36px; height: 36px; }
+  .screen-paw-decor.paw-br { bottom: 16px; right: 16px; width: 36px; height: 36px; }
+}

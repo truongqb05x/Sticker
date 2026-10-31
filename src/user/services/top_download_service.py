@@ -33,7 +33,7 @@ def format_compact(val: Any) -> str:
 def normalize_asset_url(path: Optional[str]) -> str:
     """Chuẩn hóa đường dẫn hình ảnh thành đường dẫn web tuyệt đối (/assets/...)"""
     if not path:
-        return "/assets/pack_cats.jpg"
+        return ""
     p = path.strip()
     if p.startswith("http://") or p.startswith("https://"):
         return p

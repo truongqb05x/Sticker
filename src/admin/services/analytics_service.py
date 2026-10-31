@@ -157,8 +157,8 @@ class AnalyticsService:
                 weekday_idx = d.weekday() % 7
                 # Tìm stat trong CSDL
                 s_match = next((s for s in stats_rows if s.stat_date == d), None)
-                dl = s_match.total_downloads if s_match else (14250 + i * 3800)
-                pv = s_match.total_page_views if s_match else int(dl * 1.55)
+                dl = s_match.total_downloads if s_match else 0
+                pv = s_match.total_page_views if s_match else 0
 
                 total_7d_dl += dl
                 total_7d_pv += pv

@@ -1,14 +1,3 @@
-"""
-Home Service Module - StickerHub User Portal
-Cung cấp toàn bộ nghiệp vụ truy vấn dữ liệu thực tế cho trang chủ (templates/index.html):
-- Banner trình chiếu (Hero Banners)
-- Danh mục chủ đề kèm số lượng sticker thực tế
-- Bộ sưu tập nổi bật (Featured Packs)
-- Bộ sưu tập mới nhất (Latest Packs Grid)
-- Gợi ý tìm kiếm thời gian thực (Search Suggestions)
-- Ghi nhận lượt tải bộ sưu tập (Record Downloads)
-"""
-
 import re
 import unicodedata
 from datetime import datetime, date
@@ -51,7 +40,7 @@ def format_compact(val: Any) -> str:
 def normalize_asset_url(path: Optional[str]) -> str:
     """Chuẩn hóa đường dẫn hình ảnh thành đường dẫn web tuyệt đối (/assets/...)"""
     if not path:
-        return "/assets/pack_cats.jpg"
+        return ""
     p = path.strip()
     if p.startswith("http://") or p.startswith("https://"):
         return p
@@ -87,43 +76,6 @@ class HomeService:
                 "target_url": b.target_url or "#stickerGrid",
                 "sort_order": b.sort_order,
             })
-
-        # Dự phòng nếu CSDL chưa có banner
-        if not result:
-            result = [
-                {
-                    "id": 1,
-                    "title": "Khám phá thế giới Sticker",
-                    "subtitle": "Hàng ngàn bộ sticker đẹp, độc đáo, miễn phí!",
-                    "image_url": "/assets/hero_banner.jpg",
-                    "target_url": "#stickerGrid",
-                    "sort_order": 0,
-                },
-                {
-                    "id": 2,
-                    "title": "Sticker Mèo Cưng Siêu Kawaii",
-                    "subtitle": "Bộ sưu tập mèo con cute với biểu cảm độc lạ!",
-                    "image_url": "/assets/pack_cats.jpg",
-                    "target_url": "/bo-suu-tap/animals/cute-cats",
-                    "sort_order": 1,
-                },
-                {
-                    "id": 3,
-                    "title": "Manga Chibi Hải Tặc One Piece",
-                    "subtitle": "Luffy, Zoro, Sanji tái xuất cực vui nhộn!",
-                    "image_url": "/assets/pack_onepiece.svg",
-                    "target_url": "/bo-suu-tap/anime/one-piece-wano",
-                    "sort_order": 2,
-                },
-                {
-                    "id": 4,
-                    "title": "Sticker Trà Sữa & Đồ Ăn Vặt",
-                    "subtitle": "Ngập tràn vị ngọt ngào cho khung chat của bạn!",
-                    "image_url": "/assets/pack_food.svg",
-                    "target_url": "#stickerGrid",
-                    "sort_order": 3,
-                },
-            ]
 
         return result
 
@@ -162,7 +114,7 @@ class HomeService:
             db.query(StickerPack)
             .join(Category, StickerPack.category_id == Category.id, isouter=True)
             .filter(StickerPack.status == "active")
-            .order_by(desc(StickerPack.total_downloads))
+            .order_by(desc(StickerPack.is_featured), StickerPack.featured_order.asc(), desc(StickerPack.total_downloads))
             .limit(limit)
             .all()
         )
@@ -250,7 +202,7 @@ class HomeService:
             db.query(StickerPack)
             .join(Category, StickerPack.category_id == Category.id, isouter=True)
             .filter(StickerPack.status == "active")
-            .order_by(desc(StickerPack.total_downloads))
+            .order_by(desc(StickerPack.is_featured), StickerPack.featured_order.asc(), desc(StickerPack.total_downloads))
             .limit(limit)
             .all()
         )
@@ -303,7 +255,7 @@ class HomeService:
             db.query(StickerPack)
             .join(Category, StickerPack.category_id == Category.id, isouter=True)
             .filter(StickerPack.status == "active")
-            .order_by(desc(StickerPack.total_downloads))
+            .order_by(desc(StickerPack.is_featured), StickerPack.featured_order.asc(), desc(StickerPack.total_downloads))
             .all()
         )
 
@@ -381,4 +333,3 @@ class HomeService:
 
         db.commit()
         return pack.total_downloads
-

@@ -1,10 +1,3 @@
-/**
- * ========================================================
- * ADMIN BỘ SƯU TẬP (COLLECTION MANAGEMENT) - JAVASCRIPT
- * Tích hợp REST API CSDL thực, tìm kiếm, lọc, phân trang và CRUD
- * ========================================================
- */
-
 // Chống tấn công XSS khi render dữ liệu động
 function escapeHtml(str) {
   if (str === null || str === undefined) return "";
@@ -94,9 +87,23 @@ document.addEventListener("DOMContentLoaded", function () {
   const packCategorySelect = document.getElementById("packCategorySelect");
   const packStatusSelect = document.getElementById("packStatusSelect");
   const packTagInput = document.getElementById("packTagInput");
+  const packCoverFile = document.getElementById("packCoverFile");
   const packCoverInput = document.getElementById("packCoverInput");
-  const packStickersCountInput = document.getElementById("packStickersCountInput");
+  const packCoverPreview = document.getElementById("packCoverPreview");
+  const packCoverName = document.getElementById("packCoverName");
+  const packCoverPreviewContainer = document.getElementById("packCoverPreviewContainer");
+
   const packDescInput = document.getElementById("packDescInput");
+
+  // Xem truoc anh bia khi chon tep
+  packCoverFile?.addEventListener("change", function (e) {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (packCoverPreview) packCoverPreview.src = URL.createObjectURL(file);
+      if (packCoverName) packCoverName.textContent = file.name;
+      if (packCoverPreviewContainer) packCoverPreviewContainer.style.display = "flex";
+    }
+  });
 
   let isSlugManuallyEdited = false;
 
@@ -132,12 +139,19 @@ document.addEventListener("DOMContentLoaded", function () {
     if (packEditId) packEditId.value = "";
     isSlugManuallyEdited = false;
 
+    if (packCoverFile) packCoverFile.value = "";
+    if (packCoverInput) packCoverInput.value = "";
+    if (packCoverPreview) packCoverPreview.src = "";
+    if (packCoverName) packCoverName.textContent = "";
+    if (packCoverPreviewContainer) packCoverPreviewContainer.style.display = "none";
+
     if (modalHeadingText) modalHeadingText.textContent = "Thêm bộ sưu tập mới";
     if (modalHeadingIcon) {
       modalHeadingIcon.setAttribute("data-lucide", "folder-plus");
       modalHeadingIcon.style.color = "#C45832";
     }
     if (submitCollectionModalBtn) submitCollectionModalBtn.textContent = "Xuất bản";
+
 
     if (window.lucide) window.lucide.createIcons();
 
@@ -168,8 +182,12 @@ document.addEventListener("DOMContentLoaded", function () {
       if (packCategorySelect) packCategorySelect.value = pack.category_id || "";
       if (packStatusSelect) packStatusSelect.value = pack.status || "active";
       if (packTagInput) packTagInput.value = pack.tags_str || (pack.tags ? pack.tags.join(", ") : "");
+      if (packCoverFile) packCoverFile.value = "";
       if (packCoverInput) packCoverInput.value = pack.cover_image || "";
-      if (packStickersCountInput) packStickersCountInput.value = pack.total_stickers || 0;
+      if (packCoverPreview && pack.cover_image) packCoverPreview.src = pack.cover_image;
+      if (packCoverName) packCoverName.textContent = pack.cover_image || "";
+      if (packCoverPreviewContainer) packCoverPreviewContainer.style.display = pack.cover_image ? "flex" : "none";
+
       if (packDescInput) packDescInput.value = pack.description || "";
 
       isSlugManuallyEdited = true;
@@ -279,7 +297,7 @@ document.addEventListener("DOMContentLoaded", function () {
           <td style="text-align: center; color: #9E8E84; font-weight: 700;">${(currentPage - 1) * 20 + index + 1}</td>
           <td>
             <div class="table-pack-cell">
-              <img src="${escapeHtml(p.cover_image)}" alt="${escapeHtml(p.title)}" class="table-pack-thumb" onerror="this.src='../../assets/logo_cat.svg'">
+              <img src="${escapeHtml(p.cover_image || '../../assets/logo_cat.svg')}" alt="${escapeHtml(p.title)}" class="table-pack-thumb" onerror="this.src='../../assets/logo_cat.svg'">
               <div>
                 <a href="/admin/chitietsticker?id=${p.id}" class="table-pack-title">${escapeHtml(p.title)}</a>
                 <div class="table-pack-author">Tác giả: <strong>${escapeHtml(p.author_name)}</strong></div>
@@ -486,7 +504,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const status = packStatusSelect?.value || "active";
     const tags = packTagInput?.value.trim() || "";
     const cover_image = packCoverInput?.value.trim() || "../../assets/pack_cats.jpg";
-    const total_stickers = parseInt(packStickersCountInput?.value || "24", 10);
     const description = packDescInput?.value.trim() || "";
 
     if (!title) {
@@ -494,17 +511,20 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-    const payload = {
-      title,
-      slug,
-      author_name,
-      category_id,
-      status,
-      tags,
-      cover_image,
-      total_stickers,
-      description,
-    };
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("slug", slug);
+    formData.append("author_name", author_name);
+    formData.append("category_id", category_id);
+    formData.append("status", status);
+    formData.append("tags", tags);
+    formData.append("description", description);
+
+    if (packCoverFile?.files?.[0]) {
+      formData.append("cover_file", packCoverFile.files[0]);
+    } else {
+      formData.append("cover_image", packCoverInput?.value.trim() || "");
+    }
 
     const editId = packEditId?.value;
     const isEditMode = Boolean(editId);
@@ -517,12 +537,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     try {
       const url = isEditMode ? `/admin/api/packs/${editId}` : "/admin/api/packs";
-      const method = isEditMode ? "PUT" : "POST";
+      const method = "POST";
 
       const response = await fetch(url, {
         method: method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        body: formData,
       });
 
       const result = await response.json();
@@ -542,6 +561,501 @@ document.addEventListener("DOMContentLoaded", function () {
         submitCollectionModalBtn.disabled = false;
         submitCollectionModalBtn.textContent = isEditMode ? "Lưu thay đổi" : "Xuất bản";
       }
+    }
+  });
+
+  const catModal = document.getElementById("addCategoryModal");
+  const openCatModalBtn = document.getElementById("openAddCategoryModalBtn");
+  const closeCatModalBtn = document.getElementById("closeAddCategoryModalBtn");
+  const cancelCatModalBtn = document.getElementById("cancelAddCategoryModalBtn");
+  const quickAddCatInPackModal = document.getElementById("quickAddCatInPackModal");
+  const addCatForm = document.getElementById("addCategoryForm");
+  const btnSubmitCat = document.getElementById("btnSubmitCategory");
+
+  const catNameInput = document.getElementById("catNameInput");
+  const catSlugInput = document.getElementById("catSlugInput");
+  const catOrderInput = document.getElementById("catOrderInput");
+  const catStatusSelect = document.getElementById("catStatusSelect");
+  const catIconSelect = document.getElementById("catIconSelect");
+  const catColorSelect = document.getElementById("catColorSelect");
+  const catDescInput = document.getElementById("catDescInput");
+  const sidebarCatCounter = document.getElementById("sidebarCatCounter");
+
+  let isCatSlugManuallyEdited = false;
+
+  // Tự động chuyển tên danh mục thành Slug URL chuẩn
+  catNameInput?.addEventListener("input", function () {
+    if (!isCatSlugManuallyEdited && catSlugInput) {
+      catSlugInput.value = convertToSlug(this.value);
+    }
+  });
+
+  catSlugInput?.addEventListener("input", function () {
+    if (this.value.trim() === "") {
+      isCatSlugManuallyEdited = false;
+      if (catNameInput) {
+        this.value = convertToSlug(catNameInput.value);
+      }
+    } else {
+      isCatSlugManuallyEdited = true;
+    }
+  });
+
+  catSlugInput?.addEventListener("blur", function () {
+    if (this.value.trim() !== "") {
+      this.value = convertToSlug(this.value);
+    }
+  });
+
+  // Mở modal thêm danh mục mới
+  function openCategoryModal() {
+    if (!catModal) return;
+    addCatForm?.reset();
+    isCatSlugManuallyEdited = false;
+    if (catOrderInput) catOrderInput.value = "9";
+    if (catStatusSelect) catStatusSelect.value = "active";
+    if (catIconSelect) catIconSelect.value = "tag";
+    if (catColorSelect) catColorSelect.value = "badge-bg-1";
+
+    if (window.lucide) window.lucide.createIcons();
+    catModal.classList.add("active");
+    document.body.style.overflow = "hidden";
+    setTimeout(() => catNameInput?.focus(), 120);
+  }
+
+  // Đóng modal thêm danh mục
+  function closeCategoryModal() {
+    if (catModal) {
+      catModal.classList.remove("active");
+      // Nếu modal thêm bộ sưu tập đang mở thì giữ lại overflow: hidden
+      if (!addModal?.classList.contains("active")) {
+        document.body.style.overflow = "";
+      }
+      addCatForm?.reset();
+      isCatSlugManuallyEdited = false;
+    }
+  }
+
+  openCatModalBtn?.addEventListener("click", openCategoryModal);
+  quickAddCatInPackModal?.addEventListener("click", openCategoryModal);
+  closeCatModalBtn?.addEventListener("click", closeCategoryModal);
+  cancelCatModalBtn?.addEventListener("click", closeCategoryModal);
+
+  catModal?.addEventListener("click", function (e) {
+    if (e.target === catModal) {
+      closeCategoryModal();
+    }
+  });
+
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && catModal?.classList.contains("active")) {
+      closeCategoryModal();
+    }
+  });
+
+  // Xử lý gửi Form thêm danh mục thực tế tới REST API
+  addCatForm?.addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const name = catNameInput?.value.trim();
+    let slug = catSlugInput?.value.trim() || convertToSlug(name);
+    const sort_order = parseInt(catOrderInput?.value || "9", 10);
+    const status = catStatusSelect?.value || "active";
+    const icon_name = catIconSelect?.value || "tag";
+    const badge_bg_class = catColorSelect?.value || "badge-bg-1";
+    const description = catDescInput?.value.trim() || "";
+
+    if (!name) {
+      showToast("⚠️ Vui lòng nhập tên danh mục!");
+      return;
+    }
+
+    const payload = {
+      name,
+      slug,
+      sort_order,
+      status,
+      icon_name,
+      badge_bg_class,
+      description,
+    };
+
+    if (btnSubmitCat) {
+      btnSubmitCat.disabled = true;
+      btnSubmitCat.textContent = "Đang lưu...";
+    }
+
+    try {
+      const response = await fetch("/admin/api/categories", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const result = await response.json();
+
+      if (result.success && result.category) {
+        closeCategoryModal();
+        showToast(`✅ ${result.message}`);
+
+        const newCat = result.category;
+
+        // 1. Thêm danh mục mới vào Dropdown Lọc ngoài thanh công cụ
+        if (categorySelect) {
+          const optFilter = document.createElement("option");
+          optFilter.value = newCat.id;
+          optFilter.textContent = newCat.name;
+          categorySelect.appendChild(optFilter);
+        }
+
+        // 2. Thêm danh mục mới vào Dropdown Danh mục trong Modal Bộ Sưu Tập và tự chọn nó
+        if (packCategorySelect) {
+          const optModal = document.createElement("option");
+          optModal.value = newCat.id;
+          optModal.textContent = newCat.name;
+          packCategorySelect.appendChild(optModal);
+          packCategorySelect.value = newCat.id;
+        }
+
+        // 3. Tăng bộ đếm danh mục ở Sidebar nếu có
+        if (sidebarCatCounter) {
+          const currentCount = parseInt(sidebarCatCounter.textContent.trim(), 10) || 0;
+          sidebarCatCounter.textContent = currentCount + 1;
+        }
+      } else {
+        showToast(`❌ ${result.message || "Không thể lưu danh mục!"}`);
+      }
+    } catch (err) {
+      console.error("Lỗi khi thêm danh mục:", err);
+      showToast("❌ Lỗi kết nối máy chủ khi lưu danh mục!");
+    } finally {
+      if (btnSubmitCat) {
+        btnSubmitCat.disabled = false;
+        btnSubmitCat.textContent = "Lưu danh mục";
+      }
+    }
+  });
+
+  // ========================================================
+  // 8. LOGIC MODAL CẤU HÌNH HERO STICKER (TRANG CHỦ)
+  // ========================================================
+  const heroModal = document.getElementById("heroConfigModal");
+  const openHeroConfigBtn = document.getElementById("openHeroConfigBtn");
+  const closeHeroModalBtn = document.getElementById("closeHeroModalBtn");
+  const cancelHeroModalBtn = document.getElementById("cancelHeroModalBtn");
+  const saveHeroConfigBtn = document.getElementById("saveHeroConfigBtn");
+
+  const heroSlotsGrid = document.getElementById("heroSlotsGrid");
+  const heroSlotsCounterBadge = document.getElementById("heroSlotsCounterBadge");
+  const heroPackSearchInput = document.getElementById("heroPackSearchInput");
+  const heroPacksPickerList = document.getElementById("heroPacksPickerList");
+
+  let heroSlots = [null, null, null, null];
+  let heroAvailablePacks = [];
+  let heroSearchTerm = "";
+
+  function openHeroModal() {
+    if (!heroModal) return;
+    heroModal.classList.add("active");
+    document.body.style.overflow = "hidden";
+    if (heroPackSearchInput) heroPackSearchInput.value = "";
+    heroSearchTerm = "";
+
+    // Hiển thị khung chờ
+    if (heroSlotsGrid) {
+      heroSlotsGrid.innerHTML = `
+        <div style="grid-column: span 4; text-align: center; padding: 24px; color: #8C7B71;">
+          <i data-lucide="loader" style="width: 24px; height: 24px; animation: spin 1s linear infinite; display: inline-block;"></i>
+          <p style="margin-top: 8px; font-size: 13px;">Đang tải danh sách Hero Sticker...</p>
+        </div>
+      `;
+      if (window.lucide) window.lucide.createIcons();
+    }
+
+    loadHeroData();
+  }
+
+  function closeHeroModal() {
+    if (!heroModal) return;
+    heroModal.classList.remove("active");
+    if (!addModal?.classList.contains("active") && !catModal?.classList.contains("active")) {
+      document.body.style.overflow = "";
+    }
+  }
+
+  async function loadHeroData() {
+    try {
+      const response = await fetch("/admin/api/hero-packs");
+      const data = await response.json();
+
+      if (!data.success) {
+        showToast("❌ Không thể nạp dữ liệu Hero Sticker!");
+        return;
+      }
+
+      heroAvailablePacks = data.available_packs || [];
+
+      // Reset và nạp 4 slots
+      heroSlots = [null, null, null, null];
+      const selected = data.selected_hero_packs || [];
+      for (let i = 0; i < 4; i++) {
+        heroSlots[i] = selected[i] || null;
+      }
+
+      renderHeroSlots();
+      renderHeroPickerList();
+    } catch (err) {
+      console.error("Lỗi khi tải dữ liệu Hero:", err);
+      showToast("❌ Lỗi kết nối khi tải cấu hình Hero!");
+    }
+  }
+
+  function renderHeroSlots() {
+    if (!heroSlotsGrid) return;
+
+    const selectedCount = heroSlots.filter(Boolean).length;
+    if (heroSlotsCounterBadge) {
+      heroSlotsCounterBadge.textContent = `Đã chọn: ${selectedCount}/4`;
+      if (selectedCount === 4) {
+        heroSlotsCounterBadge.style.color = "#2E7D32";
+        heroSlotsCounterBadge.style.backgroundColor = "#E8F5E9";
+        heroSlotsCounterBadge.style.borderColor = "#C8E6C9";
+      } else {
+        heroSlotsCounterBadge.style.color = "#C45832";
+        heroSlotsCounterBadge.style.backgroundColor = "#FFF2EC";
+        heroSlotsCounterBadge.style.borderColor = "#F0C4B4";
+      }
+    }
+
+    let slotsHtml = "";
+    for (let i = 0; i < 4; i++) {
+      const pack = heroSlots[i];
+      if (pack) {
+        const coverImg = pack.cover_image || "/assets/logo_cat.svg";
+        slotsHtml += `
+          <div class="hero-slot-card">
+            <span class="hero-slot-order-tag">
+              <i data-lucide="sparkles" style="width: 11px; height: 11px;"></i>
+              #${i + 1} Slide ${i + 1}
+            </span>
+            <button type="button" class="hero-slot-remove-btn btn-remove-slot" data-slot="${i}" title="Gỡ bộ này khỏi vị trí #${i + 1}">
+              <i data-lucide="x" style="width: 14px; height: 14px;"></i>
+            </button>
+            <img src="${escapeHtml(coverImg)}" alt="${escapeHtml(pack.title)}" class="hero-slot-thumb" onerror="this.src='/assets/logo_cat.svg'">
+            <div class="hero-slot-name" title="${escapeHtml(pack.title)}">${escapeHtml(pack.title)}</div>
+            <div class="hero-slot-meta">
+              <span>${escapeHtml(pack.category_name || "Khác")}</span>
+              <span>${pack.total_stickers || 0} stks</span>
+            </div>
+          </div>
+        `;
+      } else {
+        slotsHtml += `
+          <div class="hero-slot-card hero-slot-empty">
+            <span class="hero-slot-order-tag" style="background-color: #EFE8DF; color: #8C7B71;">
+              Vị trí #${i + 1}
+            </span>
+            <i data-lucide="plus-circle" class="hero-slot-empty-icon"></i>
+            <span class="hero-slot-empty-title">Còn trống</span>
+            <span class="hero-slot-empty-desc">Chọn từ danh sách bên dưới</span>
+          </div>
+        `;
+      }
+    }
+
+    heroSlotsGrid.innerHTML = slotsHtml;
+    if (window.lucide) window.lucide.createIcons();
+
+    // Gắn sự kiện gỡ slot
+    heroSlotsGrid.querySelectorAll(".btn-remove-slot").forEach((btn) => {
+      btn.addEventListener("click", function (e) {
+        e.stopPropagation();
+        const slotIdx = parseInt(this.getAttribute("data-slot"), 10);
+        if (!isNaN(slotIdx) && slotIdx >= 0 && slotIdx < 4) {
+          heroSlots[slotIdx] = null;
+          renderHeroSlots();
+          renderHeroPickerList();
+        }
+      });
+    });
+  }
+
+  function renderHeroPickerList() {
+    if (!heroPacksPickerList) return;
+
+    let filtered = heroAvailablePacks;
+    if (heroSearchTerm) {
+      filtered = heroAvailablePacks.filter((p) => {
+        const title = (p.title || "").toLowerCase();
+        const slug = (p.slug || "").toLowerCase();
+        const cat = (p.category_name || "").toLowerCase();
+        const author = (p.author || "").toLowerCase();
+        return (
+          title.includes(heroSearchTerm) ||
+          slug.includes(heroSearchTerm) ||
+          cat.includes(heroSearchTerm) ||
+          author.includes(heroSearchTerm)
+        );
+      });
+    }
+
+    if (!filtered || filtered.length === 0) {
+      heroPacksPickerList.innerHTML = `
+        <div style="text-align: center; padding: 32px 16px; color: #8C7B71;">
+          <i data-lucide="search-x" style="width: 28px; height: 28px; display: block; margin: 0 auto 8px; opacity: 0.6;"></i>
+          Không tìm thấy bộ sưu tập nào phù hợp.
+        </div>
+      `;
+      if (window.lucide) window.lucide.createIcons();
+      return;
+    }
+
+    let listHtml = "";
+    filtered.forEach((p) => {
+      const inSlotIdx = heroSlots.findIndex((s) => s && s.id === p.id);
+      const isSelected = inSlotIdx !== -1;
+      const coverImg = p.cover_image || "/assets/logo_cat.svg";
+
+      listHtml += `
+        <div class="hero-pack-row ${isSelected ? "is-selected" : ""}" data-id="${p.id}">
+          <div class="hero-pack-row-left">
+            <img src="${escapeHtml(coverImg)}" alt="${escapeHtml(p.title)}" class="hero-pack-row-thumb" onerror="this.src='/assets/logo_cat.svg'">
+            <div class="hero-pack-row-details">
+              <span class="hero-pack-row-title">${escapeHtml(p.title)}</span>
+              <div class="hero-pack-row-meta">
+                <span class="hero-pack-row-badge">${escapeHtml(p.category_name || "Chưa phân loại")}</span>
+                <span>• ${p.total_stickers || 0} sticker</span>
+                <span>• ${p.total_downloads || 0} lượt tải</span>
+              </div>
+            </div>
+          </div>
+          <div class="hero-pack-row-right">
+            ${
+              isSelected
+                ? `
+                <span class="btn-hero-action-selected">
+                  <i data-lucide="check" style="width: 13px; height: 13px;"></i>
+                  Vị trí #${inSlotIdx + 1}
+                </span>
+                <button type="button" class="btn-hero-action-remove hero-unpick-btn" data-id="${p.id}" title="Gỡ khỏi Hero Slider">
+                  <i data-lucide="trash-2" style="width: 14px; height: 14px;"></i>
+                </button>
+              `
+                : `
+                <button type="button" class="btn-hero-action-select hero-pick-btn" data-id="${p.id}">
+                  <i data-lucide="plus" style="width: 13px; height: 13px;"></i>
+                  Chọn vào Hero
+                </button>
+              `
+            }
+          </div>
+        </div>
+      `;
+    });
+
+    heroPacksPickerList.innerHTML = listHtml;
+    if (window.lucide) window.lucide.createIcons();
+
+    // Gắn sự kiện Chọn
+    heroPacksPickerList.querySelectorAll(".hero-pick-btn").forEach((btn) => {
+      btn.addEventListener("click", function () {
+        const packId = parseInt(this.getAttribute("data-id"), 10);
+        const pack = heroAvailablePacks.find((p) => p.id === packId);
+        if (!pack) return;
+
+        // Tìm vị trí trống đầu tiên
+        const emptyIdx = heroSlots.findIndex((s) => s === null);
+        if (emptyIdx === -1) {
+          showToast("⚠️ Đã chọn đủ 4 vị trí Hero! Vui lòng gỡ bớt 1 bộ trước.");
+          return;
+        }
+
+        heroSlots[emptyIdx] = pack;
+        renderHeroSlots();
+        renderHeroPickerList();
+      });
+    });
+
+    // Gắn sự kiện Gỡ
+    heroPacksPickerList.querySelectorAll(".hero-unpick-btn").forEach((btn) => {
+      btn.addEventListener("click", function () {
+        const packId = parseInt(this.getAttribute("data-id"), 10);
+        const slotIdx = heroSlots.findIndex((s) => s && s.id === packId);
+        if (slotIdx !== -1) {
+          heroSlots[slotIdx] = null;
+          renderHeroSlots();
+          renderHeroPickerList();
+        }
+      });
+    });
+  }
+
+  // Lắng nghe tìm kiếm bộ sưu tập
+  heroPackSearchInput?.addEventListener("input", function (e) {
+    heroSearchTerm = (e.target.value || "").trim().toLowerCase();
+    renderHeroPickerList();
+  });
+
+  // Mở & Đóng modal Hero
+  openHeroConfigBtn?.addEventListener("click", openHeroModal);
+  closeHeroModalBtn?.addEventListener("click", closeHeroModal);
+  cancelHeroModalBtn?.addEventListener("click", closeHeroModal);
+
+  heroModal?.addEventListener("click", function (e) {
+    if (e.target === heroModal) {
+      closeHeroModal();
+    }
+  });
+
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && heroModal?.classList.contains("active")) {
+      closeHeroModal();
+    }
+  });
+
+  // Lưu cấu hình Hero
+  saveHeroConfigBtn?.addEventListener("click", async function () {
+    const validSlots = heroSlots.filter(Boolean);
+    if (validSlots.length !== 4) {
+      showToast("⚠️ Vui lòng chọn đủ đúng 4 bộ sưu tập cho 4 vị trí Hero!");
+      return;
+    }
+
+    const packIds = validSlots.map((p) => p.id);
+
+    saveHeroConfigBtn.disabled = true;
+    const originalText = saveHeroConfigBtn.innerHTML;
+    saveHeroConfigBtn.innerHTML = `
+      <i data-lucide="loader" style="width: 16px; height: 16px; animation: spin 1s linear infinite;"></i>
+      <span>Đang lưu cấu hình...</span>
+    `;
+    if (window.lucide) window.lucide.createIcons();
+
+    try {
+      const response = await fetch("/admin/api/hero-packs", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ pack_ids: packIds }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        showToast(`✅ ${result.message}`);
+        closeHeroModal();
+        if (typeof fetchPacks === "function") {
+          fetchPacks();
+        }
+      } else {
+        showToast(`❌ ${result.message || "Không thể lưu cấu hình Hero!"}`);
+      }
+    } catch (err) {
+      console.error("Lỗi khi lưu Hero Sticker:", err);
+      showToast("❌ Lỗi kết nối máy chủ khi lưu Hero!");
+    } finally {
+      saveHeroConfigBtn.disabled = false;
+      saveHeroConfigBtn.innerHTML = originalText;
+      if (window.lucide) window.lucide.createIcons();
     }
   });
 

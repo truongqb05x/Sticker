@@ -1,12 +1,11 @@
-"""
-Admin Routes Blueprint
-Quản lý toàn bộ các tuyến đường (routes) và REST API dành cho giao diện quản trị (Admin Portal)
-"""
-
 import os
+import time
+import uuid
+import werkzeug.utils
 from flask import Blueprint, render_template, request, jsonify
+from sqlalchemy import desc
 from sqlalchemy.orm import joinedload
-from src.database import get_db, Category, StickerPack, Sticker
+from src.database import get_db, Category, StickerPack, Sticker, HeroBanner
 from .auth import (
     login_required,
     login_handler,
@@ -25,41 +24,23 @@ from .services import (
 admin_bp = Blueprint("admin", __name__, url_prefix="/admin")
 
 
-# ========================================================
-# XÁC THỰC & ĐĂNG NHẬP / ĐĂNG XUẤT ADMIN
-# ========================================================
-
 @admin_bp.route("/login", methods=["GET", "POST"])
 def login():
-    """Giao diện và API xử lý đăng nhập Quản trị viên"""
     return login_handler()
-
 
 @admin_bp.route("/logout", methods=["GET", "POST"])
 def logout():
-    """Đăng xuất Quản trị viên và đưa về trang đăng nhập"""
     return logout_handler()
-
 
 @admin_bp.route("/api/me", methods=["GET"])
 @login_required
 def me():
-    """API lấy thông tin Quản trị viên hiện tại"""
     return me_handler()
 
-
-# ========================================================
-# DASHBOARD TỔNG QUAN (VIEW & REST API)
-# ========================================================
-
-# ========================================================
-# DASHBOARD TỔNG QUAN (VIEW & REST API)
-# ========================================================
 
 @admin_bp.route("/dashboard")
 @login_required
 def dashboard():
-    """Bảng điều khiển tổng quan: lấy toàn bộ số liệu thời gian thực từ CSDL"""
     with get_db() as db:
         stats = DashboardService.get_summary_metrics(db)
         categories = db.query(Category).order_by(Category.sort_order).all()
@@ -98,9 +79,6 @@ def api_dashboard_chart():
     return jsonify({"success": True, "range": range_type, "data": data})
 
 
-# ========================================================
-# QUẢN LÝ BỘ SƯU TẬP (COLLECTIONS CRUD REST API)
-# ========================================================
 
 @admin_bp.route("/api/packs", methods=["GET"])
 @login_required
@@ -123,8 +101,24 @@ def api_get_packs():
 @admin_bp.route("/api/packs", methods=["POST"])
 @login_required
 def api_create_pack():
-    """API thêm mới bộ sưu tập sticker"""
-    data = request.get_json(silent=True) or {}
+    """API thêm mới bộ sưu tập sticker (hỗ trợ cả JSON và Multipart Form Upload)"""
+    if request.is_json:
+        data = request.get_json() or {}
+    else:
+        data = request.form.to_dict()
+        file = request.files.get("cover_file") or request.files.get("file")
+        if file and file.filename:
+            filename = werkzeug.utils.secure_filename(file.filename)
+            ext = filename.rsplit(".", 1)[-1].lower() if "." in filename else "jpg"
+            unique_filename = f"pack_{int(time.time())}_{uuid.uuid4().hex[:6]}.{ext}"
+            upload_dir = os.path.join(
+                os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "assets", "packs"
+            )
+            os.makedirs(upload_dir, exist_ok=True)
+            file_path_disk = os.path.join(upload_dir, unique_filename)
+            file.save(file_path_disk)
+            data["cover_image"] = f"/assets/packs/{unique_filename}"
+
     title = (data.get("title") or "").strip()
     if not title:
         return jsonify({"success": False, "message": "Vui lòng nhập tên bộ sưu tập!"}), 400
@@ -156,8 +150,24 @@ def api_get_pack_detail(pack_id: int):
 @admin_bp.route("/api/packs/<int:pack_id>", methods=["PUT", "POST"])
 @login_required
 def api_update_pack(pack_id: int):
-    """API cập nhật thông tin bộ sưu tập"""
-    data = request.get_json(silent=True) or {}
+    """API cập nhật thông tin bộ sưu tập (hỗ trợ cả JSON và Multipart Form Upload)"""
+    if request.is_json:
+        data = request.get_json() or {}
+    else:
+        data = request.form.to_dict()
+        file = request.files.get("cover_file") or request.files.get("file")
+        if file and file.filename:
+            filename = werkzeug.utils.secure_filename(file.filename)
+            ext = filename.rsplit(".", 1)[-1].lower() if "." in filename else "jpg"
+            unique_filename = f"pack_{pack_id}_{int(time.time())}_{uuid.uuid4().hex[:6]}.{ext}"
+            upload_dir = os.path.join(
+                os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "assets", "packs"
+            )
+            os.makedirs(upload_dir, exist_ok=True)
+            file_path_disk = os.path.join(upload_dir, unique_filename)
+            file.save(file_path_disk)
+            data["cover_image"] = f"/assets/packs/{unique_filename}"
+
     try:
         with get_db() as db:
             updated_pack = PackService.update_pack(db, pack_id, data)
@@ -211,15 +221,6 @@ def api_delete_pack(pack_id: int):
     return jsonify({"success": True, "message": "Đã xóa bộ sưu tập thành công khỏi CSDL!"})
 
 
-# ========================================================
-# CÁC TUYẾN ĐƯỜNG TRANG QUẢN TRỊ KHÁC
-# ========================================================
-
-# ========================================================
-# QUẢN LÝ DANH MỤC CHỦ ĐỀ (CATEGORY CRUD REST API)
-# ========================================================
-
-@admin_bp.route("/categories")
 @admin_bp.route("/danhmuc")
 @login_required
 def categories():
@@ -357,11 +358,6 @@ def collections():
         current_user=current_user,
     )
 
-
-# ========================================================
-# QUẢN LÝ KHO STICKER ĐƠN LẺ (STICKER CRUD REST API)
-# ========================================================
-
 @admin_bp.route("/khosticker")
 @login_required
 def stickers():
@@ -489,8 +485,39 @@ def api_download_sticker(sticker_id: int):
 @admin_bp.route("/chitietsticker")
 @login_required
 def collection_detail():
-    """Chi tiết bộ sưu tập sticker"""
-    return render_template("admin/chitietsticker.html")
+    """Chi tiết bộ sưu tập sticker: nạp dữ liệu thực tế từ CSDL theo id hoặc slug"""
+    pack_id = request.args.get("id")
+    slug = request.args.get("slug")
+    with get_db() as db:
+        pack = None
+        if pack_id and pack_id.isdigit():
+            pack = db.query(StickerPack).filter_by(id=int(pack_id)).first()
+        elif slug:
+            pack = db.query(StickerPack).filter_by(slug=slug).first()
+
+        # Nếu có truyền id hoặc slug nhưng không tìm thấy, trả về lỗi 404
+        if (pack_id or slug) and not pack:
+            return render_template("404.html", message="Không tìm thấy bộ sưu tập!"), 404
+        if not pack:
+            pack = db.query(StickerPack).order_by(StickerPack.id.asc()).first()
+
+        if not pack:
+            return render_template("404.html", message="Chưa có bộ sưu tập nào trong hệ thống!"), 404
+
+        pack_data = PackService.get_pack_by_id(db, pack.id)
+        categories = db.query(Category).order_by(Category.sort_order).all()
+        stickers_result = StickerService.get_stickers(db, pack_id=str(pack.id), limit=150)
+        stickers = stickers_result["stickers"]
+
+    current_user = get_current_user() or {"username": "Quản trị viên"}
+
+    return render_template(
+        "admin/chitietsticker.html",
+        pack=pack_data,
+        categories=categories,
+        stickers=stickers,
+        current_user=current_user,
+    )
 
 
 @admin_bp.route("/thongke")
@@ -533,3 +560,105 @@ def api_get_stats():
 
     return jsonify({"success": True, **data})
 
+# ========================================================
+# API CẤU HÌNH 4 BỘ SƯU TẬP HERO CHO TRANG CHỦ
+# ========================================================
+
+@admin_bp.route("/api/hero-packs", methods=["GET"])
+@login_required
+def api_get_hero_packs():
+    """Lấy danh sách các bộ sưu tập đang được cấu hình làm Hero và danh sách toàn bộ các gói khả dụng"""
+    with get_db() as db:
+        # 1. Lấy các pack hiện đang có cờ is_featured = 1
+        current_hero_packs = (
+            db.query(StickerPack)
+            .filter(StickerPack.status == "active", StickerPack.is_featured == 1)
+            .order_by(StickerPack.featured_order.asc())
+            .limit(4)
+            .all()
+        )
+
+        hero_pack_ids = [p.id for p in current_hero_packs]
+
+        # Nếu chưa đủ 4 pack, lấy bù các pack tải nhiều nhất để người dùng dễ chọn
+        if len(hero_pack_ids) < 4:
+            more_packs = (
+                db.query(StickerPack)
+                .filter(
+                    StickerPack.status == "active",
+                    ~StickerPack.id.in_(hero_pack_ids) if hero_pack_ids else True
+                )
+                .order_by(desc(StickerPack.total_downloads))
+                .limit(4 - len(hero_pack_ids))
+                .all()
+            )
+            for mp in more_packs:
+                current_hero_packs.append(mp)
+                hero_pack_ids.append(mp.id)
+
+        # 2. Lấy danh sách toàn bộ các bộ sưu tập active để chọn
+        all_active_packs = (
+            db.query(StickerPack)
+            .filter(StickerPack.status == "active")
+            .order_by(StickerPack.title.asc())
+            .all()
+        )
+
+        selected = [PackService.serialize_pack(p) for p in current_hero_packs]
+        available = [PackService.serialize_pack(p) for p in all_active_packs]
+
+    return jsonify({
+        "success": True,
+        "selected_hero_packs": selected,
+        "available_packs": available,
+    })
+
+
+@admin_bp.route("/api/hero-packs", methods=["POST"])
+@login_required
+def api_save_hero_packs():
+    """Lưu 4 bộ sưu tập được chỉ định làm Hero Slider hiển thị trên trang chủ"""
+    data = request.get_json(silent=True) or {}
+    pack_ids = data.get("pack_ids") or []
+
+    if not isinstance(pack_ids, list) or len(pack_ids) != 4:
+        return jsonify({"success": False, "message": "Vui lòng chọn đúng 4 bộ sưu tập cho vị trí Hero!"}), 400
+
+    try:
+        with get_db() as db:
+            # 1. Reset trạng thái is_featured của toàn bộ các bộ sưu tập khác
+            db.query(StickerPack).update({"is_featured": 0, "featured_order": 0}, synchronize_session=False)
+
+            # 2. Làm mới bảng hero_banners
+            db.query(HeroBanner).delete()
+
+            # 3. Cập nhật 4 pack được chọn và tạo slide banner tương ứng
+            selected_packs = []
+            for idx, pid in enumerate(pack_ids):
+                pack = db.query(StickerPack).filter_by(id=int(pid)).first()
+                if not pack:
+                    continue
+                pack.is_featured = 1
+                pack.featured_order = idx + 1
+                selected_packs.append(pack)
+
+                cat_slug = pack.category.slug if pack.category else "others"
+                banner = HeroBanner(
+                    title=pack.title,
+                    subtitle=pack.description or f"Bộ sưu tập {pack.title} siêu đáng yêu, miễn phí!",
+                    image_url=pack.cover_image or "/assets/logo_cat.svg",
+                    target_url=f"/bo-suu-tap/{cat_slug}/{pack.slug}",
+                    sort_order=idx,
+                    status="active",
+                )
+                db.add(banner)
+
+            db.commit()
+
+        return jsonify({
+            "success": True,
+            "message": "Đã lưu thành công 4 bộ sưu tập Hero cho trang chủ!",
+            "hero_pack_ids": pack_ids,
+        })
+    except Exception as e:
+        return jsonify({"success": False, "message": f"Lỗi khi lưu Hero Sticker: {str(e)}"}), 500

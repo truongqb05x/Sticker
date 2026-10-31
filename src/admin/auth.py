@@ -1,9 +1,3 @@
-"""
-Admin Authentication Module - StickerHub
-Cung cấp toàn bộ logic xác thực, quản lý phiên đăng nhập (session),
-bảo vệ tuyến đường quản trị (@login_required) và xử lý đăng nhập / đăng xuất.
-"""
-
 from datetime import datetime
 from functools import wraps
 from typing import Optional, Dict, Any
@@ -260,4 +254,3 @@ def auth_logout_route():
 @login_required
 def auth_me_route():
     return me_handler()
-

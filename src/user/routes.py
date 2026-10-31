@@ -219,9 +219,9 @@ def pack_detail(category_slug, slug):
     session_token, is_new = get_or_create_session_token()
 
     with get_db() as db:
-        pack = PackDetailService.get_pack_by_slug_or_id(db, slug or "cute-cats", session_token=session_token)
+        pack = PackDetailService.get_pack_by_slug_or_id(db, slug, session_token=session_token)
         if not pack:
-            return redirect(url_for("user.collections"))
+            return render_template("404.html", message=f"Không tìm thấy bộ sưu tập '{slug}'!"), 404
 
         # Nếu category_slug trên URL khác category_slug thực tế của gói thì redirect 301 về đúng chuẩn
         real_cat_slug = pack.get("category_slug") or "others"

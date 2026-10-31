@@ -1,15 +1,5 @@
-"""
-Pack Detail Service Module - StickerHub User Portal
-Cung cấp toàn bộ nghiệp vụ truy vấn và tương tác cho trang Chi tiết bộ sưu tập (templates/user/sticker_chitiet.html):
-- Lấy thông tin chi tiết gói sticker theo slug hoặc ID (kèm trạng thái yêu thích)
-- Lấy danh sách sticker đơn lẻ trong gói (có hỗ trợ phân trang xem trước)
-- Lấy danh sách bộ sưu tập liên quan (cùng danh mục hoặc nổi bật)
-- Toggle yêu thích (thả tim) theo phiên người dùng (session_token)
-- Ghi nhận lượt tải trọn bộ ZIP và tải sticker đơn lẻ
-"""
-
 import math
-from datetime import datetime
+from datetime import datetime, date
 from typing import Dict, Any, List, Optional
 from sqlalchemy import func, desc
 from sqlalchemy.orm import Session
@@ -39,7 +29,7 @@ def format_compact(val: Any) -> str:
 def normalize_asset_url(path: Optional[str]) -> str:
     """Chuẩn hóa đường dẫn hình ảnh thành đường dẫn web tuyệt đối (/assets/...)"""
     if not path:
-        return "/assets/pack_cats.jpg"
+        return ""
     p = path.strip()
     if p.startswith("http://") or p.startswith("https://"):
         return p
@@ -75,10 +65,6 @@ class PackDetailService:
         else:
             pack = query.filter_by(slug=str(identifier)).first()
 
-        # Fallback nếu không tìm thấy slug
-        if not pack:
-            pack = query.filter_by(slug="cute-cats").first() or query.first()
-
         if not pack:
             return None
 
@@ -95,36 +81,39 @@ class PackDetailService:
             fav = db.query(Favorite).filter_by(pack_id=pack.id, session_token=session_token).first()
             is_favorited = fav is not None
 
+        # Tự động đếm chính xác số lượng sticker thực tế trong CSDL
+        real_stickers_count = int(
+            db.query(func.count(Sticker.id)).filter(Sticker.pack_id == pack.id).scalar() or 0
+        )
+        if pack.total_stickers != real_stickers_count:
+            pack.total_stickers = real_stickers_count
+            try:
+                db.commit()
+            except Exception:
+                db.rollback()
+
         # Thu thập danh sách thẻ tag
-        tags = []
-        if pack.tags:
-            tags = [t.name for t in pack.tags]
-        else:
-            tags = [
-                pack.category.name if pack.category else "Mèo",
-                "Dễ thương",
-                "Chibi",
-            ]
+        tags = [t.name for t in pack.tags] if pack.tags else []
 
         # Định dạng ngày tạo
-        created_str = pack.created_at.strftime("%d/%m/%Y") if pack.created_at else "12/05/2025"
+        created_str = pack.created_at.strftime("%d/%m/%Y") if pack.created_at else ""
 
         return {
             "id": pack.id,
             "title": pack.title,
             "slug": pack.slug,
             "author_name": pack.author_name or "StickerHub Team",
-            "description": pack.description or f"Bộ sticker {pack.title} siêu đáng yêu, với nhiều biểu cảm độc đáo và sinh động!",
+            "description": pack.description or f"Bộ sưu tập {pack.title}",
             "cover_image": normalize_asset_url(pack.cover_image),
-            "total_stickers": pack.total_stickers or 0,
-            "file_size_mb": float(pack.file_size_mb or 12.5),
+            "total_stickers": real_stickers_count,
+            "file_size_mb": float(pack.file_size_mb or 0.0),
             "total_downloads": pack.total_downloads or 0,
             "total_downloads_compact": format_compact(pack.total_downloads or 0),
             "total_favorites": pack.total_favorites or 0,
             "total_favorites_compact": format_compact(pack.total_favorites or 0),
             "total_views": pack.total_views or 0,
-            "rating_avg": float(pack.rating_avg or 4.8),
-            "rating_count": pack.rating_count or 126,
+            "rating_avg": float(pack.rating_avg or 5.0),
+            "rating_count": pack.rating_count or 0,
             "created_at": pack.created_at.strftime("%Y-%m-%d %H:%M:%S") if pack.created_at else None,
             "created_at_formatted": created_str,
             "category_id": pack.category_id,
@@ -178,29 +167,10 @@ class PackDetailService:
                     "file_path": normalize_asset_url(s.file_path),
                     "format": s.format or "svg",
                     "dimensions": s.dimensions or "512x512",
-                    "file_size_kb": s.file_size_kb or 24,
+                    "file_size_kb": s.file_size_kb or 0,
                     "total_downloads": s.total_downloads or 0,
                     "sort_order": s.sort_order,
                 })
-        else:
-            # Fallback minh họa phong phú nếu gói chưa kịp upload từng sticker con vào DB
-            sample_count = min(20, limit)
-            for i in range(1, sample_count + 1):
-                idx_str = f"{i:02d}"
-                stickers.append({
-                    "id": i,
-                    "pack_id": pack_id,
-                    "title": f"Sticker #{i}",
-                    "file_name": f"cat_{idx_str}.svg",
-                    "file_path": f"/assets/stickers/cat_{idx_str}.svg",
-                    "format": "svg",
-                    "dimensions": "512x512",
-                    "file_size_kb": 24,
-                    "total_downloads": 0,
-                    "sort_order": i,
-                })
-            total = len(stickers)
-            total_pages = 1
 
         pagination = {
             "page": page,
@@ -344,8 +314,17 @@ class PackDetailService:
         if not sticker:
             return {"success": False, "message": "Không tìm thấy sticker!"}
 
+        # 1. Tăng số lượt tải của Sticker đơn lẻ
         sticker.total_downloads = (sticker.total_downloads or 0) + 1
 
+        # 2. Tăng số lượt tải của Bộ sưu tập chứa nó (+1 lượt tải)
+        pack = db.query(StickerPack).filter_by(id=sticker.pack_id).first()
+        pack_downloads = 0
+        if pack:
+            pack.total_downloads = (pack.total_downloads or 0) + 1
+            pack_downloads = pack.total_downloads
+
+        # 3. Lưu vết vào nhật ký DownloadLog
         log = DownloadLog(
             pack_id=sticker.pack_id,
             sticker_id=sticker.id,
@@ -355,13 +334,21 @@ class PackDetailService:
             downloaded_at=datetime.utcnow(),
         )
         db.add(log)
+
+        # 4. Tăng tổng lượt tải trong DailyStat hôm nay
+        today = date.today()
+        daily = db.query(DailyStat).filter_by(stat_date=today).first()
+        if daily:
+            daily.total_downloads = (daily.total_downloads or 0) + 1
+
         db.commit()
 
         return {
             "success": True,
             "sticker_id": sticker.id,
             "total_downloads": sticker.total_downloads,
+            "pack_id": sticker.pack_id,
+            "pack_downloads": pack_downloads,
             "file_path": normalize_asset_url(sticker.file_path),
             "title": sticker.title,
         }
-

@@ -1,8 +1,3 @@
-"""
-Pack Service Module - StickerHub Admin
-Cung cấp toàn bộ nghiệp vụ quản lý bộ sưu tập sticker (CRUD, lọc, tìm kiếm, phân trang, gán nhãn)
-"""
-
 import re
 import uuid
 import time
@@ -10,7 +5,7 @@ from datetime import datetime
 from typing import Dict, Any, List, Optional
 from sqlalchemy import func, or_, desc
 from sqlalchemy.orm import Session
-from src.database import StickerPack, Category, Tag
+from src.database import StickerPack, Category, Tag, Sticker
 
 
 def slugify_vn(text: str) -> str:
@@ -53,11 +48,19 @@ class PackService:
     """Dịch vụ xử lý nghiệp vụ Quản lý Bộ sưu tập Sticker"""
 
     @classmethod
-    def serialize_pack(cls, pack: StickerPack) -> Dict[str, Any]:
-        """Chuyển đổi đối tượng StickerPack sang dict an toàn cho JSON & SSR"""
+    def serialize_pack(cls, pack: StickerPack, actual_stickers: Optional[int] = None) -> Dict[str, Any]:
+        """Chuyển đổi đối tượng StickerPack sang dict an toàn cho JSON & SSR (tự động đếm sticker thực tế)"""
         cat_name = pack.category.name if pack.category else "Chưa phân loại"
         cat_slug = pack.category.slug if pack.category else "others"
         tags_list = [t.name for t in pack.tags] if pack.tags else []
+
+        # Tự động lấy số lượng sticker thực tế
+        if actual_stickers is not None:
+            count = int(actual_stickers)
+        elif hasattr(pack, "stickers") and pack.stickers is not None and len(pack.stickers) > 0:
+            count = len(pack.stickers)
+        else:
+            count = int(pack.total_stickers or 0)
 
         return {
             "id": pack.id,
@@ -69,8 +72,8 @@ class PackService:
             "category_name": cat_name,
             "category_slug": cat_slug,
             "description": pack.description or "",
-            "cover_image": pack.cover_image or "../../assets/logo_cat.svg",
-            "total_stickers": int(pack.total_stickers or 0),
+            "cover_image": pack.cover_image or "",
+            "total_stickers": count,
             "total_downloads": int(pack.total_downloads or 0),
             "total_downloads_fmt": format_compact(pack.total_downloads or 0),
             "total_favorites": int(pack.total_favorites or 0),
@@ -142,7 +145,25 @@ class PackService:
             .all()
         )
 
-        packs_data = [cls.serialize_pack(p) for p in packs_orm]
+        # Tự động đếm số lượng sticker thực tế cho các pack được hiển thị
+        pack_ids = [p.id for p in packs_orm]
+        actual_counts = {}
+        if pack_ids:
+            count_rows = (
+                db.query(Sticker.pack_id, func.count(Sticker.id))
+                .filter(Sticker.pack_id.in_(pack_ids))
+                .group_by(Sticker.pack_id)
+                .all()
+            )
+            actual_counts = {pid: int(cnt) for pid, cnt in count_rows}
+
+        packs_data = []
+        for p in packs_orm:
+            real_count = actual_counts.get(p.id, 0)
+            if p.total_stickers != real_count:
+                p.total_stickers = real_count
+            packs_data.append(cls.serialize_pack(p, actual_stickers=real_count))
+
         counts = cls.get_status_counts(db)
 
         return {
@@ -156,11 +177,18 @@ class PackService:
 
     @classmethod
     def get_pack_by_id(cls, db: Session, pack_id: int) -> Optional[Dict[str, Any]]:
-        """Lấy chi tiết một bộ sưu tập theo ID"""
+        """Lấy chi tiết một bộ sưu tập theo ID (tự động đếm số lượng sticker thực tế)"""
         pack = db.query(StickerPack).filter_by(id=pack_id).first()
         if not pack:
             return None
-        return cls.serialize_pack(pack)
+
+        # Tự động đếm số lượng sticker thực tế trong CSDL
+        real_count = int(db.query(func.count(Sticker.id)).filter(Sticker.pack_id == pack.id).scalar() or 0)
+        if pack.total_stickers != real_count:
+            pack.total_stickers = real_count
+            db.commit()
+
+        return cls.serialize_pack(pack, actual_stickers=real_count)
 
     @classmethod
     def _generate_unique_slug(cls, db: Session, base_slug: str, exclude_id: Optional[int] = None) -> str:
@@ -232,7 +260,7 @@ class PackService:
             status = "active"
 
         description = (data.get("description") or "").strip()
-        cover_image = (data.get("cover_image") or "../../assets/pack_cats.jpg").strip()
+        cover_image = (data.get("cover_image") or "").strip()
 
         # Tạo mã định danh pack
         code = f"SPK-{int(time.time()) % 1000000:06d}"
@@ -245,7 +273,7 @@ class PackService:
             author_name=author_name,
             description=description,
             cover_image=cover_image,
-            total_stickers=int(data.get("total_stickers") or 24),
+            total_stickers=0,  # Luôn khởi tạo từ 0, tự động đếm khi có sticker nạp vào qua các quá trình
             status=status,
             created_at=datetime.utcnow(),
             updated_at=datetime.utcnow(),
@@ -299,8 +327,9 @@ class PackService:
         if "cover_image" in data and data["cover_image"]:
             pack.cover_image = data["cover_image"].strip()
 
-        if "total_stickers" in data and str(data["total_stickers"]).isdigit():
-            pack.total_stickers = int(data["total_stickers"])
+        # Tự động đếm số lượng sticker thực tế trong CSDL, không nhận giá trị nhập tay
+        real_count = int(db.query(func.count(Sticker.id)).filter(Sticker.pack_id == pack.id).scalar() or 0)
+        pack.total_stickers = real_count
 
         # Cập nhật tags
         if "tags" in data or "tags_str" in data:
@@ -333,3 +362,24 @@ class PackService:
         db.commit()
         return True
 
+    @classmethod
+    def recalculate_stickers_count(cls, db: Session, pack_id: int) -> int:
+        """Tự động đếm và cập nhật số lượng sticker thực tế cho một bộ sưu tập"""
+        count = int(db.query(func.count(Sticker.id)).filter(Sticker.pack_id == pack_id).scalar() or 0)
+        db.query(StickerPack).filter(StickerPack.id == pack_id).update({"total_stickers": count})
+        db.commit()
+        return count
+
+    @classmethod
+    def sync_all_packs_sticker_counts(cls, db: Session) -> int:
+        """Tự động đồng bộ số lượng sticker thực tế cho toàn bộ các bộ sưu tập trong hệ thống"""
+        rows = (
+            db.query(StickerPack.id, func.count(Sticker.id))
+            .outerjoin(Sticker, Sticker.pack_id == StickerPack.id)
+            .group_by(StickerPack.id)
+            .all()
+        )
+        for pack_id, count in rows:
+            db.query(StickerPack).filter(StickerPack.id == pack_id).update({"total_stickers": int(count)})
+        db.commit()
+        return len(rows)

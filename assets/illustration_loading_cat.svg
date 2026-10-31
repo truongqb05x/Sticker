@@ -1,0 +1,231 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 330" width="100%" height="100%">
+  <defs>
+    <!-- Soft Drop Shadow -->
+    <filter id="boxShadow" x="-10%" y="-10%" width="125%" height="125%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#4A2E1D" flood-opacity="0.14"/>
+    </filter>
+    <filter id="stickerShadow" x="-15%" y="-15%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#543825" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+
+  <style>
+    .cat-outline { stroke: #3A2312; stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round; }
+    .cat-outline-thick { stroke: #3A2312; stroke-width: 3.8; stroke-linecap: round; stroke-linejoin: round; }
+    .cat-outline-thin { stroke: #3A2312; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+    .sticker-outline { stroke: #3A2312; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+  </style>
+
+  <!-- ================= GROUND SHADOW & PAPER SCRAPS ================= -->
+  <!-- Ground Shadow under Box -->
+  <ellipse cx="230" cy="275" rx="115" ry="16" fill="#EADCCF" opacity="0.8"/>
+  <ellipse cx="230" cy="276" rx="80" ry="10" fill="#DECAB8" opacity="0.6"/>
+
+  <!-- Paper scraps on floor -->
+  <g class="sticker-outline" fill="#FAF5EE">
+    <!-- Paper scrap 1 (left) -->
+    <polygon points="128,268 145,264 150,274 133,278" stroke="#D3B89E" stroke-width="1.8"/>
+    <!-- Paper scrap 2 (far left) -->
+    <polygon points="98,255 112,253 115,263 101,265" stroke="#D3B89E" stroke-width="1.8"/>
+    <!-- Paper scrap 3 (right) -->
+    <polygon points="310,268 326,262 331,272 315,277" stroke="#D3B89E" stroke-width="1.8"/>
+    <!-- Paper scrap 4 (far right) -->
+    <polygon points="340,256 352,252 356,260 344,264" stroke="#D3B89E" stroke-width="1.8"/>
+  </g>
+
+  <!-- ================= CARDBOARD BOX BACK (INSIDE) ================= -->
+  <g id="boxInside">
+    <!-- Interior dark cavity of box -->
+    <polygon points="160,205 295,205 315,175 140,175" fill="#8C582B"/>
+    <!-- Back inner flap (slightly visible behind cat) -->
+    <polygon points="140,175 315,175 330,140 125,140" fill="#B3783E" class="cat-outline"/>
+  </g>
+
+  <!-- ================= THE JOYFUL CAT JUMPING UP ================= -->
+  <g id="joyfulCat" class="cat-character-group">
+    <!-- Cat Body (sitting inside box) -->
+    <path d="M 165 220 C 165 170, 185 145, 230 145 C 275 145, 295 170, 295 220 Z" 
+          fill="#FFFFFF" class="cat-outline-thick"/>
+    <!-- Orange patch on body right -->
+    <path d="M 245 155 C 270 160, 290 185, 295 220 L 260 220 C 255 190, 245 175, 245 155 Z" 
+          fill="#FFA842"/>
+
+    <!-- Left Arm & Paw raised high -->
+    <g class="cat-left-arm">
+      <!-- Arm -->
+      <path d="M 185 185 C 160 170, 140 145, 142 125 C 145 110, 165 112, 172 130 C 178 145, 195 165, 200 175 Z" 
+            fill="#FFFFFF" class="cat-outline-thick"/>
+      <!-- Orange tabby markings on left arm -->
+      <path d="M 160 148 Q 170 142 178 152" fill="none" stroke="#FFA842" stroke-width="5" stroke-linecap="round"/>
+      <path d="M 152 165 Q 162 160 170 170" fill="none" stroke="#FFA842" stroke-width="5" stroke-linecap="round"/>
+      <!-- Fluffy Round Left Paw -->
+      <circle cx="140" cy="120" r="15" fill="#FFFFFF" class="cat-outline"/>
+      <!-- Toe divisions -->
+      <path d="M 134 116 C 134 110, 140 110, 140 116" fill="none" class="cat-outline-thin"/>
+      <path d="M 140 116 C 140 110, 146 110, 146 116" fill="none" class="cat-outline-thin"/>
+    </g>
+
+    <!-- Right Arm & Paw raised high -->
+    <g class="cat-right-arm">
+      <!-- Arm -->
+      <path d="M 275 185 C 300 170, 320 145, 318 125 C 315 110, 295 112, 288 130 C 282 145, 265 165, 260 175 Z" 
+            fill="#FFA842" class="cat-outline-thick"/>
+      <!-- Fluffy Round Right Paw -->
+      <circle cx="320" cy="120" r="15" fill="#FFFFFF" class="cat-outline"/>
+      <!-- Toe divisions -->
+      <path d="M 314 116 C 314 110, 320 110, 320 116" fill="none" class="cat-outline-thin"/>
+      <path d="M 320 116 C 320 110, 326 110, 326 116" fill="none" class="cat-outline-thin"/>
+    </g>
+
+    <!-- Cat Head -->
+    <g class="cat-head-group">
+      <!-- Ears -->
+      <!-- Left Ear (White & Pink) -->
+      <path d="M 182 105 Q 165 65 192 58 Q 212 75 210 100 Z" fill="#FFFFFF" class="cat-outline-thick"/>
+      <path d="M 185 96 Q 174 72 192 68 Q 204 80 202 96 Z" fill="#FFB7C2"/>
+
+      <!-- Right Ear (Ginger & Pink) -->
+      <path d="M 250 100 Q 248 75 268 58 Q 295 65 278 105 Z" fill="#FFA842" class="cat-outline-thick"/>
+      <path d="M 258 96 Q 256 80 268 68 Q 286 72 275 96 Z" fill="#FFB7C2"/>
+
+      <!-- Head Base (Chubby Cute Oval) -->
+      <ellipse cx="230" cy="115" rx="58" ry="44" fill="#FFFFFF" class="cat-outline-thick"/>
+
+      <!-- Ginger Calico Patch on Top/Right Head -->
+      <path d="M 215 72 Q 245 70 270 85 Q 288 102 288 125 Q 280 145 260 152 Q 252 135 248 118 Q 235 95 215 72 Z" 
+            fill="#FFA842" stroke="#3A2312" stroke-width="3" stroke-linejoin="round"/>
+      <!-- Tabby stripes on patch -->
+      <path d="M 235 78 Q 242 88 238 98" fill="none" stroke="#E67E22" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M 255 90 Q 262 102 258 112" fill="none" stroke="#E67E22" stroke-width="2.5" stroke-linecap="round"/>
+
+      <!-- Cheeks (Big Cute Rosy Pink Blush) -->
+      <ellipse cx="192" cy="128" rx="10" ry="6" fill="#FFA3AE" opacity="0.75"/>
+      <ellipse cx="268" cy="128" rx="10" ry="6" fill="#FFA3AE" opacity="0.75"/>
+
+      <!-- Happy Closed Smiling Eyes (^ ^) -->
+      <path d="M 198 118 Q 207 108 216 118" fill="none" class="cat-outline-thick"/>
+      <path d="M 244 118 Q 253 108 262 118" fill="none" class="cat-outline-thick"/>
+
+      <!-- Tiny Cute Nose -->
+      <polygon points="230,123 226,127 234,127" fill="#FF8294"/>
+
+      <!-- Open Joyful Mouth with Pink Tongue -->
+      <path d="M 221 128 Q 230 132 239 128 Q 239 146 230 146 Q 221 146 221 128 Z" 
+            fill="#3A2312" class="cat-outline-thin"/>
+      <!-- Pink Tongue inside mouth -->
+      <path d="M 224 138 C 224 134, 236 134, 236 138 C 236 145, 224 145, 224 138 Z" fill="#FF788B"/>
+
+      <!-- Whiskers -->
+      <line x1="172" y1="120" x2="184" y2="122" stroke="#3A2312" stroke-width="2" stroke-linecap="round"/>
+      <line x1="170" y1="128" x2="183" y2="128" stroke="#3A2312" stroke-width="2" stroke-linecap="round"/>
+      <line x1="276" y1="122" x2="288" y2="120" stroke="#3A2312" stroke-width="2" stroke-linecap="round"/>
+      <line x1="277" y1="128" x2="290" y2="128" stroke="#3A2312" stroke-width="2" stroke-linecap="round"/>
+    </g>
+  </g>
+
+  <!-- ================= CARDBOARD BOX FRONT & SIDES ================= -->
+  <g id="boxFront" filter="url(#boxShadow)">
+    <!-- Main Front Panel of Box -->
+    <polygon points="160,205 295,205 290,268 165,268" fill="#E5B67A" class="cat-outline-thick"/>
+
+    <!-- Left Side Panel (Perspective shading) -->
+    <polygon points="140,175 160,205 165,268 145,232" fill="#C9975B" class="cat-outline-thick"/>
+
+    <!-- Front Paw Print Stamp on the box -->
+    <g transform="translate(228, 236) scale(1.15)" fill="#683F20">
+      <!-- Main pad -->
+      <ellipse cx="0" cy="3" rx="10" ry="7.5"/>
+      <!-- 4 Toe beans -->
+      <circle cx="-9" cy="-8" r="3.2"/>
+      <circle cx="-3" cy="-12" r="3.6"/>
+      <circle cx="3" cy="-12" r="3.6"/>
+      <circle cx="9" cy="-8" r="3.2"/>
+    </g>
+
+    <!-- Open Folded Flaps -->
+    <!-- Front Flap (hanging downwards) -->
+    <polygon points="160,205 295,205 285,228 170,228" fill="#D9A566" class="cat-outline"/>
+    <!-- Left Flap (folded outward to the left) -->
+    <polygon points="140,175 160,205 130,215 110,185" fill="#E5B67A" class="cat-outline"/>
+    <!-- Right Flap (folded outward to the right) -->
+    <polygon points="295,205 315,175 340,195 320,225" fill="#C9975B" class="cat-outline"/>
+
+    <!-- Wood / Cardboard crease lines & texture -->
+    <line x1="165" y1="205" x2="170" y2="265" stroke="#D39F63" stroke-width="2"/>
+    <line x1="285" y1="205" x2="280" y2="265" stroke="#D39F63" stroke-width="2"/>
+  </g>
+
+  <!-- ================= FLOATING STICKERS POPPING OUT ================= -->
+  <!-- 1. Floating Red Heart Sticker (Top-Left) -->
+  <g class="floating-sticker sticker-heart" transform="translate(100, 78)" filter="url(#stickerShadow)">
+    <path d="M 18 6 C 18 0, 10 -2, 6 4 C 2 9, 4 14, 18 26 C 32 14, 34 9, 30 4 C 26 -2, 18 0, 18 6 Z" 
+          fill="#F2545B" class="sticker-outline"/>
+    <!-- Shiny White Highlight -->
+    <path d="M 10 5 C 7 7, 7 11, 10 13" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round"/>
+  </g>
+
+  <!-- 2. Mini Cat Head Sticker (Left) -->
+  <g class="floating-sticker sticker-mini-cat-left" transform="translate(85, 140) rotate(-12)" filter="url(#stickerShadow)">
+    <!-- Ears -->
+    <polygon points="6,14 1,3 12,8" fill="#FFA842" class="cat-outline-thin"/>
+    <polygon points="28,8 39,3 34,14" fill="#FFA842" class="cat-outline-thin"/>
+    <!-- Head -->
+    <ellipse cx="20" cy="18" rx="16" ry="12" fill="#FFFFFF" class="sticker-outline"/>
+    <path d="M 12 7 Q 20 6 28 10 Q 36 15 36 21 Q 33 26 26 29 Q 22 22 18 16 Z" fill="#FFA842"/>
+    <!-- Cute Face -->
+    <circle cx="15" cy="18" r="1.8" fill="#3A2312"/>
+    <circle cx="25" cy="18" r="1.8" fill="#3A2312"/>
+    <ellipse cx="11" cy="20" rx="2.5" ry="1.5" fill="#FFA3AE"/>
+    <ellipse cx="29" cy="20" rx="2.5" ry="1.5" fill="#FFA3AE"/>
+    <path d="M 18 20 Q 20 22 22 20" fill="none" stroke="#3A2312" stroke-width="1.4" stroke-linecap="round"/>
+  </g>
+
+  <!-- 3. Photo / Polaroid Landscape Sticker (Top-Right) -->
+  <g class="floating-sticker sticker-photo" transform="translate(330, 60) rotate(16)" filter="url(#stickerShadow)">
+    <!-- Photo Frame (White) -->
+    <rect x="0" y="0" width="34" height="40" rx="3" fill="#FFFFFF" class="sticker-outline"/>
+    <!-- Photo Content -->
+    <rect x="3" y="3" width="28" height="26" rx="2" fill="#75C2F6"/>
+    <!-- Sun -->
+    <circle cx="23" cy="9" r="3" fill="#FFD154"/>
+    <!-- Mountains -->
+    <polygon points="3,29 14,15 22,29" fill="#5F9E6E"/>
+    <polygon points="16,29 23,20 31,29" fill="#80BA8E"/>
+  </g>
+
+  <!-- 4. Cute 5-Point Yellow Star Sticker (Right) -->
+  <g class="floating-sticker sticker-star" transform="translate(365, 105) rotate(15)" filter="url(#stickerShadow)">
+    <polygon points="12,1 15,9 23,9 17,14 19,22 12,17 5,22 7,14 1,9 9,9" 
+             fill="#FFD154" class="sticker-outline"/>
+    <!-- Sparkle highlight -->
+    <circle cx="10" cy="7" r="1.5" fill="#FFFFFF"/>
+  </g>
+
+  <!-- 5. Mini Cat Head Sticker (Lower Right) -->
+  <g class="floating-sticker sticker-mini-cat-right" transform="translate(340, 138) rotate(14)" filter="url(#stickerShadow)">
+    <!-- Ears -->
+    <polygon points="6,14 1,3 12,8" fill="#FFA842" class="cat-outline-thin"/>
+    <polygon points="28,8 39,3 34,14" fill="#FFA842" class="cat-outline-thin"/>
+    <!-- Head -->
+    <ellipse cx="20" cy="18" rx="16" ry="12" fill="#FFFFFF" class="sticker-outline"/>
+    <path d="M 12 7 Q 20 6 28 10 Q 36 15 36 21 Q 33 26 26 29 Q 22 22 18 16 Z" fill="#FFA842"/>
+    <!-- Cute Face -->
+    <circle cx="15" cy="18" r="1.8" fill="#3A2312"/>
+    <circle cx="25" cy="18" r="1.8" fill="#3A2312"/>
+    <ellipse cx="11" cy="20" rx="2.5" ry="1.5" fill="#FFA3AE"/>
+    <ellipse cx="29" cy="20" rx="2.5" ry="1.5" fill="#FFA3AE"/>
+    <path d="M 18 20 Q 20 22 22 20" fill="none" stroke="#3A2312" stroke-width="1.4" stroke-linecap="round"/>
+  </g>
+
+  <!-- Golden Sparkle Stars around Cat -->
+  <g fill="#F5C042">
+    <!-- Sparkle 1 near heart -->
+    <path d="M 85 110 Q 85 115 80 115 Q 85 115 85 120 Q 85 115 90 115 Q 85 115 85 110 Z" />
+    <!-- Sparkle 2 near right arm -->
+    <path d="M 310 90 Q 310 94 306 94 Q 310 94 310 98 Q 310 94 314 94 Q 310 94 310 90 Z" />
+    <!-- Sparkle 3 near star -->
+    <path d="M 395 130 Q 395 133 392 133 Q 395 133 395 136 Q 395 133 398 133 Q 395 133 395 130 Z" />
+  </g>
+
+</svg>
+

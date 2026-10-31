@@ -172,10 +172,8 @@ class StickerService:
         file_name = (data.get("file_name") or "").strip()
         file_path = (data.get("file_path") or "").strip()
 
-        # Nếu không có file_path, gán ảnh mẫu vector có sẵn
         if not file_path:
-            file_name = file_name or f"sticker_{int(datetime.utcnow().timestamp())}.svg"
-            file_path = f"../../assets/stickers/cat_01.svg"
+            raise ValueError("Vui lòng tải lên hoặc chọn tệp hình ảnh cho sticker!")
         elif not file_name:
             file_name = os.path.basename(file_path)
 
@@ -209,9 +207,11 @@ class StickerService:
         )
 
         db.add(new_sticker)
+        db.flush()
 
-        # Cập nhật tổng số lượng sticker của pack
-        pack.total_stickers = (pack.total_stickers or 0) + 1
+        # Tự động đếm lại chính xác số lượng sticker thực tế của pack
+        real_count = int(db.query(func.count(Sticker.id)).filter(Sticker.pack_id == pack.id).scalar() or 0)
+        pack.total_stickers = real_count
         pack.updated_at = datetime.utcnow()
 
         db.commit()
@@ -221,17 +221,21 @@ class StickerService:
 
     @classmethod
     def delete_sticker(cls, db: Session, sticker_id: int) -> bool:
-        """Xóa vĩnh viễn sticker khỏi kho lưu trữ"""
+        """Xóa vĩnh viễn sticker khỏi kho lưu trữ (tự động cập nhật số lượng sticker trong pack)"""
         sticker = db.query(Sticker).filter_by(id=sticker_id).first()
         if not sticker:
             return False
 
         pack = sticker.pack
-        if pack and pack.total_stickers > 0:
-            pack.total_stickers -= 1
+        db.delete(sticker)
+        db.flush()
+
+        if pack:
+            # Tự động đếm lại chính xác số lượng sticker còn lại trong pack
+            real_count = int(db.query(func.count(Sticker.id)).filter(Sticker.pack_id == pack.id).scalar() or 0)
+            pack.total_stickers = real_count
             pack.updated_at = datetime.utcnow()
 
-        db.delete(sticker)
         db.commit()
         return True
 

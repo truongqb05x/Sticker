@@ -913,3 +913,244 @@
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+
+/* ========================================================
+ * ONBOARDING TOUR (HƯỚNG DẪN TẢI TỪNG ẢNH ĐƠN LẺ)
+ * ======================================================== */
+
+.onboarding-tour-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(45, 28, 20, 0.45);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  z-index: 998;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: auto;
+}
+
+.onboarding-tour-backdrop.active {
+  opacity: 1;
+}
+
+/* Hiệu ứng nổi bật nhấp nháy cho Sticker ở Bước 1 */
+.onboarding-target-pulse {
+  position: relative !important;
+  z-index: 1005 !important;
+  border-color: #C45832 !important;
+  background-color: #FFFFFF !important;
+  animation: onboardingTargetPulse 1.6s infinite ease-in-out !important;
+}
+
+@keyframes onboardingTargetPulse {
+  0%, 100% {
+    transform: translateY(-4px) scale(1.04);
+    box-shadow: 0 0 0 4px rgba(196, 88, 50, 0.32), 0 8px 24px rgba(196, 88, 50, 0.45);
+  }
+  50% {
+    transform: translateY(-7px) scale(1.08);
+    box-shadow: 0 0 0 8px rgba(196, 88, 50, 0.45), 0 12px 30px rgba(196, 88, 50, 0.6);
+  }
+}
+
+/* Hiệu ứng nổi bật nhấp nháy cho Nút Tải ở Bước 2 */
+.onboarding-target-btn-pulse {
+  position: relative !important;
+  background-color: #C45832 !important;
+  animation: onboardingBtnPulse 1.4s infinite ease-in-out !important;
+}
+
+@keyframes onboardingBtnPulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 3px rgba(196, 88, 50, 0.35), 0 4px 16px rgba(196, 88, 50, 0.5);
+  }
+  50% {
+    transform: scale(1.04);
+    box-shadow: 0 0 0 7px rgba(196, 88, 50, 0.45), 0 6px 22px rgba(196, 88, 50, 0.65);
+  }
+}
+
+/* Bàn tay chỉ trỏ và hiệu ứng gõ nhấp (Hand Indicator) */
+.onboarding-hand-indicator {
+  position: absolute;
+  pointer-events: none;
+  z-index: 1010;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s ease;
+}
+
+.onboarding-hand-indicator.step-1 {
+  bottom: -22px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.onboarding-hand-indicator.step-2 {
+  top: -38px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.onboarding-hand-emoji {
+  font-size: 34px;
+  display: inline-block;
+  line-height: 1;
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.3));
+  animation: onboardingHandBounce 1.1s infinite ease-in-out;
+  transform-origin: center bottom;
+}
+
+@keyframes onboardingHandBounce {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-8px) scale(1.18);
+  }
+}
+
+.onboarding-touch-ripple {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(196, 88, 50, 0.4);
+  top: -6px;
+  animation: onboardingRipple 1.1s infinite ease-out;
+  pointer-events: none;
+}
+
+@keyframes onboardingRipple {
+  0% {
+    transform: scale(0.3);
+    opacity: 1;
+  }
+  70% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+/* Bubble bóng thoại hướng dẫn nổi (Floating Tooltip Bubble) */
+.onboarding-tour-bubble {
+  position: absolute;
+  background: #FFFFFF;
+  border: 1.5px solid #F0C4B4;
+  border-radius: 12px;
+  padding: 11px 13px;
+  box-shadow: 0 8px 24px rgba(45, 28, 20, 0.2);
+  z-index: 1020;
+  width: 230px;
+  max-width: 85vw;
+  pointer-events: auto;
+  animation: onboardingPopIn 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.onboarding-tour-bubble.step-1 {
+  bottom: calc(100% + 14px);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.onboarding-tour-bubble.step-1::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 7px;
+  border-style: solid;
+  border-color: #F0C4B4 transparent transparent transparent;
+}
+
+@keyframes onboardingPopIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(6px) scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+}
+
+.onboarding-bubble-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.onboarding-bubble-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 800;
+  color: #C45832;
+  background: #FFF2EC;
+  border: 1px solid #F0C4B4;
+  padding: 2px 7px;
+  border-radius: 20px;
+}
+
+.onboarding-bubble-close {
+  background: none;
+  border: none;
+  color: #8C7B71;
+  cursor: pointer;
+  padding: 2px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+}
+
+.onboarding-bubble-close:hover {
+  color: #C45832;
+  background-color: #FAF5EE;
+}
+
+.onboarding-bubble-desc {
+  font-size: 12px;
+  color: #2D1C14;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.onboarding-bubble-desc strong {
+  color: #C45832;
+  font-weight: 800;
+}
+
+/* Thẻ hướng dẫn Step 2 trong Modal */
+.onboarding-modal-guide-card {
+  width: 100%;
+  background: #FFF7ED;
+  border: 1.5px solid #FDBA74;
+  border-radius: 12px;
+  padding: 10px 14px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 8px rgba(194, 65, 12, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  animation: onboardingPopIn 0.28s ease;
+}
+
+.onboarding-modal-guide-card .onboarding-bubble-top {
+  margin-bottom: 2px;
+}

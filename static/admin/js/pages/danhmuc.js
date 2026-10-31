@@ -1,10 +1,3 @@
-/**
- * ========================================================
- * ADMIN DANH MỤC CHỦ ĐỀ (CATEGORY MANAGEMENT) - JAVASCRIPT
- * Tích hợp REST API CSDL thực, tìm kiếm, lọc, CRUD và quản lý trạng thái
- * ========================================================
- */
-
 // Chống tấn công XSS khi render dữ liệu động
 function escapeHtml(str) {
   if (str === null || str === undefined) return "";

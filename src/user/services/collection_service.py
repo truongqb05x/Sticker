@@ -1,12 +1,3 @@
-"""
-Collection Service Module - StickerHub User Portal
-Cung cấp toàn bộ nghiệp vụ truy vấn dữ liệu thực tế cho trang Bộ sưu tập (templates/user/bosuutap.html):
-- Lấy danh sách bộ sưu tập phân trang theo danh mục, bộ lọc (Tất cả, Mới nhất, Tải nhiều, Yêu thích) và từ khóa tìm kiếm
-- Lấy danh mục kèm số lượng sticker thực tế
-- Lấy danh sách bộ sưu tập nổi bật cho Sidebar & Mobile Drawer
-- Hỗ trợ REST API /api/collections phục vụ lọc động và chuyển trang mượt mà
-"""
-
 import math
 from datetime import datetime
 from typing import Dict, Any, List, Optional
@@ -36,7 +27,7 @@ def format_compact(val: Any) -> str:
 def normalize_asset_url(path: Optional[str]) -> str:
     """Chuẩn hóa đường dẫn hình ảnh thành đường dẫn web tuyệt đối (/assets/...)"""
     if not path:
-        return "/assets/pack_cats.jpg"
+        return ""
     p = path.strip()
     if p.startswith("http://") or p.startswith("https://"):
         return p
@@ -220,4 +211,3 @@ class CollectionService:
             })
 
         return result
-

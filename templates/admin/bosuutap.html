@@ -101,7 +101,7 @@
                 <i data-lucide="tag" style="width: 18px; height: 18px;"></i>
                 <span>Danh mục chủ đề</span>
               </span>
-              <span class="nav-counter">{{ categories|length if categories else 0 }}</span>
+              <span class="nav-counter" id="sidebarCatCounter">{{ categories|length if categories else 0 }}</span>
             </a>
           </li>
         </ul>
@@ -185,6 +185,10 @@
         </div>
 
         <div class="filter-right-group">
+          <button type="button" class="btn-hero-config" id="openHeroConfigBtn" title="Cấu hình 4 bộ sticker hiển thị trên Hero Banner trang chủ">
+            <i data-lucide="sparkles" style="width: 16px; height: 16px;"></i>
+            <span>Hero Sticker</span>
+          </button>
           <button type="button" class="btn-add-primary" id="openAddModalBtn">
             <i data-lucide="folder-plus" style="width: 16px; height: 16px;"></i>
             <span>Thêm bộ sưu tập</span>
@@ -214,7 +218,7 @@
                 <td style="text-align: center; color: #9E8E84; font-weight: 700;">{{ loop.index }}</td>
                 <td>
                   <div class="table-pack-cell">
-                    <img src="{{ p.cover_image }}" alt="{{ p.title }}" class="table-pack-thumb">
+                    <img src="{{ p.cover_image if p.cover_image else '../../assets/logo_cat.svg' }}" alt="{{ p.title }}" class="table-pack-thumb" onerror="this.src='../../assets/logo_cat.svg'">
                     <div>
                       <a href="/admin/chitietsticker?id={{ p.id }}" class="table-pack-title">{{ p.title }}</a>
                       <div class="table-pack-author">Tác giả: <strong>{{ p.author_name }}</strong></div>
@@ -331,7 +335,13 @@
               <input type="text" id="packAuthorInput" class="form-input-text" placeholder="Ví dụ: ShibaTeam">
             </div>
             <div class="form-group-item">
-              <label class="form-label" for="packCategorySelect">Danh mục <span style="color: #C45832;">*</span></label>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <label class="form-label" for="packCategorySelect" style="margin-bottom: 0;">Danh mục <span style="color: #C45832;">*</span></label>
+                <button type="button" id="quickAddCatInPackModal" style="background: none; border: none; font-size: 11px; font-weight: 700; color: #C45832; cursor: pointer; display: inline-flex; align-items: center; gap: 3px; padding: 0;">
+                  <i data-lucide="plus" style="width: 12px; height: 12px;"></i>
+                  <span>Tạo danh mục mới</span>
+                </button>
+              </div>
               <select id="packCategorySelect" class="form-select-ctrl" required>
                 {% for cat in categories %}
                 <option value="{{ cat.id }}">{{ cat.name }}</option>
@@ -355,14 +365,13 @@
             </div>
           </div>
 
-          <div class="form-row-2col">
-            <div class="form-group-item">
-              <label class="form-label" for="packCoverInput">Ảnh đại diện (URL / Path)</label>
-              <input type="text" id="packCoverInput" class="form-input-text" placeholder="../../assets/pack_cats.jpg">
-            </div>
-            <div class="form-group-item">
-              <label class="form-label" for="packStickersCountInput">Số lượng sticker</label>
-              <input type="number" id="packStickersCountInput" class="form-input-text" placeholder="24" min="0">
+          <div class="form-group-item">
+            <label class="form-label" for="packCoverFile">Ảnh đại diện bộ sưu tập</label>
+            <input type="file" id="packCoverFile" accept=".png,.jpg,.jpeg,.webp,.svg" class="form-input-text">
+            <input type="hidden" id="packCoverInput" value="">
+            <div id="packCoverPreviewContainer" style="display: none; align-items: center; gap: 10px; margin-top: 8px;">
+              <img id="packCoverPreview" src="" alt="Cover preview" style="width: 38px; height: 38px; object-fit: cover; border-radius: 6px; border: 1px solid #DFD3C4;" onerror="this.src='../../assets/logo_cat.svg'">
+              <span id="packCoverName" style="font-size: 11px; color: #8C7B71; word-break: break-all;"></span>
             </div>
           </div>
 
@@ -378,6 +387,164 @@
           <button type="submit" class="btn-admin-action btn-primary-action" id="submitCollectionModalBtn">Xuất bản</button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       MODAL THÊM DANH MỤC CHỦ ĐỀ MỚI
+       ======================================================== -->
+  <div class="admin-modal-backdrop" id="addCategoryModal">
+    <div class="modal-dialog-box">
+      <div class="modal-header-bar">
+        <h3 class="modal-heading">
+          <i data-lucide="tag" style="width: 20px; height: 20px; color: #C45832;"></i>
+          <span>Thêm danh mục chủ đề mới</span>
+        </h3>
+        <button type="button" class="modal-close-btn" id="closeAddCategoryModalBtn" title="Đóng">
+          <i data-lucide="x" style="width: 18px; height: 18px;"></i>
+        </button>
+      </div>
+
+      <form id="addCategoryForm">
+        <div class="modal-body-content">
+          <div class="form-row-2col">
+            <div class="form-group-item">
+              <label class="form-label" for="catNameInput">Tên danh mục <span style="color: #C45832;">*</span></label>
+              <input type="text" id="catNameInput" class="form-input-text" placeholder="Ví dụ: Động vật" required autocomplete="off">
+            </div>
+            <div class="form-group-item">
+              <label class="form-label" for="catSlugInput">Mã Slug (URL) <span style="color: #C45832;">*</span></label>
+              <input type="text" id="catSlugInput" class="form-input-text" placeholder="Ví dụ: dong-vat" required autocomplete="off">
+            </div>
+          </div>
+
+          <div class="form-row-2col">
+            <div class="form-group-item">
+              <label class="form-label" for="catOrderInput">Thứ tự hiển thị</label>
+              <input type="number" id="catOrderInput" class="form-input-text" value="9" min="1" max="99">
+            </div>
+            <div class="form-group-item">
+              <label class="form-label" for="catStatusSelect">Trạng thái phát hành</label>
+              <select id="catStatusSelect" class="form-select-ctrl">
+                <option value="active">Công khai ngay</option>
+                <option value="hidden">Tạm ẩn</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row-2col">
+            <div class="form-group-item">
+              <label class="form-label" for="catIconSelect">Biểu tượng (Icon Lucide)</label>
+              <select id="catIconSelect" class="form-select-ctrl">
+                <option value="tag">tag (Mặc định)</option>
+                <option value="paw-print">paw-print (Động vật)</option>
+                <option value="tv">tv (Anime / Manga)</option>
+                <option value="smile">smile (Chibi / Nụ cười)</option>
+                <option value="mountain">mountain (Phong cảnh / Thiên nhiên)</option>
+                <option value="heart">heart (Tình yêu)</option>
+                <option value="film">film (Hoạt hình)</option>
+                <option value="message-circle">message-circle (Biểu cảm)</option>
+                <option value="gift">gift (Lễ hội)</option>
+                <option value="sparkles">sparkles (Lấp lánh / Hot)</option>
+                <option value="coffee">coffee (Ẩm thực / Trà sữa)</option>
+                <option value="gamepad-2">gamepad-2 (Trò chơi)</option>
+              </select>
+            </div>
+            <div class="form-group-item">
+              <label class="form-label" for="catColorSelect">Màu sắc chủ đạo</label>
+              <select id="catColorSelect" class="form-select-ctrl">
+                <option value="badge-bg-1">Màu Cam Nâu (Mặc định)</option>
+                <option value="badge-bg-2">Màu Đỏ Cam</option>
+                <option value="badge-bg-3">Màu Xanh Dương</option>
+                <option value="badge-bg-4">Màu Xanh Lá Cây</option>
+                <option value="badge-bg-5">Màu Hồng Tím</option>
+                <option value="badge-bg-6">Màu Vàng Hổ Phách</option>
+                <option value="badge-bg-7">Màu Tím Mộng Mơ</option>
+                <option value="badge-bg-8">Màu Xanh Cổ Vịt</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group-item">
+            <label class="form-label" for="catDescInput">Mô tả tóm tắt</label>
+            <textarea id="catDescInput" class="form-textarea-ctrl" rows="2" placeholder="Mô tả các sticker thuộc chủ đề này..."></textarea>
+          </div>
+        </div>
+
+        <div class="modal-footer-bar">
+          <button type="button" class="btn-admin-action btn-secondary-action" id="cancelAddCategoryModalBtn">Hủy bỏ</button>
+          <button type="submit" class="btn-admin-action btn-primary-action" id="btnSubmitCategory">Lưu danh mục</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       MODAL CẤU HÌNH HERO STICKER (TRANG CHỦ)
+       ======================================================== -->
+  <div class="admin-modal-backdrop" id="heroConfigModal">
+    <div class="modal-dialog-box modal-dialog-hero">
+      <div class="modal-header-bar">
+        <div class="modal-header-left">
+          <div class="modal-icon-badge hero-badge-icon">
+            <i data-lucide="sparkles" style="width: 20px; height: 20px;"></i>
+          </div>
+          <div>
+            <h3 class="modal-title-text">Cấu hình Hero Sticker (Trang chủ)</h3>
+            <p class="modal-desc-text">Chọn đúng 4 bộ sưu tập nổi bật hiển thị trên Hero Carousel và danh sách đề xuất ở trang chủ</p>
+          </div>
+        </div>
+        <button type="button" class="btn-modal-close" id="closeHeroModalBtn" aria-label="Đóng">
+          <i data-lucide="x" style="width: 18px; height: 18px;"></i>
+        </button>
+      </div>
+
+      <div class="modal-body-scrollable hero-modal-body">
+        <!-- 1. 4 Vị trí hiển thị trên Hero Carousel -->
+        <div class="hero-slots-container">
+          <div class="hero-section-headline">
+            <div class="hero-section-title-wrap">
+              <i data-lucide="layers" style="width: 17px; height: 17px; color: #C45832;"></i>
+              <span class="hero-section-title">4 Vị trí hiển thị trên Hero Carousel (Trang chủ)</span>
+            </div>
+            <div class="hero-slot-counter" id="heroSlotsCounterBadge">Đã chọn: 0/4</div>
+          </div>
+
+          <div class="hero-slots-grid" id="heroSlotsGrid">
+            <!-- 4 slots sẽ được render qua JavaScript -->
+          </div>
+          <div class="hero-slots-hint">
+            <i data-lucide="info" style="width: 14px; height: 14px;"></i>
+            <span>Vị trí #1 sẽ xuất hiện đầu tiên trên slide trang chủ. Thứ tự slide chạy từ #1 đến #4. Nhấn nút gỡ để xóa và chọn bộ khác.</span>
+          </div>
+        </div>
+
+        <!-- 2. Danh sách bộ sưu tập để chọn -->
+        <div class="hero-selection-container">
+          <div class="hero-section-headline">
+            <div class="hero-section-title-wrap">
+              <i data-lucide="folder-check" style="width: 17px; height: 17px; color: #C45832;"></i>
+              <span class="hero-section-title">Danh sách bộ sưu tập khả dụng</span>
+            </div>
+            <div class="hero-search-wrapper">
+              <i data-lucide="search" style="width: 14px; height: 14px; color: #8C7B71;"></i>
+              <input type="text" id="heroPackSearchInput" placeholder="Tìm theo tên hoặc danh mục..." autocomplete="off">
+            </div>
+          </div>
+
+          <div class="hero-packs-picker-list" id="heroPacksPickerList">
+            <!-- Danh sách bộ sưu tập sẽ được render qua JavaScript -->
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer-bar">
+        <button type="button" class="btn-admin-action btn-secondary-action" id="cancelHeroModalBtn">Hủy bỏ</button>
+        <button type="button" class="btn-admin-action btn-primary-action" id="saveHeroConfigBtn">
+          <i data-lucide="save" style="width: 16px; height: 16px;"></i>
+          <span>Lưu thay đổi</span>
+        </button>
+      </div>
     </div>
   </div>
 

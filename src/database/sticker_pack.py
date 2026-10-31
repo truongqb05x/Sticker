@@ -77,5 +77,12 @@ class StickerPack(Base):
         cascade="all, delete-orphan"
     )
 
+    @property
+    def actual_stickers_count(self) -> int:
+        """Tự động tính số lượng sticker thực tế có trong bộ sưu tập"""
+        if self.stickers is not None and len(self.stickers) > 0:
+            return len(self.stickers)
+        return int(self.total_stickers or 0)
+
     def __repr__(self) -> str:
         return f"<StickerPack id={self.id} title='{self.title}' slug='{self.slug}'>"

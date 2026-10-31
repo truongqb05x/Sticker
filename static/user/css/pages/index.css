@@ -352,6 +352,7 @@
   background-color: var(--accent-blue);
   border: none;
   color: #FFFFFF;
+  text-decoration: none;
   font-family: inherit;
   font-size: 13px;
   font-weight: 700;
@@ -362,6 +363,7 @@
   cursor: pointer;
   transition: all 0.18s ease;
   box-shadow: 0 2px 6px rgba(62, 135, 232, 0.25);
+  box-sizing: border-box;
 }
 
 .btn-download:hover {

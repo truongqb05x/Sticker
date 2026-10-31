@@ -1,0 +1,165 @@
+/**
+ * ========================================================
+ * 404 ERROR PAGE STYLES
+ * ========================================================
+ * Giao diện trang 404 Không tìm thấy trang theo phong cách
+ * ấm cúng, dễ thương của StickerHub (Bé mèo cầm bảng 404).
+ */
+
+/* Container chính của trang lỗi 404 */
+.error-page-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 24px 44px;
+  background-color: var(--bg-page, #FAF5EE);
+  min-height: calc(100vh - 64px - 220px);
+  text-align: center;
+}
+
+/* Khối hình minh họa trung tâm */
+.error-illustration-box {
+  width: 100%;
+  max-width: 620px;
+  margin: 0 auto 10px;
+  position: relative;
+  user-select: none;
+}
+
+.error-illustration-img {
+  max-width: 100%;
+  width: auto;
+  height: auto;
+  max-height: 280px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+  filter: drop-shadow(0 8px 24px rgba(61, 34, 20, 0.08));
+}
+
+/* Thông điệp lỗi */
+.error-message {
+  font-family: 'Nunito', -apple-system, sans-serif;
+  font-size: 17.5px;
+  font-weight: 600;
+  color: #35231B;
+  line-height: 1.6;
+  max-width: 520px;
+  margin: 0 auto 24px;
+  letter-spacing: -0.1px;
+}
+
+/* Nhóm nút hành động điều hướng */
+.error-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* Nút Về trang chủ (Primary) */
+.btn-error-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  background-color: #35231B;
+  color: #FFFFFF !important;
+  font-family: 'Nunito', -apple-system, sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 12px 28px;
+  border-radius: 12px;
+  text-decoration: none;
+  border: 1.5px solid #35231B;
+  box-shadow: 0 4px 14px rgba(53, 35, 27, 0.2);
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+
+.btn-error-primary:hover {
+  background-color: #4A3227;
+  border-color: #4A3227;
+  transform: translateY(-2px);
+  box-shadow: 0 7px 20px rgba(53, 35, 27, 0.28);
+}
+
+.btn-error-primary:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(53, 35, 27, 0.2);
+}
+
+.btn-error-primary i,
+.btn-error-primary svg {
+  width: 17px;
+  height: 17px;
+}
+
+/* Nút Tìm kiếm sticker (Secondary) */
+.btn-error-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  background-color: #FAF4EC;
+  color: #35231B !important;
+  font-family: 'Nunito', -apple-system, sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 12px 28px;
+  border-radius: 12px;
+  text-decoration: none;
+  border: 1.5px solid #D5C6B5;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+
+.btn-error-secondary:hover {
+  background-color: #F0E4D5;
+  border-color: #BCA997;
+  transform: translateY(-2px);
+}
+
+.btn-error-secondary:active {
+  transform: translateY(0);
+}
+
+.btn-error-secondary i,
+.btn-error-secondary svg {
+  width: 17px;
+  height: 17px;
+}
+
+/* ========================================================
+   RESPONSIVE CHO TRANG 404
+   ======================================================== */
+@media (max-width: 640px) {
+  .error-page-wrapper {
+    padding: 24px 16px 36px;
+  }
+
+  .error-illustration-box {
+    max-width: 95vw;
+  }
+
+  .error-message {
+    font-size: 15px;
+    margin-bottom: 20px;
+  }
+
+  .error-actions {
+    flex-direction: column;
+    width: 100%;
+    max-width: 260px;
+  }
+
+  .btn-error-primary,
+  .btn-error-secondary {
+    width: 100%;
+    padding: 11px 20px;
+  }
+}
+
