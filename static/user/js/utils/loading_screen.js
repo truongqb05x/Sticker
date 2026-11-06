@@ -59,7 +59,7 @@ class LoadingScreenManager {
           </div>
 
           <div class="loading-illustration-box">
-            <img src="/assets/illustration_loading_cat.svg" alt="Bé mèo StickerHub" class="loading-cat-img" width="280" height="200">
+            <img src="/assets/illustration_loading_cat.png" alt="Bé mèo StickerHub" class="loading-cat-img" width="300" height="200" loading="eager" decoding="async">
           </div>
 
           <div class="loading-content-meta">
@@ -197,6 +197,12 @@ class LoadingScreenManager {
       return;
     }
 
+    // Đảm bảo ảnh minh họa mèo đồng bộ sang tệp ảnh PNG mới
+    const catImg = existing.querySelector(".loading-cat-img");
+    if (catImg && (catImg.getAttribute("src")?.endsWith(".svg") || !catImg.getAttribute("src"))) {
+      catImg.src = "/assets/illustration_loading_cat.png";
+    }
+
     document.documentElement.classList.add("loading-active");
     if (document.body) document.body.classList.add("loading-active");
 
@@ -242,6 +248,12 @@ if (typeof window !== "undefined") {
   window.LoadingScreen = LoadingScreen;
   window.showLoading = (title, sub) => LoadingScreen.show(title, sub);
   window.hideLoading = (force) => LoadingScreen.hide(force);
+  window.testLoadingScreen = (duration = 4000) => {
+    LoadingScreen.show("Đang kiểm tra tải trang", "Chuẩn bị những sticker thật xinh cho bạn!");
+    if (duration > 0) {
+      setTimeout(() => LoadingScreen.hide(), duration);
+    }
+  };
 }
 
 export default LoadingScreen;

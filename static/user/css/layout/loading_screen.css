@@ -1,11 +1,3 @@
-/**
- * ========================================================
- * PAGE LOADING SCREEN COMPONENT STYLES
- * ========================================================
- * Giao diện màn hình loading toàn trang phong cách ấm cúng
- * của StickerHub (Bé mèo nhảy từ hộp carton & 12 chấm tròn).
- */
-
 .screen-loading-wrapper {
   position: fixed;
   top: 0;
@@ -94,18 +86,24 @@
   position: relative;
   z-index: 2;
   width: 100%;
-  max-width: 360px;
+  max-width: 340px;
   margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .screen-loading-center .loading-cat-img {
   max-width: 100%;
   width: auto;
   height: auto;
-  max-height: 250px;
+  max-height: 230px;
   object-fit: contain;
   display: block;
   margin: 0 auto;
+  filter: drop-shadow(0 10px 20px rgba(92, 56, 30, 0.12));
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
 /* Typography & Thông điệp */
@@ -225,6 +223,16 @@
 }
 
 @media (max-width: 600px) {
+  .screen-loading-center {
+    padding: 16px;
+    max-width: 320px;
+  }
+  .screen-loading-center .loading-illustration-box {
+    max-width: 280px;
+  }
+  .screen-loading-center .loading-cat-img {
+    max-height: 190px;
+  }
   .screen-paw-decor.paw-tl { top: 16px; left: 16px; width: 36px; height: 36px; }
   .screen-paw-decor.paw-tr { top: 16px; right: 16px; width: 36px; height: 36px; }
   .screen-paw-decor.paw-bl { bottom: 16px; left: 16px; width: 36px; height: 36px; }

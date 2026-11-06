@@ -12,6 +12,7 @@ from flask import (
     jsonify,
 )
 from src.database import get_db, User
+from src.utils.rate_limiter import limiter
 
 # Blueprint chuyên biệt cho Xác thực Admin (tùy chọn nhúng hoặc dùng độc lập)
 auth_bp = Blueprint("admin_auth", __name__)
@@ -144,6 +145,23 @@ def login_handler():
         return render_template("admin/login.html")
 
     # 2. Xử lý yêu cầu POST đăng nhập
+    wants_json = (
+        request.is_json
+        or request.headers.get("X-Requested-With") == "XMLHttpRequest"
+        or "application/json" in request.headers.get("Accept", "")
+    )
+
+    # Kiểm tra Rate Limit chống dò mật khẩu brute-force (tối đa 7 lần / 5 phút theo IP)
+    forwarded = request.headers.get("X-Forwarded-For")
+    client_ip = forwarded.split(",")[0].strip() if forwarded else (request.remote_addr or "127.0.0.1")
+    rate_key = f"admin_login:{client_ip}"
+    allowed, retry_after = limiter.is_allowed(rate_key, max_requests=7, window_seconds=300)
+    if not allowed:
+        err_msg = f"Đã thử đăng nhập sai quá nhiều lần. Vui lòng chờ {retry_after} giây trước khi thử lại!"
+        if wants_json:
+            return jsonify({"success": False, "message": err_msg, "retry_after": retry_after}), 429
+        return render_template("admin/login.html", error=err_msg), 429
+
     username = ""
     password = ""
     next_url = ""
@@ -163,12 +181,6 @@ def login_handler():
     if not next_url:
         next_url = request.args.get("next", "")
 
-    wants_json = (
-        request.is_json
-        or request.headers.get("X-Requested-With") == "XMLHttpRequest"
-        or "application/json" in request.headers.get("Accept", "")
-    )
-
     # 3. Kiểm tra tính đầy đủ của trường đăng nhập
     if not username or not password:
         err_msg = "Vui lòng nhập đầy đủ tài khoản quản trị và mật khẩu!"
@@ -184,7 +196,8 @@ def login_handler():
             return jsonify({"success": False, "message": err_msg}), 401
         return render_template("admin/login.html", error=err_msg, username=username), 401
 
-    # 5. Đăng nhập thành công -> Lưu session
+    # 5. Đăng nhập thành công -> Đặt lại bộ đếm rate limit và Lưu session
+    limiter.reset(rate_key)
     login_user(user, remember=True)
 
     # Kiểm tra an toàn cho URL chuyển tiếp (mặc định vào dashboard)

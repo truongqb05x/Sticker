@@ -56,8 +56,36 @@ document.addEventListener("DOMContentLoaded", function () {
   // ========================================================
   const favBtn = document.getElementById("favBtn");
   const favCount = document.getElementById("favCount");
+  const favActionBadge = document.getElementById("favActionBadge");
   const infoFavCount = document.getElementById("infoFavCount");
   let isFavLoading = false;
+
+  // Cập nhật giao diện trạng thái yêu thích
+  const updateFavUI = (isFavorited, countText) => {
+    if (!favBtn) return;
+    favBtn.classList.toggle("is-favorited", Boolean(isFavorited));
+    favBtn.setAttribute("title", isFavorited ? "Đã yêu thích • Nhấn để hủy" : "Bấm để yêu thích");
+    favBtn.setAttribute("aria-label", isFavorited ? "Đã yêu thích, nhấn để hủy" : "Bấm để yêu thích");
+
+    if (favCount && countText !== undefined && countText !== null) {
+      favCount.textContent = `${countText} yêu thích`;
+    }
+
+    if (favActionBadge) {
+      favActionBadge.style.display = isFavorited ? "inline-flex" : "none";
+    }
+
+    if (infoFavCount && countText !== undefined && countText !== null) {
+      infoFavCount.textContent = countText;
+    }
+
+    initLucide();
+  };
+
+  // Đồng bộ trạng thái ban đầu từ Hydration nếu có
+  if (packData && typeof packData.is_favorited === "boolean") {
+    updateFavUI(packData.is_favorited, packData.total_favorites_compact);
+  }
 
   if (favBtn) {
     favBtn.addEventListener("click", async function () {
@@ -74,13 +102,8 @@ document.addEventListener("DOMContentLoaded", function () {
         const result = await response.json();
 
         if (result.success) {
-          favBtn.classList.toggle("is-favorited", result.is_favorited);
-          const compactText = result.total_favorites_compact;
-          if (favCount) favCount.textContent = `${compactText} yêu thích`;
-          if (infoFavCount) infoFavCount.textContent = compactText;
-
+          updateFavUI(result.is_favorited, result.total_favorites_compact);
           notify(result.message || (result.is_favorited ? "❤️ Đã thêm vào yêu thích!" : "Đã xóa khỏi yêu thích."));
-          initLucide();
         } else {
           notify(result.message || "Không thể thực hiện thao tác yêu thích!");
         }
@@ -89,6 +112,14 @@ document.addEventListener("DOMContentLoaded", function () {
         notify("Lỗi kết nối khi cập nhật yêu thích!");
       } finally {
         isFavLoading = false;
+      }
+    });
+
+    // Hỗ trợ phím Enter / Space khi focus vào nút
+    favBtn.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        favBtn.click();
       }
     });
   }

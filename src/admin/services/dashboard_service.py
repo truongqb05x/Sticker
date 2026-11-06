@@ -8,6 +8,7 @@ from datetime import datetime, date, timedelta
 from typing import Dict, Any, List, Optional
 from sqlalchemy import func, desc
 from sqlalchemy.orm import Session
+from markupsafe import escape
 from src.database import (
     StickerPack,
     Sticker,
@@ -390,13 +391,15 @@ class DashboardService:
         recent_packs = db.query(StickerPack).order_by(desc(StickerPack.created_at)).limit(3).all()
         for p in recent_packs:
             if p.created_at:
-                cat_name = p.category.name if p.category else "Chủ đề chung"
+                cat_name = escape(p.category.name if p.category else "Chủ đề chung")
+                p_title = escape(p.title or "")
+                p_author = escape(p.author_name or "")
                 if p.status == "pending":
                     activities.append({
                         "timestamp": p.created_at,
                         "icon": "clock",
                         "icon_class": "icon-orange",
-                        "text": f"Bộ sưu tập <strong>{p.title}</strong> của tác giả <strong>{p.author_name}</strong> đang chờ duyệt.",
+                        "text": f"Bộ sưu tập <strong>{p_title}</strong> của tác giả <strong>{p_author}</strong> đang chờ duyệt.",
                         "time": f"{format_time_ago(p.created_at)} • Tác giả gửi",
                     })
                 else:
@@ -404,7 +407,7 @@ class DashboardService:
                         "timestamp": p.created_at,
                         "icon": "check",
                         "icon_class": "icon-green",
-                        "text": f"Bộ sưu tập <strong>{p.title}</strong> ({cat_name}) đã được xuất bản công khai.",
+                        "text": f"Bộ sưu tập <strong>{p_title}</strong> ({cat_name}) đã được xuất bản công khai.",
                         "time": f"{format_time_ago(p.created_at)} • Hệ thống quản trị",
                     })
 
@@ -412,12 +415,13 @@ class DashboardService:
         recent_stickers = db.query(Sticker).order_by(desc(Sticker.created_at)).limit(3).all()
         for s in recent_stickers:
             if s.created_at:
-                pack_title = s.pack.title if s.pack else "Kho Sticker"
+                pack_title = escape(s.pack.title if s.pack else "Kho Sticker")
+                s_title = escape(s.title or "")
                 activities.append({
                     "timestamp": s.created_at,
                     "icon": "smile",
                     "icon_class": "icon-blue",
-                    "text": f"Sticker <strong>{s.title}</strong> đã được thêm vào bộ sưu tập <strong>{pack_title}</strong>.",
+                    "text": f"Sticker <strong>{s_title}</strong> đã được thêm vào bộ sưu tập <strong>{pack_title}</strong>.",
                     "time": f"{format_time_ago(s.created_at)} • Quản lý kho",
                 })
 
@@ -426,8 +430,8 @@ class DashboardService:
         for l in recent_logs:
             if l.downloaded_at:
                 p = db.query(StickerPack).filter_by(id=l.pack_id).first() if l.pack_id else None
-                pack_title = p.title if p else "Gói sticker"
-                platform_str = l.platform.capitalize() if l.platform else "Web"
+                pack_title = escape(p.title if p else "Gói sticker")
+                platform_str = escape(l.platform.capitalize() if l.platform else "Web")
                 activities.append({
                     "timestamp": l.downloaded_at,
                     "icon": "download",
@@ -441,7 +445,7 @@ class DashboardService:
         for f in recent_favs:
             if f.created_at:
                 p = db.query(StickerPack).filter_by(id=f.pack_id).first() if f.pack_id else None
-                pack_title = p.title if p else "Bộ sưu tập"
+                pack_title = escape(p.title if p else "Bộ sưu tập")
                 activities.append({
                     "timestamp": f.created_at,
                     "icon": "heart",
@@ -453,11 +457,12 @@ class DashboardService:
         # 5. Phiên đăng nhập của quản trị viên (User)
         admin_user = db.query(User).order_by(desc(User.last_login_at)).first()
         if admin_user and admin_user.last_login_at:
+            admin_name = escape(admin_user.username or "")
             activities.append({
                 "timestamp": admin_user.last_login_at,
                 "icon": "shield-check",
                 "icon_class": "icon-purple",
-                "text": f"Quản trị viên <strong>{admin_user.username}</strong> đăng nhập phiên làm việc quản trị.",
+                "text": f"Quản trị viên <strong>{admin_name}</strong> đăng nhập phiên làm việc quản trị.",
                 "time": f"{format_time_ago(admin_user.last_login_at)} • Bảo mật hệ thống",
             })
 

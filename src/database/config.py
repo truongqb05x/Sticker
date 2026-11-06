@@ -15,12 +15,12 @@ from sqlalchemy.orm import DeclarativeBase, sessionmaker, Session
 # Nạp biến môi trường từ file .env
 load_dotenv()
 
-# Thông số kết nối CSDL MySQL
-DB_HOST = os.getenv("DB_HOST", "103.82.24.7")
+# Thông số kết nối CSDL MySQL (đọc an toàn từ biến môi trường, không hardcode thông tin nhạy cảm)
+DB_HOST = os.getenv("DB_HOST", "127.0.0.1")
 DB_PORT = os.getenv("DB_PORT", "3306")
-DB_USER = os.getenv("DB_USER", "mmddllg_huehub")
-DB_PASSWORD = os.getenv("DB_PASSWORD", "Ngoctruong123@")
-DB_NAME = os.getenv("DB_NAME", "mmddllg_sticker")
+DB_USER = os.getenv("DB_USER", "root")
+DB_PASSWORD = os.getenv("DB_PASSWORD", "")
+DB_NAME = os.getenv("DB_NAME", "stickerhub")
 DB_CHARSET = os.getenv("DB_CHARSET", "utf8mb4")
 
 # Mã hóa mật khẩu an toàn (xử lý ký tự đặc biệt @, #, %)

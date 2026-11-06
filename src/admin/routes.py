@@ -6,6 +6,7 @@ from flask import Blueprint, render_template, request, jsonify
 from sqlalchemy import desc
 from sqlalchemy.orm import joinedload
 from src.database import get_db, Category, StickerPack, Sticker, HeroBanner
+from src.utils.file_security import save_uploaded_image
 from .auth import (
     login_required,
     login_handler,
@@ -108,16 +109,13 @@ def api_create_pack():
         data = request.form.to_dict()
         file = request.files.get("cover_file") or request.files.get("file")
         if file and file.filename:
-            filename = werkzeug.utils.secure_filename(file.filename)
-            ext = filename.rsplit(".", 1)[-1].lower() if "." in filename else "jpg"
-            unique_filename = f"pack_{int(time.time())}_{uuid.uuid4().hex[:6]}.{ext}"
             upload_dir = os.path.join(
                 os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "assets", "packs"
             )
-            os.makedirs(upload_dir, exist_ok=True)
-            file_path_disk = os.path.join(upload_dir, unique_filename)
-            file.save(file_path_disk)
-            data["cover_image"] = f"/assets/packs/{unique_filename}"
+            success, res_info, unique_name = save_uploaded_image(file, upload_dir, prefix="pack")
+            if not success:
+                return jsonify({"success": False, "message": res_info}), 400
+            data["cover_image"] = f"/assets/packs/{unique_name}"
 
     title = (data.get("title") or "").strip()
     if not title:
@@ -157,16 +155,13 @@ def api_update_pack(pack_id: int):
         data = request.form.to_dict()
         file = request.files.get("cover_file") or request.files.get("file")
         if file and file.filename:
-            filename = werkzeug.utils.secure_filename(file.filename)
-            ext = filename.rsplit(".", 1)[-1].lower() if "." in filename else "jpg"
-            unique_filename = f"pack_{pack_id}_{int(time.time())}_{uuid.uuid4().hex[:6]}.{ext}"
             upload_dir = os.path.join(
                 os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "assets", "packs"
             )
-            os.makedirs(upload_dir, exist_ok=True)
-            file_path_disk = os.path.join(upload_dir, unique_filename)
-            file.save(file_path_disk)
-            data["cover_image"] = f"/assets/packs/{unique_filename}"
+            success, res_info, unique_name = save_uploaded_image(file, upload_dir, prefix=f"pack_{pack_id}")
+            if not success:
+                return jsonify({"success": False, "message": res_info}), 400
+            data["cover_image"] = f"/assets/packs/{unique_name}"
 
     try:
         with get_db() as db:
@@ -417,18 +412,16 @@ def api_create_sticker():
         data = request.form.to_dict()
         file = request.files.get("file")
         if file and file.filename:
-            import werkzeug.utils
-            filename = werkzeug.utils.secure_filename(file.filename)
             upload_dir = os.path.join(
                 os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "assets", "stickers"
             )
-            os.makedirs(upload_dir, exist_ok=True)
-            file_path_disk = os.path.join(upload_dir, filename)
-            file.save(file_path_disk)
-            data["file_name"] = filename
-            data["file_path"] = f"../../assets/stickers/{filename}"
-            data["format"] = filename.rsplit(".", 1)[-1].lower() if "." in filename else "svg"
-            data["file_size_kb"] = max(1, os.path.getsize(file_path_disk) // 1024)
+            success, res_path, unique_name = save_uploaded_image(file, upload_dir, prefix="stk")
+            if not success:
+                return jsonify({"success": False, "message": res_path}), 400
+            data["file_name"] = unique_name
+            data["file_path"] = f"/assets/stickers/{unique_name}"
+            data["format"] = unique_name.rsplit(".", 1)[-1].lower() if "." in unique_name else "png"
+            data["file_size_kb"] = max(1, os.path.getsize(res_path) // 1024)
 
     title = (data.get("title") or "").strip()
     if not title:

@@ -28,7 +28,7 @@ def init_db(seed: bool = True, auto_sync: bool = True) -> None:
     
     # 2. Tự động đồng bộ các cột nếu có thay đổi trong Model
     if auto_sync:
-        auto_migrate(engine, Base, drop_columns=True)
+        auto_migrate(engine, Base, drop_columns=False)
     
     if not seed:
         return

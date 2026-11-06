@@ -41,6 +41,12 @@ window.showToast = showToast;
 window.LoadingScreen = LoadingScreen;
 window.showLoading = (title, sub) => LoadingScreen.show(title, sub);
 window.hideLoading = (force) => LoadingScreen.hide(force);
+window.testLoadingScreen = (duration = 4000) => {
+  LoadingScreen.show("Đang kiểm tra tải trang", "Chuẩn bị những sticker thật xinh cho bạn!");
+  if (duration > 0) {
+    setTimeout(() => LoadingScreen.hide(), duration);
+  }
+};
 
 // Bảo mật
 window.securityManager = securityManager;

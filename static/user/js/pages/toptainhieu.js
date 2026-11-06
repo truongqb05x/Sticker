@@ -47,14 +47,16 @@ document.addEventListener("DOMContentLoaded", function () {
     isLoading: false,
   };
 
+  let initialData = null;
+
   // Đọc dữ liệu Hydration nếu có
   const hydrationScript = document.getElementById("initialTopData");
   if (hydrationScript) {
     try {
-      const initial = JSON.parse(hydrationScript.textContent);
-      if (initial) {
-        state.category = initial.category || "all";
-        state.sort = initial.sort || "downloads";
+      initialData = JSON.parse(hydrationScript.textContent);
+      if (initialData) {
+        state.category = initialData.category || "all";
+        state.sort = initialData.sort || "downloads";
       }
     } catch (e) {
       console.warn("[Hydration] Không thể phân tích initialTopData:", e);
@@ -63,9 +65,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // DOM Elements
   const grid = document.getElementById("topStickersGrid");
-  const filterCatBtns = document.querySelectorAll(".filter-cat-btn");
-  const catItems = document.querySelectorAll(".category-item");
-  const drawerSubItems = document.querySelectorAll(".drawer-sub-item");
   const sortSelect = document.getElementById("sortSelect");
 
   // Đồng bộ trạng thái active trên Sidebar, Drawer và Nút lọc ngang
@@ -73,19 +72,19 @@ document.addEventListener("DOMContentLoaded", function () {
     const targetSlug = (!categorySlug || categorySlug === "all") ? "all" : categorySlug.toLowerCase();
     const isOther = (targetSlug === "other" || targetSlug === "others");
 
-    catItems.forEach((c) => {
+    document.querySelectorAll(".category-item").forEach((c) => {
       const cat = (c.getAttribute("data-category") || "all").toLowerCase();
       const match = (cat === targetSlug) || (isOther && (cat === "other" || cat === "others"));
       c.classList.toggle("active", match);
     });
 
-    drawerSubItems.forEach((d) => {
+    document.querySelectorAll(".drawer-sub-item").forEach((d) => {
       const cat = (d.getAttribute("data-category") || "all").toLowerCase();
       const match = (cat === targetSlug) || (isOther && (cat === "other" || cat === "others"));
       d.classList.toggle("active", match);
     });
 
-    filterCatBtns.forEach((b) => {
+    document.querySelectorAll(".filter-cat-btn").forEach((b) => {
       const cat = (b.getAttribute("data-filter") || "all").toLowerCase();
       const match = (cat === targetSlug) || (isOther && (cat === "other" || cat === "others"));
       b.classList.toggle("active", match);
@@ -112,7 +111,142 @@ document.addEventListener("DOMContentLoaded", function () {
     );
   }
 
-  // 3. Render giao diện thẻ Card Bảng xếp hạng
+  // ========================================================
+  // 3. RENDER DANH MỤC TỪ DATA API
+  // ========================================================
+
+  // Render các nút lọc danh mục ngang (Pills)
+  function renderFilterPills(categories) {
+    const container = document.getElementById("filterCatPills");
+    if (!container || !Array.isArray(categories)) return;
+
+    const targetSlug = (!state.category || state.category === "all") ? "all" : state.category.toLowerCase();
+    const isOther = (targetSlug === "other" || targetSlug === "others");
+
+    let html = `<button class="filter-cat-btn ${targetSlug === 'all' ? 'active' : ''}" data-filter="all" type="button">Tất cả</button>`;
+
+    categories.forEach((cat) => {
+      if (!cat || !cat.slug) return;
+      const catSlug = cat.slug.toLowerCase();
+      const isActive = (catSlug === targetSlug) || (isOther && (catSlug === "other" || catSlug === "others"));
+      html += `<button class="filter-cat-btn ${isActive ? 'active' : ''}" data-filter="${escapeHtml(cat.slug)}" type="button">${escapeHtml(cat.name)}</button>`;
+    });
+
+    container.innerHTML = html;
+  }
+
+  // Render danh mục ở Sidebar bên trái
+  function renderSidebarCategories(categories) {
+    const list = document.getElementById("categoryList");
+    if (!list || !Array.isArray(categories)) return;
+
+    const targetSlug = (!state.category || state.category === "all") ? "all" : state.category.toLowerCase();
+    const isOther = (targetSlug === "other" || targetSlug === "others");
+
+    let html = `
+      <li>
+        <a href="/top-tai-nhieu" class="category-item ${targetSlug === 'all' ? 'active' : ''}" data-category="all">
+          <span class="cat-info">
+            <i data-lucide="layout-grid" class="cat-icon" style="width: 17px; height: 17px;"></i>
+            <span>Tất cả</span>
+          </span>
+        </a>
+      </li>
+    `;
+
+    categories.forEach((cat) => {
+      if (!cat || !cat.slug) return;
+      const catSlug = cat.slug.toLowerCase();
+      const isActive = (catSlug === targetSlug) || (isOther && (catSlug === "other" || catSlug === "others"));
+      const icon = cat.icon_name || "tag";
+      const count = cat.sticker_count !== undefined ? cat.sticker_count : 0;
+
+      html += `
+        <li>
+          <a href="/top-tai-nhieu/${encodeHtmlPath(cat.slug)}" class="category-item ${isActive ? 'active' : ''}" data-category="${escapeHtml(cat.slug)}">
+            <span class="cat-info">
+              <i data-lucide="${escapeHtml(icon)}" class="cat-icon" style="width: 17px; height: 17px;"></i>
+              <span>${escapeHtml(cat.name)}</span>
+            </span>
+            <span class="cat-count">(${count})</span>
+          </a>
+        </li>
+      `;
+    });
+
+    list.innerHTML = html;
+    initLucide();
+  }
+
+  // Render danh mục trong Mobile Drawer
+  function renderDrawerCategories(categories) {
+    const list = document.getElementById("drawerCategoryList");
+    if (!list || !Array.isArray(categories)) return;
+
+    const targetSlug = (!state.category || state.category === "all") ? "all" : state.category.toLowerCase();
+    const isOther = (targetSlug === "other" || targetSlug === "others");
+
+    let html = `
+      <li>
+        <a href="/top-tai-nhieu" class="drawer-sub-item ${targetSlug === 'all' ? 'active' : ''}" data-category="all">
+          <span class="cat-info"><span>Tất cả</span></span>
+        </a>
+      </li>
+    `;
+
+    categories.forEach((cat) => {
+      if (!cat || !cat.slug) return;
+      const catSlug = cat.slug.toLowerCase();
+      const isActive = (catSlug === targetSlug) || (isOther && (catSlug === "other" || catSlug === "others"));
+      const count = cat.sticker_count !== undefined ? cat.sticker_count : 0;
+
+      html += `
+        <li>
+          <a href="/top-tai-nhieu/${encodeHtmlPath(cat.slug)}" class="drawer-sub-item ${isActive ? 'active' : ''}" data-category="${escapeHtml(cat.slug)}">
+            <span class="cat-info"><span>${escapeHtml(cat.name)}</span></span>
+            <span class="cat-count">(${count})</span>
+          </a>
+        </li>
+      `;
+    });
+
+    list.innerHTML = html;
+  }
+
+  function encodeHtmlPath(slug) {
+    return encodeURIComponent(slug || "");
+  }
+
+  // Gọi REST API /api/categories để nạp dữ liệu danh mục động
+  async function loadCategoriesFromApi() {
+    try {
+      const response = await fetch("/api/categories");
+      if (!response.ok) return;
+
+      const data = await response.json();
+      if (data.success && Array.isArray(data.categories) && data.categories.length > 0) {
+        renderFilterPills(data.categories);
+        renderSidebarCategories(data.categories);
+        renderDrawerCategories(data.categories);
+        syncCategoryActiveUI(state.category);
+      }
+    } catch (err) {
+      console.warn("[Categories API Error]:", err);
+    }
+  }
+
+  // Khởi tạo danh mục: Ưu tiên dữ liệu hydration sẵn có, đồng thời gọi API đồng bộ mới nhất
+  if (initialData && Array.isArray(initialData.categories) && initialData.categories.length > 0) {
+    renderFilterPills(initialData.categories);
+    renderSidebarCategories(initialData.categories);
+    renderDrawerCategories(initialData.categories);
+    syncCategoryActiveUI(state.category);
+  }
+  loadCategoriesFromApi();
+
+  // ========================================================
+  // 4. RENDER GIAO DIỆN THẺ CARD BẢNG XẾP HẠNG
+  // ========================================================
   function renderTopCard(pack) {
     return `
       <div class="top-sticker-card" data-category="${escapeHtml(pack.category_slug)}" data-id="${pack.id}" data-downloads="${pack.total_downloads}" data-favorites="${pack.total_favorites}" data-name="${escapeHtml(pack.title)}">
@@ -183,7 +317,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   bindDownloadButtons();
 
-  // 4. Truy vấn danh sách Top tải nhiều từ REST API
+  // 5. Truy vấn danh sách Top tải nhiều từ REST API
   async function fetchTopDownloads() {
     if (state.isLoading || !grid) return;
     state.isLoading = true;
@@ -225,31 +359,64 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // 5. Sự kiện Lọc theo Danh mục bên Sidebar
-  catItems.forEach(function (cat) {
-    cat.addEventListener("click", function (e) {
-      if (e.metaKey || e.ctrlKey || e.shiftKey || e.which === 2 || e.button === 1) return;
-      e.preventDefault();
-      const category = this.getAttribute("data-category") || "all";
+  // ========================================================
+  // 6. GẮN SỰ KIỆN LỌC DANH MỤC (EVENT DELEGATION)
+  // ========================================================
+
+  // 6.1. Sự kiện Lọc theo Nút Danh mục ngang (Pills)
+  const filterCatPillsEl = document.getElementById("filterCatPills");
+  if (filterCatPillsEl) {
+    filterCatPillsEl.addEventListener("click", function (e) {
+      const btn = e.target.closest(".filter-cat-btn");
+      if (!btn) return;
+
+      const category = btn.getAttribute("data-filter") || "all";
       if (state.category === category) return;
 
       state.category = category;
       syncCategoryActiveUI(category);
       updateHistoryUrl();
 
-      const catName = this.querySelector(".cat-info span")?.textContent || "Danh mục";
+      const catName = btn.textContent.trim();
       fetchTopDownloads().then(() => {
         notify(`Đang xem bảng xếp hạng: ${catName}`);
       });
     });
-  });
+  }
 
-  // 6. Sự kiện Lọc theo Danh mục trong Mobile Drawer
-  drawerSubItems.forEach(function (sub) {
-    sub.addEventListener("click", function (e) {
+  // 6.2. Sự kiện Lọc theo Danh mục bên Sidebar
+  const categoryListEl = document.getElementById("categoryList");
+  if (categoryListEl) {
+    categoryListEl.addEventListener("click", function (e) {
+      const link = e.target.closest(".category-item");
+      if (!link) return;
       if (e.metaKey || e.ctrlKey || e.shiftKey || e.which === 2 || e.button === 1) return;
       e.preventDefault();
-      const category = this.getAttribute("data-category") || "all";
+
+      const category = link.getAttribute("data-category") || "all";
+      if (state.category === category) return;
+
+      state.category = category;
+      syncCategoryActiveUI(category);
+      updateHistoryUrl();
+
+      const catName = link.querySelector(".cat-info span")?.textContent || "Danh mục";
+      fetchTopDownloads().then(() => {
+        notify(`Đang xem bảng xếp hạng: ${catName}`);
+      });
+    });
+  }
+
+  // 6.3. Sự kiện Lọc theo Danh mục trong Mobile Drawer
+  const drawerCategoryListEl = document.getElementById("drawerCategoryList");
+  if (drawerCategoryListEl) {
+    drawerCategoryListEl.addEventListener("click", function (e) {
+      const link = e.target.closest(".drawer-sub-item");
+      if (!link) return;
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.which === 2 || e.button === 1) return;
+      e.preventDefault();
+
+      const category = link.getAttribute("data-category") || "all";
       if (state.category === category) return;
 
       state.category = category;
@@ -260,31 +427,14 @@ document.addEventListener("DOMContentLoaded", function () {
         window.closeDrawer();
       }
 
-      const catName = this.querySelector(".cat-info span")?.textContent || "Danh mục";
+      const catName = link.querySelector(".cat-info span")?.textContent || "Danh mục";
       fetchTopDownloads().then(() => {
         notify(`Đang xem bảng xếp hạng: ${catName}`);
       });
     });
-  });
+  }
 
-  // 7. Sự kiện Lọc theo Nút Danh mục ngang (Pills)
-  filterCatBtns.forEach((btn) => {
-    btn.addEventListener("click", function () {
-      const category = this.getAttribute("data-filter") || "all";
-      if (state.category === category) return;
-
-      state.category = category;
-      syncCategoryActiveUI(category);
-      updateHistoryUrl();
-
-      const catName = this.textContent.trim();
-      fetchTopDownloads().then(() => {
-        notify(`Đang xem bảng xếp hạng: ${catName}`);
-      });
-    });
-  });
-
-  // 8. Sự kiện Sắp xếp Dropdown
+  // 7. Sự kiện Sắp xếp Dropdown
   if (sortSelect) {
     sortSelect.addEventListener("change", function () {
       state.sort = this.value;
@@ -297,7 +447,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // 9. Lắng nghe sự kiện popstate (Back/Forward trình duyệt)
+  // 8. Lắng nghe sự kiện popstate (Back/Forward trình duyệt)
   window.addEventListener("popstate", function (e) {
     if (e.state) {
       state.category = e.state.category || "all";
