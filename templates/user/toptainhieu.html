@@ -1,497 +1,681 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <title>Top tải nhiều - StickerHub</title>
-
-  <!-- Meta Description -->
-  <meta name="description" content="Những bộ sticker được cộng đồng yêu thích và tải xuống nhiều nhất trên StickerHub. Tải miễn phí nhanh chóng cho WhatsApp, Telegram, Zalo.">
-
-  <!-- Favicon -->
-  <link rel="icon" type="image/svg+xml" href="/assets/logo_cat.svg">
-  <link rel="preload" as="image" href="/assets/illustration_loading_cat.png">
-
-  <!-- Google Fonts: Comfortaa & Nunito -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700;800&family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-
-  <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@latest"></script>
-
-  <!-- MASTER LAYOUT CSS (Bao gồm variables, base, header, sidebar, drawer, footer) -->
-  <link rel="stylesheet" href="/static/user/css/layout/layout.css">
-
-  <!-- CSS riêng của trang Top tải nhiều -->
-  <link rel="stylesheet" href="/static/user/css/pages/toptainhieu.css">
-</head>
-<body>
-
-  <div class="screen-loading-wrapper" id="screenLoader" aria-label="Đang tải trang">
-    <!-- 4 Dấu chân mèo trang trí nghệ thuật ở 4 góc màn hình -->
-    <svg class="screen-paw-decor paw-tl" width="46" height="46" viewBox="0 0 24 24" fill="currentColor">
-      <ellipse cx="12" cy="15" rx="7" ry="5.5"/><circle cx="5" cy="6" r="2.5"/><circle cx="12" cy="3.5" r="2.8"/><circle cx="19" cy="6" r="2.5"/>
-    </svg>
-    <svg class="screen-paw-decor paw-tr" width="46" height="46" viewBox="0 0 24 24" fill="currentColor">
-      <ellipse cx="12" cy="15" rx="7" ry="5.5"/><circle cx="5" cy="6" r="2.5"/><circle cx="12" cy="3.5" r="2.8"/><circle cx="19" cy="6" r="2.5"/>
-    </svg>
-    <svg class="screen-paw-decor paw-bl" width="46" height="46" viewBox="0 0 24 24" fill="currentColor">
-      <ellipse cx="12" cy="15" rx="7" ry="5.5"/><circle cx="5" cy="6" r="2.5"/><circle cx="12" cy="3.5" r="2.8"/><circle cx="19" cy="6" r="2.5"/>
-    </svg>
-    <svg class="screen-paw-decor paw-br" width="46" height="46" viewBox="0 0 24 24" fill="currentColor">
-      <ellipse cx="12" cy="15" rx="7" ry="5.5"/><circle cx="5" cy="6" r="2.5"/><circle cx="12" cy="3.5" r="2.8"/><circle cx="19" cy="6" r="2.5"/>
-    </svg>
-
-    <!-- Khối trung tâm màn hình loading -->
-    <div class="screen-loading-center">
-      <!-- 1. Brand Logo -->
-      <div class="loading-header-brand">
-        <img src="/assets/logo_cat.svg" alt="StickerHub" class="loading-brand-logo" width="32" height="32">
-        <span class="loading-brand-title">Sticker<span class="hub-part">Hub</span></span>
-      </div>
-
-      <!-- 2. Tranh minh họa Bé mèo nhảy từ thùng carton -->
-      <div class="loading-illustration-box">
-        <img src="/assets/illustration_loading_cat.png" 
-             alt="Bé mèo StickerHub" 
-             class="loading-cat-img"
-             width="300" height="200" loading="eager" decoding="async">
-      </div>
-
-      <!-- 3. Tiêu đề & Thông điệp -->
-      <div class="loading-content-meta">
-        <div class="loading-title" id="loadingTitleText">
-          <span>Đang tải trang</span>
-          <span class="loading-dots">
-            <span>.</span><span>.</span><span>.</span>
-          </span>
-        </div>
-        <p class="loading-subtitle" id="loadingSubtitleText">
-          Chuẩn bị những sticker thật xinh cho bạn!
-        </p>
-      </div>
-
-      <!-- 4. Circular Dot Spinner (12 chấm tròn ấm cúng) -->
-      <div class="loading-spinner-wrap">
-        <div class="dot-spinner" aria-label="Đang tải">
-          <div class="dot-spinner-leaf"></div>
-          <div class="dot-spinner-leaf"></div>
-          <div class="dot-spinner-leaf"></div>
-          <div class="dot-spinner-leaf"></div>
-          <div class="dot-spinner-leaf"></div>
-          <div class="dot-spinner-leaf"></div>
-          <div class="dot-spinner-leaf"></div>
-          <div class="dot-spinner-leaf"></div>
-          <div class="dot-spinner-leaf"></div>
-          <div class="dot-spinner-leaf"></div>
-          <div class="dot-spinner-leaf"></div>
-          <div class="dot-spinner-leaf"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-  <header class="site-header">
-    <div class="header-inner">
-      <!-- Left: Logo + Desktop Navigation -->
-      <div class="header-left">
-        <!-- Logo -->
-        <a href="/" class="brand-logo" id="logoLink" title="StickerHub">
-          <img src="/assets/logo_cat.svg" alt="StickerHub Cat Logo" width="38" height="38">
-          <span class="brand-title">Sticker<span class="hub-part">Hub</span></span>
-        </a>
-
-        <!-- Navigation Tabs -->
-        <nav aria-label="Main Navigation">
-          <ul class="nav-menu">
-            <li>
-              <a href="/" class="nav-link" data-tab="home" id="navHome">
-                <i data-lucide="home" style="width: 15px; height: 15px;"></i>
-                <span>Trang chủ</span>
-              </a>
-            </li>
-            <li>
-              <a href="/bo-suu-tap" class="nav-link" data-tab="collections" id="navCollections">
-                <i data-lucide="folder-heart" style="width: 15px; height: 15px;"></i>
-                <span>Bộ sưu tập</span>
-              </a>
-            </li>
-            <li>
-              <a href="/top-tai-nhieu" class="nav-link active" data-tab="top-downloaded" id="navTop">
-                <i data-lucide="flame" style="width: 15px; height: 15px;"></i>
-                <span>Top tải nhiều</span>
-              </a>
-            </li>
-            <li>
-              <a href="javascript:void(0)" class="nav-link" data-tab="guide" id="navGuide" onclick="(document.getElementById('topDownloadsGrid') || document.getElementById('stickerGrid'))?.scrollIntoView({behavior: 'smooth'})">
-                <i data-lucide="help-circle" style="width: 15px; height: 15px;"></i>
-                <span>Hướng dẫn</span>
-              </a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-
-      <!-- Right: Search Box & Mobile Hamburger Button -->
-      <div class="header-actions">
-        <!-- Ô Tìm Kiếm -->
-        <div class="search-box" id="searchBoxContainer">
-          <input type="text" class="search-input" id="stickerSearch" placeholder="Tìm kiếm sticker..." aria-label="Tìm kiếm sticker" autocomplete="off">
-          
-          <button class="clear-search-btn" id="clearSearchBtn" aria-label="Xóa nội dung tìm kiếm" type="button" title="Xóa">
-            <i data-lucide="x" style="width: 12px; height: 12px;"></i>
-          </button>
-          
-          <button class="search-btn" id="searchBtn" aria-label="Nút tìm kiếm" type="button">
-            <i data-lucide="search" style="width: 15px; height: 15px;"></i>
-          </button>
-
-          <!-- Dropdown gợi ý tìm kiếm realtime -->
-          <div class="search-suggestions" id="searchSuggestions" role="listbox" aria-label="Gợi ý bộ sưu tập sticker"></div>
-        </div>
-
-        <!-- Nút 3 gạch mở mobile drawer ở bên phải -->
-        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Mở menu điều hướng" type="button" title="Menu">
-          <i data-lucide="menu" style="width: 22px; height: 22px;"></i>
-        </button>
-      </div>
-    </div>
-  </header>
-
-
-  <div class="mobile-drawer-backdrop" id="drawerBackdrop"></div>
-  <aside class="mobile-drawer" id="mobileDrawer" aria-label="Menu điều hướng di động">
-    <div class="drawer-header">
-      <div class="brand-logo">
-        <img src="/assets/logo_cat.svg" alt="StickerHub" width="30" height="30">
-        <span class="brand-title" style="font-size: 20px;">Sticker<span class="hub-part">Hub</span></span>
-      </div>
-      <button class="drawer-close-btn" id="drawerCloseBtn" aria-label="Đóng menu" type="button">
-        <i data-lucide="x" style="width: 20px; height: 20px;"></i>
-      </button>
-    </div>
-    
-    <div class="drawer-body">
-      <!-- Menu Điều Hướng -->
-      <div>
-        <div class="drawer-section-title">Menu điều hướng</div>
-        <ul class="drawer-nav">
-          <li>
-            <a href="/" class="drawer-nav-item" data-tab="home">
-              <i data-lucide="home" style="width: 18px; height: 18px;"></i>
-              <span>Trang chủ</span>
-            </a>
-          </li>
-          <li>
-            <a href="/bo-suu-tap" class="drawer-nav-item" data-tab="collections">
-              <i data-lucide="folder-heart" style="width: 18px; height: 18px;"></i>
-              <span>Bộ sưu tập</span>
-            </a>
-          </li>
-          <li>
-            <a href="/top-tai-nhieu" class="drawer-nav-item active" data-tab="top-downloaded">
-              <i data-lucide="flame" style="width: 18px; height: 18px;"></i>
-              <span>Top tải nhiều</span>
-            </a>
-          </li>
-          <li>
-            <a href="javascript:void(0)" class="drawer-nav-item" data-tab="guide" id="drawerNavGuide" onclick="(document.getElementById('topDownloadsGrid') || document.getElementById('stickerGrid'))?.scrollIntoView({behavior: 'smooth'}); closeDrawer();">
-              <i data-lucide="help-circle" style="width: 18px; height: 18px;"></i>
-              <span>Hướng dẫn</span>
-            </a>
-          </li>
-        </ul>
-      </div>
-
-      <!-- Accordions: Danh mục & Bộ sưu tập nổi bật -->
-      <div class="drawer-accordions-group">
-        <div class="drawer-section-title">Khám phá nội dung</div>
-
-        <!-- Accordion 1: Danh mục -->
-        <div class="drawer-accordion" id="accordionDrawerCategories">
-          <button class="drawer-accordion-btn" type="button" aria-expanded="false" onclick="toggleDrawerAccordion('accordionDrawerCategories')">
-            <span class="drawer-accordion-title">
-              <i data-lucide="folder" style="width: 17px; height: 17px;"></i>
-              <span>Danh mục</span>
-            </span>
-            <i data-lucide="chevron-down" class="drawer-chevron" style="width: 16px; height: 16px;"></i>
-          </button>
-          <div class="drawer-accordion-content">
-            <ul class="drawer-sub-list" id="drawerCategoryList">
-              <li>
-                <a href="/top-tai-nhieu" class="drawer-sub-item {% if active_category == 'all' %}active{% endif %}" data-category="all">
-                  <span class="cat-info"><span>Tất cả</span></span>
-                </a>
-              </li>
-              {% for cat in categories %}
-              <li>
-                <a href="/top-tai-nhieu/{{ cat.slug }}" class="drawer-sub-item {% if cat.is_active or cat.slug == active_category %}active{% endif %}" data-category="{{ cat.slug }}">
-                  <span class="cat-info"><span>{{ cat.name }}</span></span>
-                  <span class="cat-count">({{ cat.sticker_count }})</span>
-                </a>
-              </li>
-              {% endfor %}
-            </ul>
-          </div>
-        </div>
-
-        <!-- Accordion 2: Bộ sưu tập nổi bật -->
-        <div class="drawer-accordion" id="accordionDrawerFeatured">
-          <button class="drawer-accordion-btn" type="button" aria-expanded="false" onclick="toggleDrawerAccordion('accordionDrawerFeatured')">
-            <span class="drawer-accordion-title">
-              <i data-lucide="flame" style="width: 17px; height: 17px;"></i>
-              <span>Bộ sưu tập nổi bật</span>
-            </span>
-            <i data-lucide="chevron-down" class="drawer-chevron" style="width: 16px; height: 16px;"></i>
-          </button>
-          <div class="drawer-accordion-content">
-            <div class="drawer-sub-list">
-              {% for feat in featured_packs %}
-              <a href="/bo-suu-tap/{{ feat.category_slug }}/{{ feat.slug }}" class="drawer-featured-item" style="text-decoration: none; color: inherit;">
-                <span class="drawer-featured-title">{{ feat.title }}</span>
-                <span class="drawer-featured-count">{{ feat.total_stickers }} sticker</span>
-              </a>
-              {% endfor %}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </aside>
-
-  <main class="main-wrapper top-page-wrapper">
-    
-    <!-- ==================== CỘT 1: LEFT SIDEBAR ==================== -->
-    <aside class="sidebar">
-      <!-- Card 1: Danh mục -->
-      <div class="sidebar-card">
-        <div class="card-header">
-          <i data-lucide="folder" style="width: 17px; height: 17px;"></i>
-          <span>Danh mục</span>
-        </div>
-        <ul class="category-list" id="categoryList">
-          <li>
-            <a href="/top-tai-nhieu" class="category-item {% if active_category == 'all' %}active{% endif %}" data-category="all">
-              <span class="cat-info">
-                <i data-lucide="layout-grid" class="cat-icon" style="width: 17px; height: 17px;"></i>
-                <span>Tất cả</span>
-              </span>
-            </a>
-          </li>
-          {% for cat in categories %}
-          <li>
-            <a href="/top-tai-nhieu/{{ cat.slug }}" class="category-item {% if cat.is_active or cat.slug == active_category %}active{% endif %}" data-category="{{ cat.slug }}">
-              <span class="cat-info">
-                <i data-lucide="{{ cat.icon_name or 'tag' }}" class="cat-icon" style="width: 17px; height: 17px;"></i>
-                <span>{{ cat.name }}</span>
-              </span>
-              <span class="cat-count">({{ cat.sticker_count }})</span>
-            </a>
-          </li>
-          {% endfor %}
-        </ul>
-      </div>
-
-      <!-- Card 2: Bộ sưu tập nổi bật -->
-      <div class="featured-card">
-        <div class="card-header">
-          <i data-lucide="flame" style="width: 17px; height: 17px;"></i>
-          <span>Bộ sưu tập nổi bật</span>
-        </div>
-        <div class="featured-list" id="featuredList">
-          {% for feat in featured_packs %}
-          <a href="/bo-suu-tap/{{ feat.category_slug }}/{{ feat.slug }}" class="featured-item" style="text-decoration: none; color: inherit;">
-            <img src="{{ feat.cover_image }}" alt="{{ feat.title }}" class="featured-thumb" loading="lazy">
-            <div class="featured-meta">
-              <span class="featured-name">{{ feat.title }}</span>
-              <span class="featured-stickers">{{ feat.total_stickers }} sticker</span>
-            </div>
-          </a>
-          {% endfor %}
-        </div>
-      </div>
-    </aside>
-
-    <!-- ==================== CỘT 2: CENTER MAIN CONTENT ==================== -->
-    <section class="top-main-content">
-      
-      <!-- 1. Hero Scrapbook Banner: Top tải nhiều -->
-      <div class="top-hero-banner">
-        <!-- Bên trái: Tiêu đề + vương miện + mô tả + trái tim -->
-        <div class="hero-left-col">
-          <div class="hero-crown-title">
-            <svg class="crown-icon-gold" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M5 16L3 5L8.5 10L12 4L15.5 10L21 5L19 16H5ZM19 19C19 19.5523 18.5523 20 18 20H6C5.44772 20 5 19.5523 5 19V17H19V19Z"/>
-            </svg>
-            <h1>Top tải nhiều</h1>
-          </div>
-          <p class="hero-desc-text">Những bộ sticker được cộng đồng yêu thích và tải xuống nhiều nhất!</p>
-          <div class="hero-mini-heart">❤</div>
-        </div>
-
-        <!-- Ở giữa: Giấy note đính ghim nghiêng (Scrapbook paper note) -->
-        <div class="hero-tilted-note">
-          <div class="tilted-note-pin"></div>
-          <span class="tilted-note-line1">Sticker hot</span>
-          <span class="tilted-note-line2">Không thể bỏ qua!</span>
-        </div>
-
-        <!-- Bên phải: Hình vẽ chú mèo đội vương miện lấp lánh -->
-        <div class="hero-right-cat">
-          <img src="/assets/banner_cat_crown.png" alt="Chú mèo đội vương miện hoàng gia" loading="lazy">
-        </div>
-      </div>
-
-      <!-- 2. Thanh lọc danh mục & Sắp xếp -->
-      <div class="top-filter-bar">
-        <!-- Các nút lọc chủ đề -->
-        <div class="filter-categories-pills" id="filterCatPills">
-          <button class="filter-cat-btn {% if active_category == 'all' %}active{% endif %}" data-filter="all" type="button">Tất cả</button>
-          {% for cat in categories %}
-          <button class="filter-cat-btn {% if cat.is_active or cat.slug == active_category %}active{% endif %}" data-filter="{{ cat.slug }}" type="button">{{ cat.name }}</button>
-          {% endfor %}
-        </div>
-
-        <!-- Bộ chọn sắp xếp -->
-        <div class="sort-container-right">
-          <span class="sort-label">Sắp xếp:</span>
-          <div class="sort-select-box">
-            <select class="sort-select" id="sortSelect" aria-label="Sắp xếp danh sách">
-              <option value="downloads" {% if active_sort == 'downloads' %}selected{% endif %}>Tải nhiều nhất</option>
-              <option value="favorites" {% if active_sort == 'favorites' %}selected{% endif %}>Yêu thích nhất</option>
-              <option value="name" {% if active_sort == 'name' %}selected{% endif %}>Tên A-Z</option>
-            </select>
-            <i data-lucide="chevron-down" class="sort-chevron" style="width: 14px; height: 14px;"></i>
-          </div>
-        </div>
-      </div>
-
-      <!-- 3. Lưới hiển thị 12 Card Sticker (4 cột x 3 hàng) -->
-      <div class="top-stickers-grid" id="topStickersGrid">
-        {% if top_packs %}
-          {% for pack in top_packs %}
-          <div class="top-sticker-card" data-category="{{ pack.category_slug }}" data-id="{{ pack.id }}" data-downloads="{{ pack.total_downloads }}" data-favorites="{{ pack.total_favorites }}" data-name="{{ pack.title }}">
-            <span class="rank-badge {{ pack.rank_badge_class }}" title="Hạng {{ pack.rank }}">{{ pack.rank }}</span>
-            <a href="/bo-suu-tap/{{ pack.category_slug }}/{{ pack.slug }}" class="card-preview-box">
-              <img src="{{ pack.cover_image }}" alt="{{ pack.title }}" loading="lazy">
-            </a>
-            <div class="card-meta-info">
-              <a href="/bo-suu-tap/{{ pack.category_slug }}/{{ pack.slug }}" style="text-decoration: none; color: inherit;">
-                <h3 class="card-pack-title">{{ pack.title }}</h3>
-              </a>
-              <span class="card-sticker-count">{{ pack.total_stickers }} sticker</span>
-              <div class="card-stats-line">
-                <span class="stat-item" title="Lượt tải về">
-                  <i data-lucide="download" style="width: 13px; height: 13px;"></i>
-                  <span class="stat-downloads-text">{{ pack.total_downloads_compact }}</span>
-                </span>
-                <span class="stat-item" title="Yêu thích">
-                  <i data-lucide="heart" style="width: 13px; height: 13px;"></i>
-                  <span>{{ pack.total_favorites_compact }}</span>
-                </span>
-              </div>
-              <button class="btn-card-download" type="button" data-pack-id="{{ pack.id }}" data-pack-title="{{ pack.title }}" aria-label="Tải về bộ sticker {{ pack.title }}">
-                <i data-lucide="download" style="width: 14px; height: 14px;"></i>
-                <span>Tải về</span>
-              </button>
-            </div>
-          </div>
-          {% endfor %}
-        {% else %}
-          <div class="empty-state" style="grid-column: 1 / -1; text-align: center; padding: 48px 20px; background: #FAF5EE; border-radius: 14px; border: 1.5px dashed #E0D3C3;">
-            <i data-lucide="folder-search" style="width: 48px; height: 48px; color: #9C8A7B; margin-bottom: 12px;"></i>
-            <h4 style="font-size: 17px; font-weight: 700; color: #35231B; margin-bottom: 6px;">Không tìm thấy bộ sưu tập nào</h4>
-            <p style="font-size: 14px; color: #766557;">Thử chọn danh mục hoặc tiêu chí sắp xếp khác nhé!</p>
-          </div>
-        {% endif %}
-      </div>
-
-    </section>
-
-    <!-- ==================== CỘT 3: RIGHT SIDEBAR ==================== -->
-    <aside class="top-right-sidebar">
-      
-      <!-- Card 1: Top 5 bộ sưu tập hot nhất -->
-      <div class="hot-ranking-card">
-        <div class="hot-ranking-header">
-          <i data-lucide="flame" class="hot-fire-icon" style="width: 18px; height: 18px; color: #E64A38; fill: #E64A38;"></i>
-          <span>Top 5 bộ sưu tập hot nhất</span>
-        </div>
-
-        <div class="hot-ranking-list" id="hotRankingList">
-          {% for item in hot_ranking %}
-          <a href="/bo-suu-tap/{{ item.category_slug }}/{{ item.slug }}" class="hot-ranking-item">
-            <span class="ranking-order-num">{{ item.order }}</span>
-            <img src="{{ item.cover_image }}" alt="{{ item.title }}" class="ranking-thumb-img" loading="lazy">
-            <div class="ranking-info-text">
-              <span class="ranking-name">{{ item.title }}</span>
-              <span class="ranking-downloads">{{ item.total_downloads_compact }} lượt tải</span>
-            </div>
-          </a>
-          {% endfor %}
-        </div>
-      </div>
-
-      <!-- Card 2: Promo Scrapbook Card -->
-      <div class="promo-scrapbook-card">
-        <h4 class="promo-quote-title">Cùng khám phá<br>thế giới sticker<br>đầy màu sắc!</h4>
-        <div class="promo-illustration-box">
-          <img src="/assets/promo_cat_heart.png" alt="Cùng khám phá thế giới sticker đầy màu sắc" loading="lazy">
-        </div>
-      </div>
-
-    </aside>
-
-  </main>
-
-
-  <footer class="site-footer">
-    <div class="footer-inner">
-      <div class="footer-copy">
-        © 2025 StickerHub. All rights reserved.
-      </div>
-
-      <div class="footer-right">
-        <ul class="footer-links">
-          <li><a href="/gioi-thieu" class="footer-link">Giới thiệu</a></li>
-          <li><a href="/dieu-khoan-su-dung" class="footer-link">Điều khoản sử dụng</a></li>
-          <li><a href="javascript:void(0)" class="footer-link" onclick="if(window.showToast) window.showToast('Email hỗ trợ: support@stickerhub.vn')">Liên hệ</a></li>
-        </ul>
-
-        <div class="footer-socials">
-          <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="Facebook">
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-            </svg>
-          </a>
-          <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="Instagram">
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-            </svg>
-          </a>
-          <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="YouTube">
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-            </svg>
-          </a>
-        </div>
-      </div>
-    </div>
-  </footer>
-
-  <!-- Toast Notification Container (dùng chung qua showToast.js) -->
-  <div class="toast-container" id="toastContainer"></div>
-
-  <!-- Hydration Data -->
-  <script id="initialTopData" type="application/json">{{ initial_data | tojson }}</script>
-
-  <!-- MASTER LAYOUT JAVASCRIPT & PAGE SCRIPT -->
-  <script src="/static/user/js/pages/toptainhieu.js"></script>
-  <script type="module" src="/static/user/js/app.js"></script>
-</body>
-</html>
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+      Top tải nhiều - StickerHub
+    </title>
+    <!-- Meta Description -->
+    <meta name="description"
+    content="Những bộ sticker được cộng đồng yêu thích và tải xuống nhiều nhất trên StickerHub. Tải miễn phí nhanh chóng cho WhatsApp, Telegram, Zalo.">
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/assets/logo_cat.svg">
+    <link rel="preload" as="image" href="/assets/illustration_loading_cat.png">
+    <!-- Google Fonts: Comfortaa & Nunito -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+    href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700;800&family=Nunito:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+    <!-- Lucide Icons -->
+<script src="https://unpkg.com/lucide@latest">
+</script>
+    <link rel="stylesheet" href="/static/user/css/layout/layout.css">
+    <link rel="stylesheet" href="/static/user/css/pages/toptainhieu.css">
+  </head>
+  <body>
+    <div class="screen-loading-wrapper" id="screenLoader" aria-label="Đang tải trang">
+      <!-- 4 Dấu chân mèo trang trí nghệ thuật ở 4 góc màn hình -->
+      <svg class="screen-paw-decor paw-tl" width="46" height="46" viewBox="0 0 24 24" fill="currentColor">
+        <ellipse cx="12" cy="15" rx="7" ry="5.5" />
+        <circle cx="5" cy="6" r="2.5" />
+        <circle cx="12" cy="3.5" r="2.8" />
+        <circle cx="19" cy="6" r="2.5" />
+      </svg>
+      <svg class="screen-paw-decor paw-tr" width="46" height="46" viewBox="0 0 24 24" fill="currentColor">
+        <ellipse cx="12" cy="15" rx="7" ry="5.5" />
+        <circle cx="5" cy="6" r="2.5" />
+        <circle cx="12" cy="3.5" r="2.8" />
+        <circle cx="19" cy="6" r="2.5" />
+      </svg>
+      <svg class="screen-paw-decor paw-bl" width="46" height="46" viewBox="0 0 24 24" fill="currentColor">
+        <ellipse cx="12" cy="15" rx="7" ry="5.5" />
+        <circle cx="5" cy="6" r="2.5" />
+        <circle cx="12" cy="3.5" r="2.8" />
+        <circle cx="19" cy="6" r="2.5" />
+      </svg>
+      <svg class="screen-paw-decor paw-br" width="46" height="46" viewBox="0 0 24 24" fill="currentColor">
+        <ellipse cx="12" cy="15" rx="7" ry="5.5" />
+        <circle cx="5" cy="6" r="2.5" />
+        <circle cx="12" cy="3.5" r="2.8" />
+        <circle cx="19" cy="6" r="2.5" />
+      </svg>
+      <!-- Khối trung tâm màn hình loading -->
+      <div class="screen-loading-center">
+        <!-- 1. Brand Logo -->
+        <div class="loading-header-brand">
+          <img src="/assets/logo_cat.svg" alt="StickerHub" class="loading-brand-logo" width="32" height="32">
+          <span class="loading-brand-title">
+            Sticker
+            <span class="hub-part">
+              Hub
+            </span>
+          </span>
+        </div>
+        <!-- 2. Tranh minh họa Bé mèo nhảy từ thùng carton -->
+        <div class="loading-illustration-box">
+          <img src="/assets/illustration_loading_cat.png" alt="Bé mèo StickerHub" class="loading-cat-img" width="300"
+          height="200" loading="eager" decoding="async">
+        </div>
+        <!-- 3. Tiêu đề & Thông điệp -->
+        <div class="loading-content-meta">
+          <div class="loading-title" id="loadingTitleText">
+            <span>
+              Đang tải trang
+            </span>
+            <span class="loading-dots">
+              <span>
+                .
+              </span>
+              <span>
+                .
+              </span>
+              <span>
+                .
+              </span>
+            </span>
+          </div>
+          <p class="loading-subtitle" id="loadingSubtitleText">
+            Chuẩn bị những sticker thật xinh cho bạn!
+          </p>
+        </div>
+        <!-- 4. Circular Dot Spinner (12 chấm tròn ấm cúng) -->
+        <div class="loading-spinner-wrap">
+          <div class="dot-spinner" aria-label="Đang tải">
+            <div class="dot-spinner-leaf">
+            </div>
+            <div class="dot-spinner-leaf">
+            </div>
+            <div class="dot-spinner-leaf">
+            </div>
+            <div class="dot-spinner-leaf">
+            </div>
+            <div class="dot-spinner-leaf">
+            </div>
+            <div class="dot-spinner-leaf">
+            </div>
+            <div class="dot-spinner-leaf">
+            </div>
+            <div class="dot-spinner-leaf">
+            </div>
+            <div class="dot-spinner-leaf">
+            </div>
+            <div class="dot-spinner-leaf">
+            </div>
+            <div class="dot-spinner-leaf">
+            </div>
+            <div class="dot-spinner-leaf">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <header class="site-header">
+      <div class="header-inner">
+        <!-- Left: Logo + Desktop Navigation -->
+        <div class="header-left">
+          <!-- Logo -->
+          <a href="/" class="brand-logo" id="logoLink" title="StickerHub">
+            <img src="/assets/logo_cat.svg" alt="StickerHub Cat Logo" width="38" height="38">
+            <span class="brand-title">
+              Sticker
+              <span class="hub-part">
+                Hub
+              </span>
+            </span>
+          </a>
+          <!-- Navigation Tabs -->
+          <nav aria-label="Main Navigation">
+            <ul class="nav-menu">
+              <li>
+                <a href="/" class="nav-link" data-tab="home" id="navHome">
+                  <i data-lucide="home" style="width: 15px; height: 15px;">
+                  </i>
+                  <span>
+                    Trang chủ
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="/bo-suu-tap" class="nav-link" data-tab="collections" id="navCollections">
+                  <i data-lucide="folder-heart" style="width: 15px; height: 15px;">
+                  </i>
+                  <span>
+                    Bộ sưu tập
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="/top-tai-nhieu" class="nav-link active" data-tab="top-downloaded" id="navTop">
+                  <i data-lucide="flame" style="width: 15px; height: 15px;">
+                  </i>
+                  <span>
+                    Top tải nhiều
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="/huong-dan" class="nav-link" data-tab="guide" id="navGuide">
+                  <i data-lucide="help-circle" style="width: 15px; height: 15px;">
+                  </i>
+                  <span>
+                    Hướng dẫn
+                  </span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+        <!-- Right: Search Box & Mobile Hamburger Button -->
+        <div class="header-actions">
+          <!-- Ô Tìm Kiếm -->
+          <div class="search-box" id="searchBoxContainer">
+            <input type="text" class="search-input" id="stickerSearch" placeholder="Tìm kiếm sticker..."
+            aria-label="Tìm kiếm sticker" autocomplete="off">
+            <button class="clear-search-btn" id="clearSearchBtn" aria-label="Xóa nội dung tìm kiếm" type="button"
+            title="Xóa">
+              <i data-lucide="x" style="width: 12px; height: 12px;">
+              </i>
+            </button>
+            <button class="search-btn" id="searchBtn" aria-label="Nút tìm kiếm" type="button">
+              <i data-lucide="search" style="width: 15px; height: 15px;">
+              </i>
+            </button>
+            <!-- Dropdown gợi ý tìm kiếm realtime -->
+            <div class="search-suggestions" id="searchSuggestions" role="listbox" aria-label="Gợi ý bộ sưu tập sticker">
+            </div>
+          </div>
+          <!-- Nút 3 gạch mở mobile drawer ở bên phải -->
+          <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Mở menu điều hướng" type="button" title="Menu">
+            <i data-lucide="menu" style="width: 22px; height: 22px;">
+            </i>
+          </button>
+        </div>
+      </div>
+    </header>
+    <div class="mobile-drawer-backdrop" id="drawerBackdrop">
+    </div>
+    <aside class="mobile-drawer" id="mobileDrawer" aria-label="Menu điều hướng di động">
+      <div class="drawer-header">
+        <div class="brand-logo">
+          <img src="/assets/logo_cat.svg" alt="StickerHub" width="30" height="30">
+          <span class="brand-title" style="font-size: 20px;">
+            Sticker
+            <span class="hub-part">
+              Hub
+            </span>
+          </span>
+        </div>
+        <button class="drawer-close-btn" id="drawerCloseBtn" aria-label="Đóng menu" type="button">
+          <i data-lucide="x" style="width: 20px; height: 20px;">
+          </i>
+        </button>
+      </div>
+      <div class="drawer-body">
+        <!-- Menu Điều Hướng -->
+        <div>
+          <div class="drawer-section-title">
+            Menu điều hướng
+          </div>
+          <ul class="drawer-nav">
+            <li>
+              <a href="/" class="drawer-nav-item" data-tab="home">
+                <i data-lucide="home" style="width: 18px; height: 18px;">
+                </i>
+                <span>
+                  Trang chủ
+                </span>
+              </a>
+            </li>
+            <li>
+              <a href="/bo-suu-tap" class="drawer-nav-item" data-tab="collections">
+                <i data-lucide="folder-heart" style="width: 18px; height: 18px;">
+                </i>
+                <span>
+                  Bộ sưu tập
+                </span>
+              </a>
+            </li>
+            <li>
+              <a href="/top-tai-nhieu" class="drawer-nav-item active" data-tab="top-downloaded">
+                <i data-lucide="flame" style="width: 18px; height: 18px;">
+                </i>
+                <span>
+                  Top tải nhiều
+                </span>
+              </a>
+            </li>
+            <li>
+              <a href="/huong-dan" class="drawer-nav-item" data-tab="guide" id="drawerNavGuide">
+                <i data-lucide="help-circle" style="width: 18px; height: 18px;">
+                </i>
+                <span>
+                  Hướng dẫn
+                </span>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <!-- Accordions: Danh mục & Bộ sưu tập nổi bật -->
+        <div class="drawer-accordions-group">
+          <div class="drawer-section-title">
+            Khám phá nội dung
+          </div>
+          <!-- Accordion 1: Danh mục -->
+          <div class="drawer-accordion" id="accordionDrawerCategories">
+            <button class="drawer-accordion-btn" type="button" aria-expanded="false"
+            onclick="toggleDrawerAccordion('accordionDrawerCategories')">
+              <span class="drawer-accordion-title">
+                <i data-lucide="folder" style="width: 17px; height: 17px;">
+                </i>
+                <span>
+                  Danh mục
+                </span>
+              </span>
+              <i data-lucide="chevron-down" class="drawer-chevron" style="width: 16px; height: 16px;">
+              </i>
+            </button>
+            <div class="drawer-accordion-content">
+              <ul class="drawer-sub-list" id="drawerCategoryList">
+                <li>
+                  <a href="/top-tai-nhieu" class="drawer-sub-item {% if active_category == 'all' %}active{% endif %}"
+                  data-category="all">
+                    <span class="cat-info">
+                      <span>
+                        Tất cả
+                      </span>
+                    </span>
+                  </a>
+                </li>
+                {% for cat in categories %}
+                <li>
+                  <a href="/top-tai-nhieu/{{ cat.slug }}"
+                  class="drawer-sub-item {% if cat.is_active or cat.slug == active_category %}active{% endif %}"
+                  data-category="{{ cat.slug }}">
+                    <span class="cat-info">
+                      <span>
+                        {{ cat.name }}
+                      </span>
+                    </span>
+                    <span class="cat-count">
+                      ({{ cat.sticker_count }})
+                    </span>
+                  </a>
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+          <!-- Accordion 2: Bộ sưu tập nổi bật -->
+          <div class="drawer-accordion" id="accordionDrawerFeatured">
+            <button class="drawer-accordion-btn" type="button" aria-expanded="false"
+            onclick="toggleDrawerAccordion('accordionDrawerFeatured')">
+              <span class="drawer-accordion-title">
+                <i data-lucide="flame" style="width: 17px; height: 17px;">
+                </i>
+                <span>
+                  Bộ sưu tập nổi bật
+                </span>
+              </span>
+              <i data-lucide="chevron-down" class="drawer-chevron" style="width: 16px; height: 16px;">
+              </i>
+            </button>
+            <div class="drawer-accordion-content">
+              <div class="drawer-sub-list">
+                {% for feat in featured_packs %}
+                <a href="/bo-suu-tap/{{ feat.category_slug }}/{{ feat.slug }}" class="drawer-featured-item"
+                style="text-decoration: none; color: inherit;">
+                  <span class="drawer-featured-title">
+                    {{ feat.title }}
+                  </span>
+                  <span class="drawer-featured-count">
+                    {{ feat.total_stickers }} sticker
+                  </span>
+                </a>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+    <main class="main-wrapper top-page-wrapper">
+      <!-- ==================== CỘT 1: LEFT SIDEBAR ==================== -->
+      <aside class="sidebar">
+        <!-- Card 1: Danh mục -->
+        <div class="sidebar-card">
+          <div class="card-header">
+            <i data-lucide="folder" style="width: 17px; height: 17px;">
+            </i>
+            <span>
+              Danh mục
+            </span>
+          </div>
+          <ul class="category-list" id="categoryList">
+            <li>
+              <a href="/top-tai-nhieu" class="category-item {% if active_category == 'all' %}active{% endif %}"
+              data-category="all">
+                <span class="cat-info">
+                  <i data-lucide="layout-grid" class="cat-icon" style="width: 17px; height: 17px;">
+                  </i>
+                  <span>
+                    Tất cả
+                  </span>
+                </span>
+              </a>
+            </li>
+            {% for cat in categories %}
+            <li>
+              <a href="/top-tai-nhieu/{{ cat.slug }}"
+              class="category-item {% if cat.is_active or cat.slug == active_category %}active{% endif %}"
+              data-category="{{ cat.slug }}">
+                <span class="cat-info">
+                  <i data-lucide="{{ cat.icon_name or 'tag' }}" class="cat-icon" style="width: 17px; height: 17px;">
+                  </i>
+                  <span>
+                    {{ cat.name }}
+                  </span>
+                </span>
+                <span class="cat-count">
+                  ({{ cat.sticker_count }})
+                </span>
+              </a>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+        <!-- Card 2: Bộ sưu tập nổi bật -->
+        <div class="featured-card">
+          <div class="card-header">
+            <i data-lucide="flame" style="width: 17px; height: 17px;">
+            </i>
+            <span>
+              Bộ sưu tập nổi bật
+            </span>
+          </div>
+          <div class="featured-list" id="featuredList">
+            {% for feat in featured_packs %}
+            <a href="/bo-suu-tap/{{ feat.category_slug }}/{{ feat.slug }}" class="featured-item"
+            style="text-decoration: none; color: inherit;">
+              <img src="{{ feat.cover_image }}" alt="{{ feat.title }}" class="featured-thumb" loading="lazy">
+              <div class="featured-meta">
+                <span class="featured-name">
+                  {{ feat.title }}
+                </span>
+                <span class="featured-stickers">
+                  {{ feat.total_stickers }} sticker
+                </span>
+              </div>
+            </a>
+            {% endfor %}
+          </div>
+        </div>
+      </aside>
+      <!-- ==================== CỘT 2: CENTER MAIN CONTENT ==================== -->
+      <section class="top-main-content">
+        <!-- 1. Hero Scrapbook Banner: Top tải nhiều -->
+        <div class="top-hero-banner">
+          <!-- Bên trái: Tiêu đề + vương miện + mô tả + trái tim -->
+          <div class="hero-left-col">
+            <div class="hero-crown-title">
+              <svg class="crown-icon-gold" viewBox="0 0 24 24" fill="currentColor">
+                <path
+                d="M5 16L3 5L8.5 10L12 4L15.5 10L21 5L19 16H5ZM19 19C19 19.5523 18.5523 20 18 20H6C5.44772 20 5 19.5523 5 19V17H19V19Z" />
+              </svg>
+              <h1>
+                Top tải nhiều
+              </h1>
+            </div>
+            <p class="hero-desc-text">
+              Những bộ sticker được cộng đồng yêu thích và tải xuống nhiều nhất!
+            </p>
+            <div class="hero-mini-heart">
+              ❤
+            </div>
+          </div>
+          <!-- Ở giữa: Giấy note đính ghim nghiêng (Scrapbook paper note) -->
+          <div class="hero-tilted-note">
+            <div class="tilted-note-pin">
+            </div>
+            <span class="tilted-note-line1">
+              Sticker hot
+            </span>
+            <span class="tilted-note-line2">
+              Không thể bỏ qua!
+            </span>
+          </div>
+          <!-- Bên phải: Hình vẽ chú mèo đội vương miện lấp lánh -->
+          <div class="hero-right-cat">
+            <img src="/assets/banner_cat_crown.png" alt="Chú mèo đội vương miện hoàng gia" loading="lazy">
+          </div>
+        </div>
+        <!-- 2. Thanh lọc danh mục & Sắp xếp -->
+        <div class="top-filter-bar">
+          <!-- Các nút lọc chủ đề -->
+          <div class="filter-categories-pills" id="filterCatPills">
+            <button class="filter-cat-btn {% if active_category == 'all' %}active{% endif %}" data-filter="all"
+            type="button">
+              Tất cả
+            </button>
+            {% for cat in categories %}
+            <button class="filter-cat-btn {% if cat.is_active or cat.slug == active_category %}active{% endif %}"
+            data-filter="{{ cat.slug }}" type="button">
+              {{ cat.name }}
+            </button>
+            {% endfor %}
+          </div>
+          <!-- Bộ chọn sắp xếp -->
+          <div class="sort-container-right">
+            <span class="sort-label">
+              Sắp xếp:
+            </span>
+            <div class="sort-select-box">
+              <select class="sort-select" id="sortSelect" aria-label="Sắp xếp danh sách">
+                <option value="downloads" {% if active_sort=='downloads' %}selected{% endif %}>
+                  Tải nhiều nhất
+                </option>
+                <option value="favorites" {% if active_sort=='favorites' %}selected{% endif %}>
+                  Yêu thích nhất
+                </option>
+                <option value="name" {% if active_sort=='name' %}selected{% endif %}>
+                  Tên A-Z
+                </option>
+              </select>
+              <i data-lucide="chevron-down" class="sort-chevron" style="width: 14px; height: 14px;">
+              </i>
+            </div>
+          </div>
+        </div>
+        <!-- 3. Lưới hiển thị 12 Card Sticker (4 cột x 3 hàng) -->
+        <div class="top-stickers-grid" id="topStickersGrid">
+          {% if top_packs %}
+
+        {% for pack in top_packs %}
+          <div class="top-sticker-card" data-category="{{ pack.category_slug }}" data-id="{{ pack.id }}"
+          data-downloads="{{ pack.total_downloads }}" data-favorites="{{ pack.total_favorites }}"
+          data-name="{{ pack.title }}">
+            <span class="rank-badge {{ pack.rank_badge_class }}" title="Hạng {{ pack.rank }}">
+              {{ pack.rank }}
+            </span>
+            <a href="/bo-suu-tap/{{ pack.category_slug }}/{{ pack.slug }}" class="card-preview-box">
+              <img src="{{ pack.cover_image }}" alt="{{ pack.title }}" loading="lazy">
+            </a>
+            <div class="card-meta-info">
+              <a href="/bo-suu-tap/{{ pack.category_slug }}/{{ pack.slug }}"
+              style="text-decoration: none; color: inherit;">
+                <h3 class="card-pack-title">
+                  {{ pack.title }}
+                </h3>
+              </a>
+              <span class="card-sticker-count">
+                {{ pack.total_stickers }} sticker
+              </span>
+              <div class="card-stats-line">
+                <span class="stat-item" title="Lượt tải về">
+                  <i data-lucide="download" style="width: 13px; height: 13px;">
+                  </i>
+                  <span class="stat-downloads-text">
+                    {{ pack.total_downloads_compact }}
+                  </span>
+                </span>
+                <span class="stat-item" title="Yêu thích">
+                  <i data-lucide="heart" style="width: 13px; height: 13px;">
+                  </i>
+                  <span>
+                    {{ pack.total_favorites_compact }}
+                  </span>
+                </span>
+              </div>
+              <button class="btn-card-download" type="button" data-pack-id="{{ pack.id }}"
+              data-pack-title="{{ pack.title }}" aria-label="Tải về bộ sticker {{ pack.title }}">
+                <i data-lucide="download" style="width: 14px; height: 14px;">
+                </i>
+                <span>
+                  Tải về
+                </span>
+              </button>
+            </div>
+          </div>
+          {% endfor %}
+
+        {% else %}
+          <div class="empty-state"
+          style="grid-column: 1 / -1; text-align: center; padding: 48px 20px; background: #FAF5EE; border-radius: 14px; border: 1.5px dashed #E0D3C3;">
+            <i data-lucide="folder-search" style="width: 48px; height: 48px; color: #9C8A7B; margin-bottom: 12px;">
+            </i>
+            <h4 style="font-size: 17px; font-weight: 700; color: #35231B; margin-bottom: 6px;">
+              Không tìm thấy bộ sưu tập
+            nào
+            </h4>
+            <p style="font-size: 14px; color: #766557;">
+              Thử chọn danh mục hoặc tiêu chí sắp xếp khác nhé!
+            </p>
+          </div>
+          {% endif %}
+        </div>
+      </section>
+      <!-- ==================== CỘT 3: RIGHT SIDEBAR ==================== -->
+      <aside class="top-right-sidebar">
+        <!-- Card 1: Top 5 bộ sưu tập hot nhất -->
+        <div class="hot-ranking-card">
+          <div class="hot-ranking-header">
+            <i data-lucide="flame" class="hot-fire-icon"
+            style="width: 18px; height: 18px; color: #E64A38; fill: #E64A38;">
+            </i>
+            <span>
+              Top 5 bộ sưu tập hot nhất
+            </span>
+          </div>
+          <div class="hot-ranking-list" id="hotRankingList">
+            {% for item in hot_ranking %}
+            <a href="/bo-suu-tap/{{ item.category_slug }}/{{ item.slug }}" class="hot-ranking-item">
+              <span class="ranking-order-num">
+                {{ item.order }}
+              </span>
+              <img src="{{ item.cover_image }}" alt="{{ item.title }}" class="ranking-thumb-img" loading="lazy">
+              <div class="ranking-info-text">
+                <span class="ranking-name">
+                  {{ item.title }}
+                </span>
+                <span class="ranking-downloads">
+                  {{ item.total_downloads_compact }} lượt tải
+                </span>
+              </div>
+            </a>
+            {% endfor %}
+          </div>
+        </div>
+        <!-- Card 2: Promo Scrapbook Card -->
+        <div class="promo-scrapbook-card">
+          <h4 class="promo-quote-title">
+            Cùng khám phá
+            <br>
+            thế giới sticker
+            <br>
+            đầy màu sắc!
+          </h4>
+          <div class="promo-illustration-box">
+            <img src="/assets/promo_cat_heart.png" alt="Cùng khám phá thế giới sticker đầy màu sắc" loading="lazy">
+          </div>
+        </div>
+      </aside>
+    </main>
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <div class="footer-copy">
+          © 2025 StickerHub. All rights reserved.
+        </div>
+        <div class="footer-right">
+          <ul class="footer-links">
+            <li>
+              <a href="/gioi-thieu" class="footer-link">
+                Giới thiệu
+              </a>
+            </li>
+            <li>
+              <a href="/dieu-khoan-su-dung" class="footer-link">
+                Điều khoản sử dụng
+              </a>
+            </li>
+            <li>
+              <a href="/tai-xuong" class="footer-link">
+                Tải xuống
+              </a>
+            </li>
+          </ul>
+          <div class="footer-socials">
+            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="social-btn"
+            aria-label="Facebook">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
+                <path
+                d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+              </svg>
+            </a>
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-btn"
+            aria-label="Instagram">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5">
+                </rect>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z">
+                </path>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5">
+                </line>
+              </svg>
+            </a>
+            <a href="https://threads.net" target="_blank" rel="noopener noreferrer" class="social-btn"
+            aria-label="Threads">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
+                <path
+                d="M12.186 24h-.007c-3.581-.024-6.334-1.205-8.184-3.509C2.35 18.44 1.5 15.586 1.472 12.01v-.017c.03-3.579.879-6.43 2.525-8.482C5.845 1.205 8.6.024 12.18 0h.014c2.746.02 5.043.725 6.826 2.098c1.677 1.29 2.858 3.13 3.509 5.467l-2.04.569c-1.104-3.96-3.898-5.984-8.304-6.015c-2.91.022-5.11.936-6.54 2.717C4.307 6.504 3.616 8.914 3.589 12c.027 3.086.718 5.496 2.057 7.164c1.43 1.783 3.631 2.698 6.54 2.717c2.623-.02 4.358-.631 5.8-2.045c1.647-1.613 1.618-3.593 1.09-4.798c-.31-.71-.873-1.3-1.634-1.75c-.192 1.352-.622 2.446-1.284 3.272c-.886 1.102-2.14 1.704-3.73 1.79-1.202.065-2.361-.218-3.259-.801c-1.063-.689-1.685-1.74-1.752-2.964c-.065-1.19.408-2.285 1.33-3.082c.88-.76 2.119-1.207 3.583-1.291a14 14 0 0 1 3.02.142c-.126-.742-.375-1.332-.75-1.757c-.513-.586-1.308-.883-2.359-.89h-.029c-.844 0-1.992.232-2.721 1.32l-1.757-1.18c.98-1.454 2.568-2.256 4.478-2.256h.044c3.194.02 5.097 1.975 5.287 5.388q.163.07.321.142c1.49.7 2.58 1.761 3.154 3.07c.797 1.82.871 4.79-1.548 7.158c-1.85 1.81-4.094 2.628-7.277 2.65Zm1.003-11.69q-.362 0-.739.021c-1.836.103-2.98.946-2.916 2.143c.067 1.256 1.452 1.839 2.784 1.767c1.224-.065 2.818-.543 3.086-3.71a10.5 10.5 0 0 0-2.215-.221" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <!-- Toast Notification Container (dùng chung qua showToast.js) -->
+    <div class="toast-container" id="toastContainer">
+    </div>
+    <!-- Hydration Data -->
+<script id="initialTopData" type="application/json">
+{{ initial_data | tojson }}
+</script>
+    <!-- MASTER LAYOUT JAVASCRIPT & PAGE SCRIPT -->
+<script src="/static/user/js/pages/toptainhieu.js">
+</script>
+<script type="module" src="/static/user/js/app.js">
+</script>
+  </body>
+</html>

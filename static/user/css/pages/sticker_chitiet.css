@@ -1,11 +1,3 @@
-/**
- * ========================================================
- * STICKER CHI TIẾT (STICKER DETAIL) SPECIFIC STYLES
- * ========================================================
- * Chứa layout 3 cột, breadcrumb, hero banner sticker chi tiết,
- * lưới 20 sticker xem trước, phân trang và thanh công cụ bên phải.
- */
-
 /* ========================================================
    CONTAINER & 3-COLUMN LAYOUT
    ======================================================== */
@@ -283,14 +275,17 @@
 
 .stat-item.favorite-stat {
   cursor: pointer;
-  padding: 4px 10px;
+  padding: 4px 12px;
   border-radius: 20px;
   border: 1px solid transparent;
-  transition: all 0.2s ease;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   user-select: none;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
+  min-height: 28px;
+  box-sizing: border-box;
 }
 
 .stat-item.favorite-stat:hover {
@@ -311,48 +306,45 @@
   transition: transform 0.2s ease;
 }
 
+/* Huy hiệu / nút Nhấn để hủy: MẶC ĐỊNH KHÔNG HIỂN THỊ SẴN */
+.fav-action-badge {
+  display: none !important;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #C0392B;
+  line-height: 1.3;
+}
+
+.fav-action-badge svg.badge-x-icon {
+  width: 13px;
+  height: 13px;
+  stroke-width: 2.5;
+  color: #C0392B;
+}
+
+/* Khi đã yêu thích: Mặc định hiển thị số lượt yêu thích */
+.stat-item.favorite-stat.is-favorited #favCount {
+  display: inline;
+}
+
+/* Khi đã yêu thích và RÊ CHUỘT VÀO (HOVER):
+   - Ẩn phần số lượt yêu thích và icon tim
+   - Hiển thị 'Nhấn để hủy' thay thế ngay tại vị trí đó
+   - Nền chuyển màu cảnh báo hủy nhẹ nhàng, tinh tế */
 .stat-item.favorite-stat.is-favorited:hover {
   background-color: #FEE8E3;
   border-color: #F2AEA0;
 }
 
-.stat-item.favorite-stat.is-favorited:hover svg.fav-icon,
-.stat-item.favorite-stat.is-favorited:hover svg {
-  transform: scale(1.1);
+.stat-item.favorite-stat.is-favorited:hover .fav-icon,
+.stat-item.favorite-stat.is-favorited:hover #favCount {
+  display: none !important;
 }
 
-/* Huy hiệu Nhấn để hủy */
-.fav-action-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 3px;
-  font-size: 11.5px;
-  font-weight: 700;
-  padding: 2px 8px;
-  border-radius: 12px;
-  background-color: #FCE6E2;
-  color: #C0392B;
-  border: 1px solid #F5BDB5;
-  margin-left: 2px;
-  transition: all 0.2s ease;
-  line-height: 1.3;
-}
-
-.fav-action-badge svg.badge-x-icon {
-  stroke-width: 2.5;
-  color: #C0392B;
-}
-
-/* Hover hiệu ứng nhấn mạnh hủy yêu thích */
 .stat-item.favorite-stat.is-favorited:hover .fav-action-badge {
-  background-color: #E64A38;
-  color: #FFFFFF;
-  border-color: #E64A38;
-  box-shadow: 0 1px 4px rgba(230, 74, 56, 0.25);
-}
-
-.stat-item.favorite-stat.is-favorited:hover .fav-action-badge svg.badge-x-icon {
-  color: #FFFFFF;
+  display: inline-flex !important;
 }
 
 .hero-right-decor {

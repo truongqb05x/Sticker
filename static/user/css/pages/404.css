@@ -1,11 +1,3 @@
-/**
- * ========================================================
- * 404 ERROR PAGE STYLES
- * ========================================================
- * Giao diện trang 404 Không tìm thấy trang theo phong cách
- * ấm cúng, dễ thương của StickerHub (Bé mèo cầm bảng 404).
- */
-
 /* Container chính của trang lỗi 404 */
 .error-page-wrapper {
   flex: 1;

@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     if (favActionBadge) {
-      favActionBadge.style.display = isFavorited ? "inline-flex" : "none";
+      favActionBadge.removeAttribute("style");
     }
 
     if (infoFavCount && countText !== undefined && countText !== null) {
